@@ -35,20 +35,20 @@ pip install ray[all] torch torchvision torchaudio seaborn tqdm visdom tabulate
 
 You need to set up the following environment variables:
 
-- `DATA_DIR`: The directory where you want to store the datasets.
+<!-- - `DATA_DIR`: The directory where you want to store the datasets. -->
 - `RESULTS_DIR`: The directory where you want to store the results.
 - `CODE_DIR`: The directory where you clone and store the code.
 
 Of course, make sure that the directories exist.
 Exactly how to set up environment variables depends on your system (a quick search on internet should give you the answer).
 
-#### Download the datasets
+<!-- #### Download the datasets
 
 ```bash
 python -c "from torchvision import datasets; import os; [eval(f'datasets.{dataset}')(os.environ.get('DATA_DIR'),download=True) for dataset in ['MNIST']]"
 python -c "from torchvision import datasets; import os; [eval(f'datasets.{dataset}')(os.environ.get('DATA_DIR'),download=True) for dataset in ['FashionMNIST']]"
 python -c "from torchvision import datasets; import os; [eval(f'datasets.{dataset}')(os.environ.get('DATA_DIR'),download=True) for dataset in ['CIFAR10']]"
-```
+``` -->
 
 ## Structure of the code
 
@@ -59,8 +59,8 @@ The code is organized as follows:
   - `utils.py`: Utility functions
   - `analysis_v1.py`: Functions for analyzing the results. Calling this file with configuration file will load the results and plot the figures.
   - `analysis_utils.py`: Utility functions for analysis.
-  - `*_trainable.py`: Various trainable classes that is shared across different experiments.
-  - `data_utils.py`: Utility functions for dataset.
+  <!-- - `*_trainable.py`: Various trainable classes that is shared across different experiments. -->
+  <!-- - `data_utils.py`: Utility functions for dataset. -->
   - `fit_data.py`: Functions for fitting data from biological experiments.
 - `experiments`: This folder contains all the experiments. Specifically, each subfolder contains
   - the `README.md` file that describes the experiment, document the comments to run to reproduce the experiment and reproduce the figure in the paper.

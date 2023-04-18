@@ -71,9 +71,9 @@ The code is organized as follows:
 
 ## Run the code to reproduce experiments and figures
 
-The simply look into each subfolders in `experiments` and follow the instructions in the `README.md` file, where the resulted figures are also documented.
+Then simply look into each subfolders in `experiments` and follow the instructions in the `README.md` file, where the resulting figures are also documented.
 
-By reading each `README.md` file in a markdown editor (such as viewing it on github), the resulted figures are attached inline, so it is obvious which corresponding figure it produces in the paper.
+By reading each `README.md` file in a markdown editor (such as viewing it on github), the resulting figures are attached inline, so it is obvious which corresponding figure it produces in the paper.
 
 Before looking at each experiment folder, we explain the shared underlying logic of the code.
 In each experiment folder, the `README.md` documents two kinds of commands to run:
@@ -97,7 +97,7 @@ You may see some warning messages when running the code:
 - depreciation warning messages from dependencies are normally safe, as the dependencies of the code base are well maintained libaries like PyTorch, Numpy, Seaborn and etc, depreciation warning messages is almost guaranteed to have backward compatibility.
 
 You should not see any error messages if you are using the docker image.
-You may see error messages if you are using your own environment, but they are usually easy to fix by compring the `Dockerfile` with your procedure of setting up the environment.
+You may see error messages if you are using your own environment, but they are usually easy to fix by comparing the `Dockerfile` with your procedure of setting up the environment.
 Open an issue if you have any problem in dealing with error messages and we will help out as we can.
 
 ### Reproducibility

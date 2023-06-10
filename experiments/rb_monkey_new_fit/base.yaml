@@ -1,0 +1,17 @@
+# after_run_code: |-
+#     u.report_via_email(
+#         subject=f"Run {args.experiment_config} finished"
+#     )
+
+ray_paradigm: "fit"
+
+trainable: eu.train
+
+run_config: |-
+    ray.air.RunConfig(
+        name=name,
+        local_dir=local_dir,
+    )
+
+param_space:
+    version: 0.5

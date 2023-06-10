@@ -41,11 +41,11 @@ if __name__ == '__main__':
 
     # for historical experiments, there were default imports of trainables, importing here
     # to avoid breaking old experiments
-    from base_trainable import BaseTrainable
-    from dataset_learning_trainable import DatasetLearningTrainable
-    from supervised_learning_trainable import SupervisedLearningTrainable
-    from any_energy_trainable import AnyEnergyTrainable
-    from hand_coded_rules_trainable import HandCodedRulesTrainable
+    # from base_trainable import BaseTrainable
+    # from dataset_learning_trainable import DatasetLearningTrainable
+    # from supervised_learning_trainable import SupervisedLearningTrainable
+    # from any_energy_trainable import AnyEnergyTrainable
+    # from hand_coded_rules_trainable import HandCodedRulesTrainable
 
     # main_import_code
     if config.get('main_import_code', None) is not None:
@@ -209,10 +209,16 @@ if __name__ == '__main__':
 
     elif ray_paradigm == "fit":
 
-        is_resume = config['is_resume']
-        config.pop('is_resume')
-        restore_kwargs = config['restore_kwargs']
-        config.pop('restore_kwargs')
+        is_resume = config.get('is_resume', None)
+        if is_resume is None:
+            is_resume = False
+        else:
+            config.pop('is_resume')
+        restore_kwargs = config.get('restore_kwargs', None)
+        if restore_kwargs is None:
+            restore_kwargs = {}
+        else:
+            config.pop('restore_kwargs')
 
         if not is_resume:
 
@@ -236,8 +242,18 @@ if __name__ == '__main__':
                     )
                 trainable = eval(trainable)
             config['trainable'] = trainable
-            config['tune_config'] = eval(config['tune_config'])
-            config['run_config'] = eval(config['run_config'])
+            
+            # tune_config
+            if config.get('tune_config', None) is not None:
+                config['tune_config'] = eval(config['tune_config'])
+            
+            # run_config
+            if config.get('run_config', None) is not None:
+                if 'name=name' not in config['run_config']:
+                    logger.warning((
+                        f"it is recommended to have a pattern of 'name=name' for the run_config, but got {config['run_config']}. "
+                    ))
+                config['run_config'] = eval(config['run_config'])
 
             tuner = ray.tune.Tuner(
                 **config,

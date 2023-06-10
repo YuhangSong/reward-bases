@@ -10,8 +10,14 @@ trainable: eu.train
 run_config: |-
     ray.air.RunConfig(
         name=name,
+        stop=lambda _, result: result['training_iteration']>0,
         local_dir=local_dir,
     )
 
 param_space:
     version: 0.5
+
+    formula:
+        grid_search:
+            - "value + identity"
+            - "value + identity : value"

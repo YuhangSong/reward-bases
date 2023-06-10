@@ -2,18 +2,17 @@
 # base
 
 ```bash
-python main.py -c rb_monkey_new_fit/base -l
-```
-
-```bash
+rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
+python main.py -c rb_monkey_new_fit/base && \
 python analysis_v1.py \
 -t "base" \
+--p "sns.set_theme()" \
 -l $RESULTS_DIR/rb_monkey_new_fit/ \
--m "eval(df['value-along-index'].iloc[-1])" \
+-m "df['rsquared'].iloc[-1]" \
 -f "./experiments/rb_monkey_new_fit/base.yaml" \
 -v \
 "import experiments.rb_monkey_new_fit.utils as eu" \
-"input(df)"
+"eu.plot(df)"
 ```
 
 ![](base-.png)

@@ -5,6 +5,11 @@ import analysis_utils as au
 import sys
 sys.path.insert(0, "/Users/yuhang/working_dir/reward-base/")
 
+import numpy as np
+import seaborn as sns
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
 from monkey.get_clean_data import get_clean_data
 
 def train(config):
@@ -21,11 +26,6 @@ def train(config):
     }
     for trial_i in range(len(spiketimes_list)):
         
-        data['trial_i'].append(trial_i)
-        
-        onset = stim_onsets_list[trial_i]
-        data['onset'].append(onset)
-        
         # 1 = 1.5g banana, 2 = 0.3g banana, 3 = 0.2ml juice, 4 = 0.5ml juice, 5 = 0.9ml juice, 25 = a trial without a stimulus (empty)
         situation = {
             1: "1.5g banana",
@@ -35,7 +35,14 @@ def train(config):
             5: "0.9ml juice",
             25: "empty",
         }[situations_list[trial_i]]
+        if situation == "empty":
+            continue
         data['situation'].append(situation)
+
+        data['trial_i'].append(trial_i)
+        
+        onset = stim_onsets_list[trial_i]
+        data['onset'].append(onset)
 
         identity = {
             "1.5g banana": +1,
@@ -59,31 +66,30 @@ def train(config):
 
         spiketimes = spiketimes_list[trial_i]
         # count how many spikes are in interval 150 to 500
-        dopamine = len([spiketime for spiketime in spiketimes if 150 <= spiketime <= 500])
+        dopamine = len([spiketime for spiketime in spiketimes if ((onset+150) <= spiketime <= (onset+500))])
         data['dopamine'].append(dopamine)
     
     df = pd.DataFrame.from_dict(data)
 
-    # Set-up Python libraries - you need to run this but you don't need to change it
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import scipy.stats as stats
-    import pandas
-    import seaborn as sns
-    import statsmodels.api as sm
-    import statsmodels.formula.api as smf
-    # Fit a regression model: Y = dopamine, x1 = food, x2 = drink.
-
     # first we run this line to tell statsmodels where to find the data and the explanatory variables
-    reg_formula = sm.regression.linear_model.OLS.from_formula(data = df, formula = 'dopamine ~ value + identity')
+    reg_formula = sm.regression.linear_model.OLS.from_formula(data = df, formula = f'dopamine ~ {config["formula"]}')
 
     # then we run this line to fit the regression (work out the values of intercept and slope)
     # the output is a structure which we will call reg_results
     reg_results = reg_formula.fit()
 
     # let's view a summary of the regression results
-    reg_results.summary()
+    # reg_results.summary()
 
     results = {}
 
+    results['rsquared'] = reg_results.rsquared
+
     return results
+
+def plot(df):
+
+    df = df.rename(columns={"df['rsquared'].iloc[-1]": 'rsquared'})
+
+    sns.catplot(x="formula", y="rsquared", data=df, kind="bar")
+

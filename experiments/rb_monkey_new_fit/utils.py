@@ -120,11 +120,11 @@ def train(config):
 
     return results
 
-def plot(df, y="rsquared"):
+def plot(df, y, x):
 
     df = df.rename(columns={f"df['{y}'].iloc[-1]": y})
 
-    g=sns.catplot(x="neuron", hue="formula", y=y, data=df, kind="bar")
+    g=sns.catplot(hue="formula", x=x, y=y, data=df, kind="bar")
 
     # rotate x-axis labels for 90 degrees
     g.set_xticklabels(rotation=90)

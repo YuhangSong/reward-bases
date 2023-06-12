@@ -17,7 +17,32 @@ run_config: |-
 param_space:
     version: 0.5
 
+    neuron:
+        grid_search:
+            - "0359"
+            - "0360"
+            - "0361"
+            - "0362"
+            - "0363"
+            - "0364"
+            - "0365"
+            - "0366"
+            - "0367"
+            - "0368"
+            - "0369"
+            - "0370"
+            - "0371"
+            - "0372"
+            - "0373"
+            - "0374"
+            - "0375"
+            - "0376"
+            - "0377"
+
     formula:
         grid_search:
+            - "value"
             - "value + identity"
             - "value + identity : value"
+            - "value + identity + identity : value"
+            - "value + situation"

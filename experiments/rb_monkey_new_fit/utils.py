@@ -14,7 +14,9 @@ from monkey.get_clean_data import get_clean_data
 
 def train(config):
 
-    spiketimes_list, stim_onsets_list, situations_list = get_clean_data(path="/Users/yuhang/working_dir/reward-base/monkey/CleanData/w065-0359.jld2")
+    spiketimes_list, stim_onsets_list, situations_list = get_clean_data(
+        path=f"/Users/yuhang/working_dir/reward-base/monkey/CleanData/w065-{config['neuron']}.jld2"
+    )
 
     data = {
         'trial_i': [],
@@ -35,13 +37,15 @@ def train(config):
             5: "0.9ml juice",
             25: "empty",
         }[situations_list[trial_i]]
-        if situation == "empty":
+        onset = stim_onsets_list[trial_i]
+        spiketimes = spiketimes_list[trial_i]
+        if situation == "empty" or onset == [] or (not isinstance(spiketimes, list)):
             continue
+        
         data['situation'].append(situation)
 
         data['trial_i'].append(trial_i)
         
-        onset = stim_onsets_list[trial_i]
         data['onset'].append(onset)
 
         identity = {
@@ -64,7 +68,6 @@ def train(config):
         }[situation]
         data['value'].append(value)
 
-        spiketimes = spiketimes_list[trial_i]
         # count how many spikes are in interval 150 to 500
         dopamine = len([spiketime for spiketime in spiketimes if ((onset+150) <= spiketime <= (onset+500))])
         data['dopamine'].append(dopamine)
@@ -85,11 +88,17 @@ def train(config):
 
     results['rsquared'] = reg_results.rsquared
 
+    # get bic score
+    results['bic'] = reg_results.bic
+
     return results
 
-def plot(df):
+def plot(df, y="rsquared"):
 
-    df = df.rename(columns={"df['rsquared'].iloc[-1]": 'rsquared'})
+    df = df.rename(columns={f"df['{y}'].iloc[-1]": y})
 
-    sns.catplot(x="formula", y="rsquared", data=df, kind="bar")
+    g=sns.catplot(x="neuron", hue="formula", y=y, data=df, kind="bar")
+
+    # rotate x-axis labels for 90 degrees
+    g.set_xticklabels(rotation=90)
 

@@ -13,7 +13,6 @@ python analysis_v1.py \
 -v \
 "import experiments.rb_monkey_new_fit.utils as eu" \
 "eu.plot(df,y='rsquared')" && \
-python main.py -c rb_monkey_new_fit/base && \
 python analysis_v1.py \
 -t "base-bic" \
 --p "sns.set_theme()" \

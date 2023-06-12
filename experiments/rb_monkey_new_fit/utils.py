@@ -18,7 +18,32 @@ def train(config):
         path=f"/Users/yuhang/working_dir/reward-base/monkey/CleanData/w065-{config['neuron']}.jld2"
     )
 
+    date = {
+        "0358": "11/09/2013",
+        "0359": "01/10/2013",
+        "0360": "01/10/2013",
+        "0361": "01/10/2013",
+        "0362": "02/10/2013",
+        "0363": "02/10/2013",
+        "0364": "03/10/2013",
+        "0365": "03/10/2013",
+        "0366": "03/10/2013",
+        "0367": "03/10/2013",
+        "0368": "04/10/2013",
+        "0369": "04/10/2013",
+        "0370": "04/10/2013",
+        "0371": "04/10/2013",
+        "0372": "08/10/2013",
+        "0373": "09/10/2013",
+        "0374": "09/10/2013",
+        "0375": "09/10/2013",
+        "0376": "11/10/2013",
+        "0377": "11/10/2013",
+        "0378": "20/02/2014",
+    }[config['neuron']]
+
     data = {
+        'date': [],
         'trial_i': [],
         'onset': [],
         'situation': [],
@@ -41,10 +66,12 @@ def train(config):
         spiketimes = spiketimes_list[trial_i]
         if situation == "empty" or onset == [] or (not isinstance(spiketimes, list)):
             continue
-        
-        data['situation'].append(situation)
 
+        data['date'].append(date)
+        
         data['trial_i'].append(trial_i)
+
+        data['situation'].append(situation)
         
         data['onset'].append(onset)
 

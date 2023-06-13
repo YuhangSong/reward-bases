@@ -86,11 +86,11 @@ def train(config):
         data['identity'].append(identity)
         
         value = {
-            "1.5g banana": 1.5,
-            "0.3g banana": 0.3,
-            "0.2ml juice": 0.2,
+            "1.5g banana": 0.7,
+            "0.3g banana": 0.05,
+            "0.2ml juice": 0.1,
             "0.5ml juice": 0.5,
-            "0.9ml juice": 0.9,
+            "0.9ml juice": 1,
             "empty": 0,
         }[situation]
         data['value'].append(value)

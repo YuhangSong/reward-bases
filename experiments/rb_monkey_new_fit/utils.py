@@ -18,6 +18,7 @@ def train(config):
         path=f"/Users/yuhang/working_dir/reward-base/monkey/CleanData/w065-{config['neuron']}.jld2"
     )
 
+    # these are obtained from ./file list and date.PNG
     date = {
         "0358": "11/09/2013",
         "0359": "01/10/2013",
@@ -121,11 +122,19 @@ def train(config):
     # get coeff
     results['coeff'] = reg_results.params[config['coeff_id']]
 
+    # get pvalue
+    results['pvalue'] = reg_results.pvalues[config['coeff_id']]
+
     return results
 
 def proc_df(df, log_id):
 
-    df = df.rename(columns={f"df['{log_id}'].iloc[-1]": log_id})
+    if isinstance(log_id, str):
+        log_id = [log_id]
+    assert isinstance(log_id, list)
+
+    for v in log_id:
+        df = df.rename(columns={f"df['{v}'].iloc[-1]": v})
 
     return df
 

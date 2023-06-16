@@ -62,3 +62,20 @@ python analysis_v1.py \
 ```
 
 ![](base-formula-coeff-.png)
+
+```bash
+python analysis_v1.py \
+-t "base-formula-pvalue" \
+--p "sns.set_theme()" \
+-l $RESULTS_DIR/rb_monkey_new_fit/ \
+-m "df['coeff'].iloc[-1]" "df['pvalue'].iloc[-1]" \
+-f "./experiments/rb_monkey_new_fit/base-formula.yaml" \
+-v \
+"import experiments.rb_monkey_new_fit.utils as eu" \
+"df=eu.proc_df(df, ['coeff', 'pvalue'])" \
+"df=eu.sort_by_id_coeff(df)" \
+"g=sns.catplot(data=df, kind='bar', y='pvalue', x='neuron', hue='coeff_id')" \
+"g.set_xticklabels(rotation=90)"
+```
+
+![](base-formula-pvalue-.png)

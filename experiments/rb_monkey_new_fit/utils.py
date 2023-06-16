@@ -77,11 +77,11 @@ def train(config):
         data['onset'].append(onset)
 
         identity = {
-            "1.5g banana": +1,
-            "0.3g banana": +1,
-            "0.2ml juice": -1,
-            "0.5ml juice": -1,
-            "0.9ml juice": -1,
+            "1.5g banana": -1,
+            "0.3g banana": -1,
+            "0.2ml juice": +1,
+            "0.5ml juice": +1,
+            "0.9ml juice": +1,
             "empty": 0,
         }[situation]
         data['identity'].append(identity)

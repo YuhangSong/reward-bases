@@ -120,12 +120,9 @@ def train(config):
 
     return results
 
-def plot(df, y, x):
+def proc_df(df, log_id):
 
-    df = df.rename(columns={f"df['{y}'].iloc[-1]": y})
+    df = df.rename(columns={f"df['{log_id}'].iloc[-1]": log_id})
 
-    g=sns.catplot(hue="formula", x=x, y=y, data=df, kind="bar")
-
-    # rotate x-axis labels for 90 degrees
-    g.set_xticklabels(rotation=90)
+    return df
 

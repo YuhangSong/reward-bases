@@ -38,3 +38,27 @@ python analysis_v1.py \
 ```
 
 ![](base-bic-all_neuron-.png)
+
+# base-formula
+
+```bash
+rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
+python main.py -c rb_monkey_new_fit/base-formula
+```
+
+```bash
+python analysis_v1.py \
+-t "base-formula-bic-all_neuron" \
+--p "sns.set_theme()" \
+-l $RESULTS_DIR/rb_monkey_new_fit/ \
+-m "df['bic'].iloc[-1]" \
+-f "./experiments/rb_monkey_new_fit/base-formula.yaml" \
+-v \
+"import experiments.rb_monkey_new_fit.utils as eu" \
+"df=eu.proc_df(df, 'bic')" \
+"df=au.reduce(df, ['formula'], lambda df: {'sum_bic': df['bic'].sum()})" \
+"g=sns.relplot(data=df, kind='scatter', y='sum_bic', x='formula')" \
+"g.set_xticklabels(rotation=90)"
+```
+
+![](base-formula-bic-all_neuron-.png)

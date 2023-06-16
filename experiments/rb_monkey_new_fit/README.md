@@ -48,7 +48,7 @@ python main.py -c rb_monkey_new_fit/base-formula
 
 ```bash
 python analysis_v1.py \
--t "base-formula-bic-all_neuron" \
+-t "base-formula-coeff" \
 --p "sns.set_theme()" \
 -l $RESULTS_DIR/rb_monkey_new_fit/ \
 -m "df['coeff'].iloc[-1]" \
@@ -61,4 +61,4 @@ python analysis_v1.py \
 "g.set_xticklabels(rotation=90)"
 ```
 
-![](base-formula-bic-all_neuron-.png)
+![](base-formula-coeff-.png)

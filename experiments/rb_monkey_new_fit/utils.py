@@ -118,6 +118,9 @@ def train(config):
     # get bic score
     results['bic'] = reg_results.bic
 
+    # get coeff
+    results['coeff'] = reg_results.params[config['coeff_id']]
+
     return results
 
 def proc_df(df, log_id):
@@ -125,4 +128,19 @@ def proc_df(df, log_id):
     df = df.rename(columns={f"df['{log_id}'].iloc[-1]": log_id})
 
     return df
+
+def sort_by_id_coeff(df):
+
+    # Filter the DataFrame
+    df_filtered = df[df['coeff_id'] == "identity:value"]
+
+    # Sort the filtered DataFrame and get the sorted 'neuron' values
+    sorted_neurons = df_filtered.sort_values('coeff', ascending=False)['neuron']
+
+    # Convert sorted_neurons to a categorical type with its categories being the sorted neurons
+    df['neuron'] = pd.Categorical(df['neuron'], categories=sorted_neurons, ordered=True)
+
+    # Now use the catplot function
+    return df
+
 

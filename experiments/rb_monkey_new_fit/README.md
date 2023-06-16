@@ -51,13 +51,13 @@ python analysis_v1.py \
 -t "base-formula-bic-all_neuron" \
 --p "sns.set_theme()" \
 -l $RESULTS_DIR/rb_monkey_new_fit/ \
--m "df['bic'].iloc[-1]" \
+-m "df['coeff'].iloc[-1]" \
 -f "./experiments/rb_monkey_new_fit/base-formula.yaml" \
 -v \
 "import experiments.rb_monkey_new_fit.utils as eu" \
-"df=eu.proc_df(df, 'bic')" \
-"df=au.reduce(df, ['formula'], lambda df: {'sum_bic': df['bic'].sum()})" \
-"g=sns.relplot(data=df, kind='scatter', y='sum_bic', x='formula')" \
+"df=eu.proc_df(df, 'coeff')" \
+"df=eu.sort_by_id_coeff(df)" \
+"g=sns.catplot(data=df, kind='bar', y='coeff', x='neuron', hue='coeff_id')" \
 "g.set_xticklabels(rotation=90)"
 ```
 

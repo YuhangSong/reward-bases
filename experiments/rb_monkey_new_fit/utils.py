@@ -119,11 +119,12 @@ def train(config):
     # get bic score
     results['bic'] = reg_results.bic
 
-    # get coeff
-    results['coeff'] = reg_results.params[config['coeff_id']]
+    if 'coeff_id' in config:
+        # get coeff
+        results['coeff'] = reg_results.params[config['coeff_id']]
 
-    # get pvalue
-    results['pvalue'] = reg_results.pvalues[config['coeff_id']]
+        # get pvalue
+        results['pvalue'] = reg_results.pvalues[config['coeff_id']]
 
     return results
 

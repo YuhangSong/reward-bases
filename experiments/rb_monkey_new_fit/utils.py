@@ -50,6 +50,8 @@ def get_df(neuron):
         'situation': [],
         'identity': [],
         'value': [],
+        'subjective_value_banana': [],
+        'subjective_value_juice': [],
         'dopamine': [],
     }
     for trial_i in range(len(spiketimes_list)):
@@ -96,6 +98,13 @@ def get_df(neuron):
         }[situation]
         data['value'].append(value)
 
+        data['subjective_value_banana'].append(
+            value if situation.endswith("banana") else 0
+        )
+        data['subjective_value_juice'].append(
+            value if situation.endswith("juice") else 0
+        )
+
         # count how many spikes are in interval 150 to 500
         dopamine = len([spiketime for spiketime in spiketimes if ((onset+150) <= spiketime <= (onset+500))])
         data['dopamine'].append(dopamine)
@@ -133,6 +142,26 @@ def train(config):
 
         # get pvalue
         results['pvalue'] = reg_results.pvalues[config['coeff_id']]
+
+    return results
+
+def train_two_regressor(config):
+
+    df = get_df(
+        neuron=config['neuron'],
+    )
+
+    results = {}
+
+    for regressor_id in ['banana', 'juice']:
+
+        reg_formula = sm.regression.linear_model.OLS.from_formula(
+            data = df, formula = f'dopamine ~ subjective_value_{regressor_id}'
+        )
+
+        reg_results = reg_formula.fit()
+
+        results[f'coeff_{regressor_id}'] = reg_results.params[f'subjective_value_{regressor_id}']
 
     return results
 

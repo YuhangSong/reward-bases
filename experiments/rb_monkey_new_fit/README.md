@@ -66,6 +66,8 @@ python analysis_v1.py \
 
 ![](base-formula-pvalue-.png)
 
+# base-two-regressor
+
 ```bash
 rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
 python main.py -c rb_monkey_new_fit/base-two-regressor
@@ -76,14 +78,12 @@ python analysis_v1.py \
 -t "base-two-regressor" \
 --p "sns.set_theme()" \
 -l $RESULTS_DIR/rb_monkey_new_fit/ \
--m "df['coeff'].iloc[-1]" "df['pvalue'].iloc[-1]" \
+-m "df['coeff_banana'].iloc[-1]" "df['coeff_juice'].iloc[-1]" \
 -f "./experiments/rb_monkey_new_fit/base-two-regressor.yaml" \
 -v \
 "import experiments.rb_monkey_new_fit.utils as eu" \
-"df=eu.proc_df(df, ['coeff', 'pvalue'])" \
-"df=eu.sort_by_id_coeff(df)" \
-"g=sns.catplot(data=df, kind='bar', y='coeff', x='neuron', hue='coeff_id')" \
-"g.set_xticklabels(rotation=90)"
+"df=eu.proc_df(df, ['coeff_banana', 'coeff_juice'])" \
+"g=sns.relplot(data=df, kind='scatter', y='coeff_banana', x='coeff_juice')"
 ```
 
 ![](base-two-regressor-.png)

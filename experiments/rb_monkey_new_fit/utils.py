@@ -12,10 +12,10 @@ import statsmodels.formula.api as smf
 
 from monkey.get_clean_data import get_clean_data
 
-def train(config):
+def get_df(neuron):
 
     spiketimes_list, stim_onsets_list, situations_list = get_clean_data(
-        path=f"/Users/yuhang/working_dir/reward-base/monkey/CleanData/w065-{config['neuron']}.jld2"
+        path=f"/Users/yuhang/working_dir/reward-base/monkey/CleanData/w065-{neuron}.jld2"
     )
 
     # these are obtained from ./file list and date.PNG
@@ -41,7 +41,7 @@ def train(config):
         "0376": "11/10/2013",
         "0377": "11/10/2013",
         "0378": "20/02/2014",
-    }[config['neuron']]
+    }[neuron]
 
     data = {
         'date': [],
@@ -101,6 +101,14 @@ def train(config):
         data['dopamine'].append(dopamine)
     
     df = pd.DataFrame.from_dict(data)
+
+    return df
+
+def train(config):
+
+    df = get_df(
+        neuron=config['neuron'],
+    )
 
     # first we run this line to tell statsmodels where to find the data and the explanatory variables
     reg_formula = sm.regression.linear_model.OLS.from_formula(data = df, formula = f'dopamine ~ {config["formula"]}')

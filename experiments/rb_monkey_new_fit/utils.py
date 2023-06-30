@@ -153,15 +153,38 @@ def train_two_regressor(config):
 
     results = {}
 
-    for regressor_id in ['banana', 'juice']:
+    reg_formula = sm.regression.linear_model.OLS.from_formula(
+        data = df, formula = f'dopamine ~ subjective_value_banana + subjective_value_juice'
+    )
 
+    reg_results = reg_formula.fit()
+
+    coeff_banana = reg_results.params[f'subjective_value_banana']
+    coeff_juice = reg_results.params[f'subjective_value_juice']
+    results[f'coeff_banana'] = coeff_banana
+    results[f'coeff_juice'] = coeff_juice
+
+    if "compare_coeff" in config:
+
+        # compare against another model
         reg_formula = sm.regression.linear_model.OLS.from_formula(
-            data = df, formula = f'dopamine ~ subjective_value_{regressor_id}'
+            data = df, formula = f'dopamine ~ value + identity : value'
         )
-
         reg_results = reg_formula.fit()
+        coeff_value_fitted = reg_results.params[f'value']
+        coeff_identity_value_fitted = reg_results.params[f'identity:value']
 
-        results[f'coeff_{regressor_id}'] = reg_results.params[f'subjective_value_{regressor_id}']
+        coeff_value_inferred = (coeff_banana + coeff_juice) / 2
+        coeff_identity_value_inferred = (coeff_juice - coeff_banana) / 2
+
+        if config['compare_coeff'] == 'inferred':
+            results[f'coeff_value'] = coeff_value_inferred
+            results[f'coeff_identity_value'] = coeff_identity_value_inferred
+        elif config['compare_coeff'] == 'fitted':
+            results[f'coeff_value'] = coeff_value_fitted
+            results[f'coeff_identity_value'] = coeff_identity_value_fitted
+        else:
+            raise NotImplementedError
 
     return results
 

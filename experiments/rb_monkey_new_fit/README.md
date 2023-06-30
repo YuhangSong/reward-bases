@@ -87,3 +87,25 @@ python analysis_v1.py \
 ```
 
 ![](base-two-regressor-.png)
+
+# base-two-regressor-compare_coeff
+
+```bash
+rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
+python main.py -c rb_monkey_new_fit/base-two-regressor-compare_coeff
+```
+
+```bash
+python analysis_v1.py \
+-t "base-two-regressor-compare_coeff" \
+--p "sns.set_theme()" \
+-l $RESULTS_DIR/rb_monkey_new_fit/ \
+-m "df['coeff_value'].iloc[-1]" "df['coeff_identity_value'].iloc[-1]" \
+-f "./experiments/rb_monkey_new_fit/base-two-regressor-compare_coeff.yaml" \
+-v \
+"import experiments.rb_monkey_new_fit.utils as eu" \
+"df=eu.proc_df(df, ['coeff_value', 'coeff_identity_value'])" \
+"g=sns.relplot(data=df, kind='scatter', y='coeff_value', x='coeff_identity_value', style='compare_coeff')"
+```
+
+![](base-two-regressor-compare_coeff-.png)

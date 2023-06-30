@@ -1,3 +1,9 @@
+import matplotlib.pyplot as plt
+from monkey.get_clean_data import get_clean_data
+import statsmodels.formula.api as smf
+import statsmodels.api as sm
+import seaborn as sns
+import numpy as np
 import pandas as pd
 
 import analysis_utils as au
@@ -5,14 +11,12 @@ import analysis_utils as au
 import sys
 sys.path.insert(0, "/Users/yuhang/working_dir/reward-base/")
 
-import numpy as np
-import seaborn as sns
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
 
-from monkey.get_clean_data import get_clean_data
-
-def get_df(neuron):
+def get_df(
+    neuron,
+    response_window_start=150, response_window_end=500,
+    baseline_window_start=-500, baseline_window_end=0,
+):
 
     spiketimes_list, stim_onsets_list, situations_list = get_clean_data(
         path=f"/Users/yuhang/working_dir/reward-base/monkey/CleanData/w065-{neuron}.jld2"
@@ -56,7 +60,7 @@ def get_df(neuron):
         'relative_firing_rate': [],
     }
     for trial_i in range(len(spiketimes_list)):
-        
+
         # 1 = 1.5g banana, 2 = 0.3g banana, 3 = 0.2ml juice, 4 = 0.5ml juice, 5 = 0.9ml juice, 25 = a trial without a stimulus (empty)
         situation = {
             1: "1.5g banana",
@@ -72,11 +76,11 @@ def get_df(neuron):
             continue
 
         data['date'].append(date)
-        
+
         data['trial_i'].append(trial_i)
 
         data['situation'].append(situation)
-        
+
         data['onset'].append(onset)
 
         identity = {
@@ -88,7 +92,7 @@ def get_df(neuron):
             "empty": 0,
         }[situation]
         data['identity'].append(identity)
-        
+
         value = {
             "1.5g banana": 0.7,
             "0.3g banana": 0.05,
@@ -106,24 +110,43 @@ def get_df(neuron):
             value if situation.endswith("juice") else 0
         )
 
-        # count how many spikes are in interval 150 to 500
-        num_spikes_in_response_window = len([spiketime for spiketime in spiketimes if ((onset+150) <= spiketime <= (onset+500))])
-        response_window_size = (500 - 150)/1000.0
+        num_spikes_in_response_window = len(
+            [
+                spiketime for spiketime in spiketimes if (
+                    (onset+response_window_start) <= spiketime <= (onset +
+                                                                   response_window_end)
+                )
+            ]
+        )
+        response_window_size = (
+            response_window_end - response_window_start
+        )/1000.0
         firing_rate_in_response_window = num_spikes_in_response_window / response_window_size
-        
+
         dopamine = num_spikes_in_response_window
         data['dopamine'].append(dopamine)
 
-        num_spikes_in_baseline_window = len([spiketime for spiketime in spiketimes if ((onset-500) <= spiketime <= (onset+0))])
-        baseline_window_size = (0 - (-500))/1000.0
+        num_spikes_in_baseline_window = len(
+            [
+                spiketime for spiketime in spiketimes if (
+                    (onset+baseline_window_start) <= spiketime <= (onset +
+                                                                   baseline_window_end)
+                )
+            ]
+        )
+        baseline_window_size = (
+            baseline_window_end - baseline_window_start
+        )/1000.0
         firing_rate_in_baseline_window = num_spikes_in_baseline_window / baseline_window_size
 
-        relative_firing_rate = firing_rate_in_response_window - firing_rate_in_baseline_window
+        relative_firing_rate = firing_rate_in_response_window - \
+            firing_rate_in_baseline_window
         data['relative_firing_rate'].append(relative_firing_rate)
-    
+
     df = pd.DataFrame.from_dict(data)
 
     return df
+
 
 def train(config):
 
@@ -132,7 +155,9 @@ def train(config):
     )
 
     # first we run this line to tell statsmodels where to find the data and the explanatory variables
-    reg_formula = sm.regression.linear_model.OLS.from_formula(data = df, formula = f'dopamine ~ {config["formula"]}')
+    reg_formula = sm.regression.linear_model.OLS.from_formula(
+        data=df, formula=f'dopamine ~ {config["formula"]}'
+    )
 
     # then we run this line to fit the regression (work out the values of intercept and slope)
     # the output is a structure which we will call reg_results
@@ -157,6 +182,7 @@ def train(config):
 
     return results
 
+
 def train_two_regressor(config):
 
     df = get_df(
@@ -166,7 +192,7 @@ def train_two_regressor(config):
     results = {}
 
     reg_formula = sm.regression.linear_model.OLS.from_formula(
-        data = df, formula = f'dopamine ~ subjective_value_banana + subjective_value_juice'
+        data=df, formula=f'dopamine ~ subjective_value_banana + subjective_value_juice'
     )
 
     reg_results = reg_formula.fit()
@@ -180,7 +206,7 @@ def train_two_regressor(config):
 
         # compare against another model
         reg_formula = sm.regression.linear_model.OLS.from_formula(
-            data = df, formula = f'dopamine ~ value + identity : value'
+            data=df, formula=f'dopamine ~ value + identity : value'
         )
         reg_results = reg_formula.fit()
         coeff_value_fitted = reg_results.params[f'value']
@@ -200,17 +226,22 @@ def train_two_regressor(config):
 
     return results
 
+
 def train_neuron_response(config):
 
     df = get_df(
         neuron=config['neuron'],
     )
 
-    biggest_banana_relative_firing_rate = df[df['situation'] == '1.5g banana']['relative_firing_rate']
+    biggest_banana_relative_firing_rate = df[
+        df['situation'] == '1.5g banana'
+    ]['relative_firing_rate']
     biggest_banana_relative_firing_rate_mean = biggest_banana_relative_firing_rate.mean()
     biggest_banana_relative_firing_rate_sem_half = biggest_banana_relative_firing_rate.sem() / 2
 
-    biggest_juice_relative_firing_rate = df[df['situation'] == '0.9ml juice']['relative_firing_rate']
+    biggest_juice_relative_firing_rate = df[
+        df['situation'] == '0.9ml juice'
+    ]['relative_firing_rate']
     biggest_juice_relative_firing_rate_mean = biggest_juice_relative_firing_rate.mean()
     biggest_juice_relative_firing_rate_sem_half = biggest_juice_relative_firing_rate.sem() / 2
 
@@ -224,6 +255,7 @@ def train_neuron_response(config):
 
     return results
 
+
 def proc_df(df, log_id):
 
     if isinstance(log_id, str):
@@ -235,34 +267,46 @@ def proc_df(df, log_id):
 
     return df
 
+
 def sort_by_id_coeff(df):
 
     # Filter the DataFrame
     df_filtered = df[df['coeff_id'] == "identity:value"]
 
     # Sort the filtered DataFrame and get the sorted 'neuron' values
-    sorted_neurons = df_filtered.sort_values('coeff', ascending=False)['neuron']
+    sorted_neurons = df_filtered.sort_values(
+        'coeff', ascending=False
+    )['neuron']
 
     # Convert sorted_neurons to a categorical type with its categories being the sorted neurons
-    df['neuron'] = pd.Categorical(df['neuron'], categories=sorted_neurons, ordered=True)
+    df['neuron'] = pd.Categorical(
+        df['neuron'], categories=sorted_neurons, ordered=True,
+    )
 
     # Now use the catplot function
     return df
 
-import matplotlib.pyplot as plt
 
 def plot_neuron_response(df):
 
     def convert(x): return np.squeeze(x.to_numpy())
 
     plt.errorbar(
-        convert(df[['biggest_juice_relative_firing_rate_mean']]), convert(df[['biggest_banana_relative_firing_rate_mean']]), 
-        convert(df[['biggest_juice_relative_firing_rate_sem_half']]), convert(df[['biggest_banana_relative_firing_rate_sem_half']]), 
-        'none', 
+        convert(
+            df[['biggest_juice_relative_firing_rate_mean']]
+        ), convert(
+            df[['biggest_banana_relative_firing_rate_mean']]
+        ),
+        convert(
+            df[['biggest_juice_relative_firing_rate_sem_half']]
+        ), convert(
+            df[['biggest_banana_relative_firing_rate_sem_half']]
+        ),
+        'none',
         ecolor='gray', elinewidth=1.5, capsize=1.7, capthick=1.5, zorder=1,
     )
 
     ax = sns.scatterplot(
         data=df,
-        x='biggest_juice_relative_firing_rate_mean', y='biggest_banana_relative_firing_rate_mean', 
+        x='biggest_juice_relative_firing_rate_mean', y='biggest_banana_relative_firing_rate_mean',
     )

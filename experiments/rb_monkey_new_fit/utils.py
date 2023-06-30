@@ -53,6 +53,7 @@ def get_df(neuron):
         'subjective_value_banana': [],
         'subjective_value_juice': [],
         'dopamine': [],
+        'relative_firing_rate': [],
     }
     for trial_i in range(len(spiketimes_list)):
         
@@ -106,8 +107,19 @@ def get_df(neuron):
         )
 
         # count how many spikes are in interval 150 to 500
-        dopamine = len([spiketime for spiketime in spiketimes if ((onset+150) <= spiketime <= (onset+500))])
+        num_spikes_in_response_window = len([spiketime for spiketime in spiketimes if ((onset+150) <= spiketime <= (onset+500))])
+        window_size = (500 - 150)/1000.0
+        firing_rate_in_response_window = num_spikes_in_response_window / window_size
+        
+        dopamine = num_spikes_in_response_window
         data['dopamine'].append(dopamine)
+
+        num_spikes_in_baseline_window = len([spiketime for spiketime in spiketimes if ((onset-500) <= spiketime <= (onset+0))])
+        baseline_window_size = (0 - (-500))/1000.0
+        firing_rate_in_baseline_window = num_spikes_in_baseline_window / baseline_window_size
+
+        relative_firing_rate = firing_rate_in_response_window - firing_rate_in_baseline_window
+        data['relative_firing_rate'].append(relative_firing_rate)
     
     df = pd.DataFrame.from_dict(data)
 
@@ -188,6 +200,30 @@ def train_two_regressor(config):
 
     return results
 
+def train_neuron_response(config):
+
+    df = get_df(
+        neuron=config['neuron'],
+    )
+
+    biggest_banana_relative_firing_rate = df[df['situation'] == '1.5g banana']['relative_firing_rate']
+    biggest_banana_relative_firing_rate_mean = biggest_banana_relative_firing_rate.mean()
+    biggest_banana_relative_firing_rate_sem_half = biggest_banana_relative_firing_rate.sem() / 2
+
+    biggest_juice_relative_firing_rate = df[df['situation'] == '0.9ml juice']['relative_firing_rate']
+    biggest_juice_relative_firing_rate_mean = biggest_juice_relative_firing_rate.mean()
+    biggest_juice_relative_firing_rate_sem_half = biggest_juice_relative_firing_rate.sem() / 2
+
+    results = {}
+
+    results['biggest_banana_relative_firing_rate_mean'] = biggest_banana_relative_firing_rate_mean
+    results['biggest_juice_relative_firing_rate_mean'] = biggest_juice_relative_firing_rate_mean
+
+    results['biggest_banana_relative_firing_rate_sem_half'] = biggest_banana_relative_firing_rate_sem_half
+    results['biggest_juice_relative_firing_rate_sem_half'] = biggest_juice_relative_firing_rate_sem_half
+
+    return results
+
 def proc_df(df, log_id):
 
     if isinstance(log_id, str):
@@ -213,4 +249,20 @@ def sort_by_id_coeff(df):
     # Now use the catplot function
     return df
 
+import matplotlib.pyplot as plt
 
+def plot_neuron_response(df):
+
+    def convert(x): return np.squeeze(x.to_numpy())
+
+    plt.errorbar(
+        convert(df[['biggest_juice_relative_firing_rate_mean']]), convert(df[['biggest_banana_relative_firing_rate_mean']]), 
+        convert(df[['biggest_juice_relative_firing_rate_sem_half']]), convert(df[['biggest_banana_relative_firing_rate_sem_half']]), 
+        'none', 
+        ecolor='gray', elinewidth=1.5, capsize=1.7, capthick=1.5, zorder=1,
+    )
+
+    ax = sns.scatterplot(
+        data=df,
+        x='biggest_juice_relative_firing_rate_mean', y='biggest_banana_relative_firing_rate_mean', 
+    )

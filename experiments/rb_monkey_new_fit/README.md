@@ -111,3 +111,22 @@ python analysis_v1.py \
 ```
 
 ![](base-two-regressor-compare_coeff-.png)
+
+# base-neuron-response
+
+```bash
+rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
+python main.py -c rb_monkey_new_fit/base-neuron-response && \
+python analysis_v1.py \
+-t "base-neuron-response" \
+--p "sns.set_theme()" \
+-l $RESULTS_DIR/rb_monkey_new_fit/ \
+-m "df['biggest_banana_relative_firing_rate_mean'].iloc[-1]" "df['biggest_juice_relative_firing_rate_mean'].iloc[-1]" "df['biggest_banana_relative_firing_rate_sem_half'].iloc[-1]" "df['biggest_juice_relative_firing_rate_sem_half'].iloc[-1]" \
+-f "./experiments/rb_monkey_new_fit/base-neuron-response.yaml" \
+-v \
+"import experiments.rb_monkey_new_fit.utils as eu" \
+"df=eu.proc_df(df, ['biggest_banana_relative_firing_rate_mean', 'biggest_juice_relative_firing_rate_mean', 'biggest_banana_relative_firing_rate_sem_half', 'biggest_juice_relative_firing_rate_sem_half'])" \
+"eu.plot_neuron_response(df)"
+```
+
+![](base-neuron-response-.png)

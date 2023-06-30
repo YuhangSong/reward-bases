@@ -83,7 +83,9 @@ python analysis_v1.py \
 -v \
 "import experiments.rb_monkey_new_fit.utils as eu" \
 "df=eu.proc_df(df, ['coeff_banana', 'coeff_juice'])" \
-"g=sns.relplot(data=df, kind='scatter', y='coeff_banana', x='coeff_juice')"
+"g=sns.relplot(data=df, kind='scatter', y='coeff_banana', x='coeff_juice')" \
+"ax = plt.gca()" \
+"ax.set_aspect('equal', adjustable='box')"
 ```
 
 ![](base-two-regressor-.png)

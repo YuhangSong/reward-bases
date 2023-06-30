@@ -108,8 +108,8 @@ def get_df(neuron):
 
         # count how many spikes are in interval 150 to 500
         num_spikes_in_response_window = len([spiketime for spiketime in spiketimes if ((onset+150) <= spiketime <= (onset+500))])
-        window_size = (500 - 150)/1000.0
-        firing_rate_in_response_window = num_spikes_in_response_window / window_size
+        response_window_size = (500 - 150)/1000.0
+        firing_rate_in_response_window = num_spikes_in_response_window / response_window_size
         
         dopamine = num_spikes_in_response_window
         data['dopamine'].append(dopamine)

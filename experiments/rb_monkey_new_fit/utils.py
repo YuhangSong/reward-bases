@@ -22,6 +22,7 @@ def get_df(
         path=f"/Users/yuhang/working_dir/reward-base/monkey/CleanData/w065-{neuron}.jld2"
     )
 
+    # date each neuron is recorded
     # these are obtained from ./file list and date.PNG
     date = {
         "0358": "11/09/2013",
@@ -47,6 +48,7 @@ def get_df(
         "0378": "20/02/2014",
     }[neuron]
 
+    # data used to construct the dataframe, where each row is a trial
     data = {
         'date': [],
         'trial_i': [],
@@ -61,7 +63,7 @@ def get_df(
     }
     for trial_i in range(len(spiketimes_list)):
 
-        # 1 = 1.5g banana, 2 = 0.3g banana, 3 = 0.2ml juice, 4 = 0.5ml juice, 5 = 0.9ml juice, 25 = a trial without a stimulus (empty)
+        # situation is the stimulus presented in this trial
         situation = {
             1: "1.5g banana",
             2: "0.3g banana",
@@ -70,19 +72,22 @@ def get_df(
             5: "0.9ml juice",
             25: "empty",
         }[situations_list[trial_i]]
+        # onset is the time when the stimulus is presented
         onset = stim_onsets_list[trial_i]
+        # spiketimes is the list of spike times in this trial
         spiketimes = spiketimes_list[trial_i]
         if situation == "empty" or onset == [] or (not isinstance(spiketimes, list)):
+            # in these cases, we don't have enough data to construct a row of a trial
             continue
 
+        # add date, trial_i, situation, onset to the row of this trial
         data['date'].append(date)
-
         data['trial_i'].append(trial_i)
-
         data['situation'].append(situation)
-
         data['onset'].append(onset)
 
+        # identity is the identity of the stimulus presented in this trial
+        # it is 1 if the stimulus is a banana, -1 if the stimulus is a juice, and 0 if the stimulus is empty
         identity = {
             "1.5g banana": -1,
             "0.3g banana": -1,
@@ -93,6 +98,7 @@ def get_df(
         }[situation]
         data['identity'].append(identity)
 
+        # value is the value of the stimulus presented in this trial, normalized across different stimuli
         value = {
             "1.5g banana": 0.7,
             "0.3g banana": 0.05,
@@ -103,6 +109,7 @@ def get_df(
         }[situation]
         data['value'].append(value)
 
+        # subjective_value is the similar as value
         data['subjective_value_banana'].append(
             value if situation.endswith("banana") else 0
         )
@@ -110,6 +117,7 @@ def get_df(
             value if situation.endswith("juice") else 0
         )
 
+        # number of spikes in the response window (in contrast to in baseline window)
         num_spikes_in_response_window = len(
             [
                 spiketime for spiketime in spiketimes if (
@@ -118,14 +126,18 @@ def get_df(
                 )
             ]
         )
+        # size of the response window
         response_window_size = (
             response_window_end - response_window_start
         )/1000.0
+        # firing rate in the response window
         firing_rate_in_response_window = num_spikes_in_response_window / response_window_size
 
+        # dopamine is the number of spikes in the response window
         dopamine = num_spikes_in_response_window
         data['dopamine'].append(dopamine)
 
+        # number of spikes in the baseline window (in contrast to in response window)
         num_spikes_in_baseline_window = len(
             [
                 spiketime for spiketime in spiketimes if (
@@ -134,13 +146,17 @@ def get_df(
                 )
             ]
         )
+        # size of the baseline window
         baseline_window_size = (
             baseline_window_end - baseline_window_start
         )/1000.0
+        # firing rate in the baseline window
         firing_rate_in_baseline_window = num_spikes_in_baseline_window / baseline_window_size
 
-        relative_firing_rate = firing_rate_in_response_window - \
-            firing_rate_in_baseline_window
+        # relative_firing_rate is the difference between firing rate in the response window and in the baseline window
+        relative_firing_rate = (
+            firing_rate_in_response_window - firing_rate_in_baseline_window
+        )
         data['relative_firing_rate'].append(relative_firing_rate)
 
     df = pd.DataFrame.from_dict(data)
@@ -168,11 +184,13 @@ def train(config):
 
     results = {}
 
+    # get r2 score
     results['rsquared'] = reg_results.rsquared
 
     # get bic score
     results['bic'] = reg_results.bic
 
+    # get coeff
     if 'coeff_id' in config:
         # get coeff
         results['coeff'] = reg_results.params[config['coeff_id']]
@@ -191,24 +209,29 @@ def train_two_regressor(config):
 
     results = {}
 
+    # fit to formula
     reg_formula = sm.regression.linear_model.OLS.from_formula(
         data=df, formula=f'dopamine ~ subjective_value_banana + subjective_value_juice'
     )
-
     reg_results = reg_formula.fit()
 
+    # get coeff
     coeff_banana = reg_results.params[f'subjective_value_banana']
     coeff_juice = reg_results.params[f'subjective_value_juice']
     results[f'coeff_banana'] = coeff_banana
     results[f'coeff_juice'] = coeff_juice
 
+    # compare coeff of two formula to confirm the code is consistent with theorectical derivation
     if "compare_coeff" in config:
 
         # compare against another model
+
+        # fit to formula
         reg_formula = sm.regression.linear_model.OLS.from_formula(
             data=df, formula=f'dopamine ~ value + identity : value'
         )
         reg_results = reg_formula.fit()
+        # get coeff
         coeff_value_fitted = reg_results.params[f'value']
         coeff_identity_value_fitted = reg_results.params[f'identity:value']
 
@@ -233,20 +256,27 @@ def train_neuron_response(config):
         neuron=config['neuron'],
     )
 
+    # relative firing rate of the biggest banana stimulus
     biggest_banana_relative_firing_rate = df[
         df['situation'] == '1.5g banana'
     ]['relative_firing_rate']
+    # mean of it
     biggest_banana_relative_firing_rate_mean = biggest_banana_relative_firing_rate.mean()
+    # half of the standard error of it
     biggest_banana_relative_firing_rate_sem_half = biggest_banana_relative_firing_rate.sem() / 2
 
+    # relative firing rate of the biggest juice stimulus
     biggest_juice_relative_firing_rate = df[
         df['situation'] == '0.9ml juice'
     ]['relative_firing_rate']
+    # mean of it
     biggest_juice_relative_firing_rate_mean = biggest_juice_relative_firing_rate.mean()
+    # half of the standard error of it
     biggest_juice_relative_firing_rate_sem_half = biggest_juice_relative_firing_rate.sem() / 2
 
     results = {}
 
+    # put into results
     results['biggest_banana_relative_firing_rate_mean'] = biggest_banana_relative_firing_rate_mean
     results['biggest_juice_relative_firing_rate_mean'] = biggest_juice_relative_firing_rate_mean
 
@@ -257,6 +287,8 @@ def train_neuron_response(config):
 
 
 def proc_df(df, log_id):
+
+    # rename the col for easier access
 
     if isinstance(log_id, str):
         log_id = [log_id]
@@ -270,27 +302,28 @@ def proc_df(df, log_id):
 
 def sort_by_id_coeff(df):
 
-    # Filter the DataFrame
+    # filter the DataFrame
     df_filtered = df[df['coeff_id'] == "identity:value"]
 
-    # Sort the filtered DataFrame and get the sorted 'neuron' values
+    # sort the filtered DataFrame and get the sorted 'neuron' values
     sorted_neurons = df_filtered.sort_values(
         'coeff', ascending=False
     )['neuron']
 
-    # Convert sorted_neurons to a categorical type with its categories being the sorted neurons
+    # convert sorted_neurons to a categorical type with its categories being the sorted neurons
     df['neuron'] = pd.Categorical(
         df['neuron'], categories=sorted_neurons, ordered=True,
     )
 
-    # Now use the catplot function
     return df
 
 
 def plot_neuron_response(df):
 
+    # convert a pd.Series to a np.array
     def convert(x): return np.squeeze(x.to_numpy())
 
+    # plot error bars in both x and y directions
     plt.errorbar(
         convert(
             df[['biggest_juice_relative_firing_rate_mean']]
@@ -306,6 +339,7 @@ def plot_neuron_response(df):
         ecolor='gray', elinewidth=1.5, capsize=1.7, capthick=1.5, zorder=1,
     )
 
+    # scatter plot
     ax = sns.scatterplot(
         data=df,
         x='biggest_juice_relative_firing_rate_mean', y='biggest_banana_relative_firing_rate_mean',

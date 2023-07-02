@@ -1,13 +1,12 @@
-import matplotlib.pyplot as plt
-from monkey.get_clean_data import get_clean_data
-import statsmodels.formula.api as smf
-import statsmodels.api as sm
-import seaborn as sns
-import numpy as np
-import pandas as pd
-
 import analysis_utils as au
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
 
+# for import monkey, need improvement
 import sys
 sys.path.insert(0, "/Users/yuhang/working_dir/reward-base/")
 
@@ -17,6 +16,7 @@ def get_df(
     response_window_start=150, response_window_end=500,
     baseline_window_start=-500, baseline_window_end=0,
 ):
+    from monkey.get_clean_data import get_clean_data
 
     spiketimes_list, stim_onsets_list, situations_list = get_clean_data(
         path=f"/Users/yuhang/working_dir/reward-base/monkey/CleanData/w065-{neuron}.jld2"
@@ -344,3 +344,26 @@ def plot_neuron_response(df):
         data=df,
         x='biggest_juice_relative_firing_rate_mean', y='biggest_banana_relative_firing_rate_mean',
     )
+
+    ax.set_aspect('equal', adjustable='box')
+
+    ax.axhline(0, color='red', linestyle='--')  # Adds a horizontal line at y=0
+    ax.axvline(0, color='red', linestyle='--')  # Adds a vertical line at x=0
+
+    # Get the range of the data
+    xmin, xmax = np.floor(df['biggest_juice_relative_firing_rate_mean'].min(
+    )), np.ceil(df['biggest_juice_relative_firing_rate_mean'].max())
+    ymin, ymax = np.floor(df['biggest_banana_relative_firing_rate_mean'].min(
+    )), np.ceil(df['biggest_banana_relative_firing_rate_mean'].max())
+
+    # Combine the ranges
+    combined_min = min(xmin, ymin)
+    combined_max = max(xmax, ymax)
+
+    # Make a list of ticks
+    # plus 1 to include the maximum
+    ticks = np.arange(combined_min, combined_max + 1)
+
+    # Set the ticks
+    ax.set_xticks(ticks)
+    ax.set_yticks(ticks)

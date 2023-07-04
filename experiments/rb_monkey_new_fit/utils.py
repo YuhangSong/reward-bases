@@ -217,14 +217,14 @@ def get_two_regressor_coeffs(neuron):
     coeff_banana = reg_results.params[f'subjective_value_banana']
     coeff_juice = reg_results.params[f'subjective_value_juice']
 
-    return coeff_banana, coeff_juice
+    return df, coeff_banana, coeff_juice
 
 
 def train_two_regressor(config):
 
     results = {}
 
-    coeff_banana, coeff_juice = get_two_regressor_coeffs(
+    df, coeff_banana, coeff_juice = get_two_regressor_coeffs(
         neuron=config['neuron'],
     )
 
@@ -415,7 +415,7 @@ def train_data_model(config):
 
     coeffs = {}
     for neuron in neurons:
-        coeff_banana, coeff_juice = get_two_regressor_coeffs(
+        _, coeff_banana, coeff_juice = get_two_regressor_coeffs(
             neuron=neuron,
         )
         coeffs[neuron] = {
@@ -520,4 +520,6 @@ def plot_data_model(df):
         data=df,
         kind='line',
         x='epoch_history', y='V_history',
+        hue='V_history_x',
+        col='V_history_i',
     )

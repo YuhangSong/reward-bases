@@ -3,10 +3,7 @@
 
 ```bash
 rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base
-```
-
-```bash
+python main.py -c rb_monkey_new_fit/base && \
 python analysis_v1.py \
 -t "base-bic-all_neuron" \
 --p "sns.set_theme()" \
@@ -28,10 +25,7 @@ python analysis_v1.py \
 
 ```bash
 rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base-formula
-```
-
-```bash
+python main.py -c rb_monkey_new_fit/base-formula && \
 python analysis_v1.py \
 -t "base-formula-coeff" \
 --p "sns.set_theme()" \
@@ -43,12 +37,7 @@ python analysis_v1.py \
 "df=eu.proc_df(df, ['coeff', 'pvalue'])" \
 "df=eu.sort_by_id_coeff(df)" \
 "g=sns.catplot(data=df, kind='bar', y='coeff', x='neuron', hue='coeff_id')" \
-"g.set_xticklabels(rotation=90)"
-```
-
-![](base-formula-coeff-.png)
-
-```bash
+"g.set_xticklabels(rotation=90)" && \
 python analysis_v1.py \
 -t "base-formula-pvalue" \
 --p "sns.set_theme()" \
@@ -64,16 +53,15 @@ python analysis_v1.py \
 "g.set_xticklabels(rotation=90)"
 ```
 
+![](base-formula-coeff-.png)
+
 ![](base-formula-pvalue-.png)
 
 # base-two-regressor
 
 ```bash
 rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base-two-regressor
-```
-
-```bash
+python main.py -c rb_monkey_new_fit/base-two-regressor && \
 python analysis_v1.py \
 -t "base-two-regressor" \
 --p "sns.set_theme()" \
@@ -94,10 +82,7 @@ python analysis_v1.py \
 
 ```bash
 rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base-two-regressor-compare_coeff
-```
-
-```bash
+python main.py -c rb_monkey_new_fit/base-two-regressor-compare_coeff && \
 python analysis_v1.py \
 -t "base-two-regressor-compare_coeff" \
 --p "sns.set_theme()" \

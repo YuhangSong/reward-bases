@@ -130,3 +130,21 @@ python analysis_v1.py \
 ```
 
 ![](base-neuron-response-.png)
+
+# base-data-model
+
+```bash
+rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
+python main.py -c rb_monkey_new_fit/base-data-model && \
+python analysis_v1.py \
+-t "base-data-model" \
+--p "sns.set_theme()" \
+-l $RESULTS_DIR/rb_monkey_new_fit/ \
+-m "df['epoch_history'].iloc[0]" "df['V_history'].iloc[0]" \
+-f "./experiments/rb_monkey_new_fit/base-data-model.yaml" \
+-v \
+"import experiments.rb_monkey_new_fit.utils as eu" \
+"eu.plot_data_model(df)"
+```
+
+![](base-data-model-.png)

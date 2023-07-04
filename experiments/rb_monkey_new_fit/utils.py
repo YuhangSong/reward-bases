@@ -201,13 +201,11 @@ def train(config):
     return results
 
 
-def train_two_regressor(config):
+def get_two_regressor_coeffs(neuron):
 
     df = get_df(
-        neuron=config['neuron'],
+        neuron=neuron,
     )
-
-    results = {}
 
     # fit to formula
     reg_formula = sm.regression.linear_model.OLS.from_formula(
@@ -218,6 +216,18 @@ def train_two_regressor(config):
     # get coeff
     coeff_banana = reg_results.params[f'subjective_value_banana']
     coeff_juice = reg_results.params[f'subjective_value_juice']
+
+    return coeff_banana, coeff_juice
+
+
+def train_two_regressor(config):
+
+    results = {}
+
+    coeff_banana, coeff_juice = get_two_regressor_coeffs(
+        neuron=config['neuron'],
+    )
+
     results[f'coeff_banana'] = coeff_banana
     results[f'coeff_juice'] = coeff_juice
 
@@ -367,3 +377,147 @@ def plot_neuron_response(df):
     # Set the ticks
     ax.set_xticks(ticks)
     ax.set_yticks(ticks)
+
+
+def train_data_model(config):
+
+    # seed
+    seed = config['seed']
+    np.random.seed(seed)
+
+    # r
+
+    r = {
+        'banana': [0.7, 0.05, 0.0, 0.0, 0.0],
+        'juice': [0.0, 0.0, 0.1, 0.5, 1.0],
+    }
+
+    def get_r(i, x):
+        return r[i][x]
+
+    # V
+
+    V = {
+        'banana': [0.0, 0.0, 0.0, 0.0, 0.0],
+        'juice': [0.0, 0.0, 0.0, 0.0, 0.0],
+    }
+
+    def get_V(i, x):
+        return V[i][x]
+
+    def set_V(i, x, v):
+        V[i][x] = v
+
+    # beta
+
+    neurons = ['0359', '0360', '0361', '0362', '0363', '0364', '0365', '0366', '0367',
+               '0368', '0369', '0370', '0371', '0372', '0373', '0374', '0375', '0376', '0377']
+
+    coeffs = {}
+    for neuron in neurons:
+        coeff_banana, coeff_juice = get_two_regressor_coeffs(
+            neuron=neuron,
+        )
+        coeffs[neuron] = {
+            'banana': coeff_banana,
+            'juice': coeff_juice,
+        }
+
+    def get_beta(i, k):
+        return coeffs[k][i]
+
+    # delta
+
+    delta = {}
+    for neuron in neurons:
+        delta[neuron] = [0.0, 0.0, 0.0, 0.0, 0.0]
+
+    def get_delta(k, x):
+        return delta[k][x]
+
+    def set_delta(k, x, v):
+        delta[k][x] = v
+
+    # total set of indexes
+    ks = neurons
+    xs = [0, 1, 2, 3, 4]
+    is_ = ['banana', 'juice']
+
+    epoch_history = []
+    V_history = []
+
+    for epoch in range(config['epochs']):
+
+        x = int(np.random.uniform(low=0, high=5))
+
+        for k in ks:
+
+            vs = []
+            for i in is_:
+                vs.append(
+                    get_beta(i=i, k=k) * (
+                        get_r(i=i, x=x) - get_V(i=i, x=x)
+                    )
+                )
+            v = sum(vs)
+
+            set_delta(
+                k=k,
+                x=x,
+                v=v,
+            )
+
+        for i in is_:
+
+            delta_Vs = []
+            for k in ks:
+                delta_Vs.append(
+                    get_beta(i=i, k=k) * get_delta(k=k, x=x)
+                )
+            delta_V = sum(delta_Vs) * config['alpha']
+            set_V(
+                i=i,
+                x=x,
+                v=get_V(i=i, x=x) + delta_V,
+            )
+
+        epoch_history.append(epoch)
+        V_history.append(
+            get_V(i=config['V_history_i'], x=config['V_history_x'])
+        )
+
+    return {
+        'epoch_history': epoch_history,
+        'V_history': V_history,
+    }
+
+
+def eval_extract_lists(df, cols):
+
+    def eval_col(df, col_eval, col_new):
+        def eval_with_nan_inf(v):
+            nan = float('nan')
+            inf = float('inf')
+            return eval(v)
+        df = au.new_col(
+            df, col_new, lambda row: eval_with_nan_inf(row[col_eval]))
+        df = df.drop(col_eval, axis=1)
+        return df
+
+    for col in cols:
+        df = eval_col(df, f"df['{col}'].iloc[0]", col)
+
+    df = au.extract_lists(df, cols)
+
+    return df
+
+
+def plot_data_model(df):
+
+    df = eval_extract_lists(df, ['epoch_history', 'V_history'])
+
+    sns.relplot(
+        data=df,
+        kind='line',
+        x='epoch_history', y='V_history',
+    )

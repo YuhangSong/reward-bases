@@ -33,6 +33,52 @@ logger = u.getLogger(__name__)
 
 pp = pprint.PrettyPrinter(indent=4)
 
+
+def extract_lists(df, cols):
+
+    assert isinstance(df, pd.DataFrame), (
+        f"df must be a pandas DataFrame, not {type(df)}"
+    )
+
+    assert isinstance(cols, list), (
+        f"cols must be a list, not {type(cols)}"
+    )
+
+    other_cols = [col for col in df.columns if col not in cols]
+
+    row_res_list = []
+
+    print()
+    print("Extracting lists...")
+
+    for _, row in tqdm.tqdm(df.iterrows(), total=df.shape[0], desc="Proc trials", position=0, leave=True):
+
+        row_other = {other_col: row[other_col] for other_col in other_cols}
+
+        lists_lens = []
+        for col in cols:
+            lists_lens.append(len(row[col]))
+        lists_lens = set(lists_lens)
+        assert len(lists_lens) == 1, (
+            f"Lists in columns {cols} have different lengths: {lists_lens}"
+        )
+        lists_len = list(lists_lens)[0]
+        for i in tqdm.tqdm(range(lists_len), total=lists_len, desc="Proc lists", position=1, leave=False):
+            row_res = row_other.copy()
+            for col in tqdm.tqdm(cols, total=len(cols), desc="Proc cols", position=2, leave=False):
+                row_res.update({
+                    col: row[col][i]
+                })
+            row_res_list.append(row_res)
+
+    print("...lists extracted")
+    print()
+
+    df_res = pd.DataFrame(row_res_list)[df.columns]
+
+    return df_res
+
+
 """
     resolve_nested_dict has been made private in later release of ray, so keep a copy here
 """

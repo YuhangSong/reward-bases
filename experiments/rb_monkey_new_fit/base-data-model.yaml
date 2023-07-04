@@ -120,9 +120,9 @@ param_space:
             # - 1703657804
             # - 2162018890
 
-    epochs: 1000
+    epochs: 200
 
-    alpha: 0.001
+    alpha: 0.005
 
     V_history_i:
         grid_search:

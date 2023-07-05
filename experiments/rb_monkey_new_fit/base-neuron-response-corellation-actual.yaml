@@ -1,0 +1,20 @@
+# after_run_code: |-
+#     u.report_via_email(
+#         subject=f"Run {args.experiment_config} finished"
+#     )
+
+ray_paradigm: "fit"
+
+trainable: eu.get_neuron_responses_corellation
+
+run_config: |-
+    ray.air.RunConfig(
+        name=name,
+        stop=lambda _, result: result['training_iteration']>0,
+        local_dir=local_dir,
+    )
+
+param_space:
+    version: 0.5
+    is_shuffle_situation: False
+    seed: 1482555873

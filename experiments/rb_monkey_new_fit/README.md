@@ -135,6 +135,23 @@ python analysis_v1.py \
 
 ![](base-neuron-response-corellation-.png)
 
+# base-neuron-response-corellation-actual
+
+```bash
+rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
+python main.py -c rb_monkey_new_fit/base-neuron-response-corellation-actual && \
+python analysis_v1.py \
+-t "base-neuron-response-corellation-actual" \
+--p "sns.set_theme()" \
+-l $RESULTS_DIR/rb_monkey_new_fit/ \
+-m "df['corr'].iloc[-1]" \
+-f "./experiments/rb_monkey_new_fit/base-neuron-response-corellation-actual.yaml" \
+-v \
+"import experiments.rb_monkey_new_fit.utils as eu" \
+"df=eu.proc_df(df, ['corr'])" \
+"print(df['corr'])"
+```
+
 # base-data-model
 
 ```bash

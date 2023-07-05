@@ -130,7 +130,7 @@ python analysis_v1.py \
 -v \
 "import experiments.rb_monkey_new_fit.utils as eu" \
 "df=eu.proc_df(df, ['corr'])" \
-"sns.histplot(data=df, x='corr')"
+"sns.displot(data=df, x='corr', kind='kde')"
 ```
 
 ![](base-neuron-response-corellation-.png)

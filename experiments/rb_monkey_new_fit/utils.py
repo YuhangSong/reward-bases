@@ -10,6 +10,9 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.insert(0, "/Users/yuhang/working_dir/reward-base/")
 
+neurons = ['0359', '0360', '0361', '0362', '0363', '0364', '0365', '0366', '0367',
+           '0368', '0369', '0370', '0371', '0372', '0373', '0374', '0375', '0376', '0377']
+
 
 def get_df(
     neuron,
@@ -260,38 +263,60 @@ def train_two_regressor(config):
     return results
 
 
-def train_neuron_response(config):
+def get_neuron_responses(neuron):
 
     df = get_df(
-        neuron=config['neuron'],
+        neuron=neuron,
     )
+
+    neuron_responses = {
+        'banana': {
+            'mean': None,
+            'sem_half': None,
+        },
+        'juice': {
+            'mean': None,
+            'sem_half': None,
+        },
+    }
 
     # relative firing rate of the biggest banana stimulus
     biggest_banana_relative_firing_rate = df[
         df['situation'] == '1.5g banana'
     ]['relative_firing_rate']
     # mean of it
-    biggest_banana_relative_firing_rate_mean = biggest_banana_relative_firing_rate.mean()
+    neuron_responses['banana']['mean'] = biggest_banana_relative_firing_rate.mean()
     # half of the standard error of it
-    biggest_banana_relative_firing_rate_sem_half = biggest_banana_relative_firing_rate.sem() / 2
+    neuron_responses['banana']['sem_half'] = biggest_banana_relative_firing_rate.sem(
+    ) / 2
 
     # relative firing rate of the biggest juice stimulus
     biggest_juice_relative_firing_rate = df[
         df['situation'] == '0.9ml juice'
     ]['relative_firing_rate']
     # mean of it
-    biggest_juice_relative_firing_rate_mean = biggest_juice_relative_firing_rate.mean()
+    neuron_responses['juice']['mean'] = biggest_juice_relative_firing_rate.mean()
     # half of the standard error of it
-    biggest_juice_relative_firing_rate_sem_half = biggest_juice_relative_firing_rate.sem() / 2
+    neuron_responses['juice']['sem_half'] = biggest_juice_relative_firing_rate.sem(
+    ) / 2
+
+    return neuron_responses
+
+
+def train_neuron_response(config):
+
+    neuron_responses = get_neuron_responses(
+        neuron=config['neuron'],
+    )
 
     results = {}
 
     # put into results
-    results['biggest_banana_relative_firing_rate_mean'] = biggest_banana_relative_firing_rate_mean
-    results['biggest_juice_relative_firing_rate_mean'] = biggest_juice_relative_firing_rate_mean
+    results['biggest_banana_relative_firing_rate_mean'] = neuron_responses['banana']['mean']
+    results['biggest_juice_relative_firing_rate_mean'] = neuron_responses['juice']['mean']
 
-    results['biggest_banana_relative_firing_rate_sem_half'] = biggest_banana_relative_firing_rate_sem_half
-    results['biggest_juice_relative_firing_rate_sem_half'] = biggest_juice_relative_firing_rate_sem_half
+    results['biggest_banana_relative_firing_rate_sem_half'] = neuron_responses['banana']['sem_half']
+    results['biggest_juice_relative_firing_rate_sem_half'] = neuron_responses['juice']['sem_half']
 
     return results
 
@@ -409,9 +434,6 @@ def train_data_model(config):
         V[i][x] = v
 
     # beta
-
-    neurons = ['0359', '0360', '0361', '0362', '0363', '0364', '0365', '0366', '0367',
-               '0368', '0369', '0370', '0371', '0372', '0373', '0374', '0375', '0376', '0377']
 
     coeffs = {}
     for neuron in neurons:

@@ -1,10 +1,12 @@
 import analysis_utils as au
+import random
 import pandas as pd
 import numpy as np
 import seaborn as sns
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
+from scipy import stats
 
 # for import monkey, need improvement
 import sys
@@ -263,11 +265,17 @@ def train_two_regressor(config):
     return results
 
 
-def get_neuron_responses(neuron):
+def get_neuron_responses(neuron, is_shuffle_situation=False):
 
     df = get_df(
         neuron=neuron,
     )
+
+    # get df with only rows is situation='1.5g banana' or '0.9ml juice'
+    df = df[df['situation'].isin(['1.5g banana', '0.9ml juice'])]
+
+    if is_shuffle_situation:
+        df['situation'] = df['situation'].sample(frac=1).values
 
     neuron_responses = {
         'banana': {
@@ -301,6 +309,36 @@ def get_neuron_responses(neuron):
     ) / 2
 
     return neuron_responses
+
+
+def get_neuron_responses_corellation(config):
+
+    seed = config['seed']
+    # in numpy (pandas uses numpy for random number generation)
+    np.random.seed(seed)
+    # in random
+    random.seed(seed)
+
+    banana = []
+    juice = []
+
+    for neuron in neurons:
+        neuron_responses = get_neuron_responses(
+            neuron=neuron,
+            is_shuffle_situation=config['is_shuffle_situation'],
+        )
+        banana.append(
+            neuron_responses['banana']['mean']
+        )
+        juice.append(
+            neuron_responses['juice']['mean']
+        )
+
+    corr, _ = stats.pearsonr(banana, juice)
+
+    return {
+        'corr': corr,
+    }
 
 
 def train_neuron_response(config):
@@ -406,9 +444,11 @@ def plot_neuron_response(df):
 
 def train_data_model(config):
 
-    # seed
     seed = config['seed']
+    # in numpy (pandas uses numpy for random number generation)
     np.random.seed(seed)
+    # in random
+    random.seed(seed)
 
     # r
 

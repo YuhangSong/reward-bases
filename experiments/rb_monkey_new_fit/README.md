@@ -1,6 +1,7 @@
 
 - [base](#base)
 - [base-formula](#base-formula)
+- [base-coeff-date-anova](#base-coeff-date-anova)
 - [base-two-regressor](#base-two-regressor)
 - [base-two-regressor-compare\_coeff](#base-two-regressor-compare_coeff)
 - [base-neuron-response](#base-neuron-response)
@@ -66,6 +67,13 @@ python analysis_v1.py \
 ![](base-formula-coeff-.png)
 
 ![](base-formula-pvalue-.png)
+
+# base-coeff-date-anova
+
+```bash
+rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
+python main.py -c rb_monkey_new_fit/base-coeff-date-anova -l
+```
 
 # base-two-regressor
 

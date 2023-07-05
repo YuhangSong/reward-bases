@@ -169,15 +169,15 @@ def get_df(
     return df
 
 
-def train(config):
+def do_regression(neuron, formula):
 
     df = get_df(
-        neuron=config['neuron'],
+        neuron=neuron,
     )
 
     # first we run this line to tell statsmodels where to find the data and the explanatory variables
     reg_formula = sm.regression.linear_model.OLS.from_formula(
-        data=df, formula=f'dopamine ~ {config["formula"]}'
+        data=df, formula=f'dopamine ~ {formula}'
     )
 
     # then we run this line to fit the regression (work out the values of intercept and slope)
@@ -186,6 +186,16 @@ def train(config):
 
     # let's view a summary of the regression results
     # reg_results.summary()
+
+    return df, reg_results
+
+
+def train(config):
+
+    _, reg_results = do_regression(
+        neuron=config['neuron'],
+        formula=config['formula'],
+    )
 
     results = {}
 
@@ -204,6 +214,34 @@ def train(config):
         results['pvalue'] = reg_results.pvalues[config['coeff_id']]
 
     return results
+
+
+def get_coeff_date_anova(config):
+
+    data = {
+        'date': [],
+        'coeff': [],
+    }
+
+    for neuron in neurons:
+        df, reg_results = do_regression(
+            neuron=neuron,
+            formula="value + identity : value",
+        )
+
+        data['date'].append(df['date'].iloc[0])
+        data['coeff'].append(reg_results.params['identity:value'])
+
+    df = pd.DataFrame.from_dict(data)
+
+    # First we create the ANOVA model:
+    chimps_lm = smf.ols('coeff ~ date', data=df).fit()
+    # Then output the ANOVA table
+    table = sm.stats.anova_lm(chimps_lm, typ=2)
+
+    input(table)
+
+    return {}
 
 
 def get_two_regressor_coeffs(neuron):

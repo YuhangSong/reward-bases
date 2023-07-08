@@ -1,7 +1,7 @@
 
 - [base](#base)
 - [base-formula](#base-formula)
-- [base-coeff-date-anova](#base-coeff-date-anova)
+- [base-num-significant-coeffs](#base-num-significant-coeffs)
 - [base-two-regressor](#base-two-regressor)
 - [base-two-regressor-compare\_coeff](#base-two-regressor-compare_coeff)
 - [base-neuron-response](#base-neuron-response)
@@ -67,12 +67,31 @@ python analysis_v1.py \
 
 ![](base-formula-pvalue-.png)
 
-# base-coeff-date-anova
+<!-- # base-coeff-date-anova
 
 ```bash
 rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
 python main.py -c rb_monkey_new_fit/base-coeff-date-anova -l
+``` -->
+
+# base-num-significant-coeffs
+
+```bash
+rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
+python main.py -c rb_monkey_new_fit/base-num-significant-coeffs && \
+python analysis_v1.py \
+-t "base-num-significant-coeffs" \
+--p "sns.set_theme()" \
+-l $RESULTS_DIR/rb_monkey_new_fit/ \
+-m "df['corr'].iloc[-1]" \
+-f "./experiments/rb_monkey_new_fit/base-num-significant-coeffs.yaml" \
+-v \
+"import experiments.rb_monkey_new_fit.utils as eu" \
+"df=eu.proc_df(df, ['corr'])" \
+"sns.displot(data=df, x='corr', hue='is_shuffle_situation', kind='hist')"
 ```
+
+![](base-num-significant-coeffs-.png)
 
 # base-two-regressor
 

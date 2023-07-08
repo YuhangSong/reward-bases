@@ -6,7 +6,6 @@
 - [base-two-regressor-compare\_coeff](#base-two-regressor-compare_coeff)
 - [base-neuron-response](#base-neuron-response)
 - [base-neuron-response-corellation](#base-neuron-response-corellation)
-- [base-neuron-response-corellation-actual](#base-neuron-response-corellation-actual)
 - [base-data-model](#base-data-model)
 
 
@@ -148,27 +147,10 @@ python analysis_v1.py \
 -v \
 "import experiments.rb_monkey_new_fit.utils as eu" \
 "df=eu.proc_df(df, ['corr'])" \
-"sns.displot(data=df, x='corr', kind='kde')"
+"sns.displot(data=df, x='corr', hue='is_shuffle_situation', kind='hist')"
 ```
 
 ![](base-neuron-response-corellation-.png)
-
-# base-neuron-response-corellation-actual
-
-```bash
-rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base-neuron-response-corellation-actual && \
-python analysis_v1.py \
--t "base-neuron-response-corellation-actual" \
---p "sns.set_theme()" \
--l $RESULTS_DIR/rb_monkey_new_fit/ \
--m "df['corr'].iloc[-1]" \
--f "./experiments/rb_monkey_new_fit/base-neuron-response-corellation-actual.yaml" \
--v \
-"import experiments.rb_monkey_new_fit.utils as eu" \
-"df=eu.proc_df(df, ['corr'])" \
-"print(df['corr'])"
-```
 
 # base-data-model
 

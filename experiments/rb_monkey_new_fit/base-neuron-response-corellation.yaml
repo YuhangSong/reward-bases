@@ -16,7 +16,10 @@ run_config: |-
 
 param_space:
     version: 0.5
-    is_shuffle_situation: True
+    is_shuffle_situation:
+        grid_search:
+            - True
+            - False
     seed:
         grid_search:
             - 1482555873

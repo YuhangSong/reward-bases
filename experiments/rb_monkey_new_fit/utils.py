@@ -244,6 +244,26 @@ def get_coeff_date_anova(config):
     return {}
 
 
+def get_num_significant_coeffs(config):
+
+    num_significant_coeffs = 0
+
+    for neuron in neurons:
+        df, reg_results = do_regression(
+            neuron=neuron,
+            formula="value + identity : value",
+        )
+
+        p_value = reg_results.pvalues['identity:value']
+
+        if p_value < 0.05:
+            num_significant_coeffs += 1
+
+    return {
+        'num_significant_coeffs': num_significant_coeffs,
+    }
+
+
 def get_two_regressor_coeffs(neuron):
 
     df = get_df(

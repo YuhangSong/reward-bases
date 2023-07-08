@@ -134,6 +134,9 @@ def get_df(
         )
         data['relative_firing_rate'].append(relative_firing_rate)
 
+    if is_shuffle_situation:
+        random.shuffle(data['situation'])
+
     # obtain properties generated from situation
     for trial_i in range(len(data['situation'])):
 

@@ -96,8 +96,11 @@ def get_df(
         num_spikes_in_response_window = len(
             [
                 spiketime for spiketime in spiketimes if (
-                    (onset+response_window_start) <= spiketime <= (onset +
-                                                                   response_window_end)
+                    (
+                        onset+response_window_start
+                    ) <= spiketime <= (
+                        onset + response_window_end
+                    )
                 )
             ]
         )
@@ -116,8 +119,11 @@ def get_df(
         num_spikes_in_baseline_window = len(
             [
                 spiketime for spiketime in spiketimes if (
-                    (onset+baseline_window_start) <= spiketime <= (onset +
-                                                                   baseline_window_end)
+                    (
+                        onset+baseline_window_start
+                    ) <= spiketime <= (
+                        onset + baseline_window_end
+                    )
                 )
             ]
         )

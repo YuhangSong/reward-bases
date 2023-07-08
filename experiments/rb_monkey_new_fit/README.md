@@ -83,12 +83,12 @@ python analysis_v1.py \
 -t "base-num-significant-coeffs" \
 --p "sns.set_theme()" \
 -l $RESULTS_DIR/rb_monkey_new_fit/ \
--m "df['corr'].iloc[-1]" \
+-m "df['num_significant_coeffs'].iloc[-1]" \
 -f "./experiments/rb_monkey_new_fit/base-num-significant-coeffs.yaml" \
 -v \
 "import experiments.rb_monkey_new_fit.utils as eu" \
-"df=eu.proc_df(df, ['corr'])" \
-"sns.displot(data=df, x='corr', hue='is_shuffle_situation', kind='hist')"
+"df=eu.proc_df(df, ['num_significant_coeffs'])" \
+"sns.displot(data=df, x='num_significant_coeffs', hue='is_shuffle_situation', kind='hist')"
 ```
 
 ![](base-num-significant-coeffs-.png)

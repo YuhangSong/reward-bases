@@ -20,6 +20,7 @@ def get_df(
     neuron,
     response_window_start=150, response_window_end=500,
     baseline_window_start=-500, baseline_window_end=0,
+    is_shuffle_situation=False,
 ):
     from monkey.get_clean_data import get_clean_data
 
@@ -91,37 +92,6 @@ def get_df(
         data['situation'].append(situation)
         data['onset'].append(onset)
 
-        # identity is the identity of the stimulus presented in this trial
-        # it is 1 if the stimulus is a banana, -1 if the stimulus is a juice, and 0 if the stimulus is empty
-        identity = {
-            "1.5g banana": -1,
-            "0.3g banana": -1,
-            "0.2ml juice": +1,
-            "0.5ml juice": +1,
-            "0.9ml juice": +1,
-            "empty": 0,
-        }[situation]
-        data['identity'].append(identity)
-
-        # value is the value of the stimulus presented in this trial, normalized across different stimuli
-        value = {
-            "1.5g banana": 0.7,
-            "0.3g banana": 0.05,
-            "0.2ml juice": 0.1,
-            "0.5ml juice": 0.5,
-            "0.9ml juice": 1,
-            "empty": 0,
-        }[situation]
-        data['value'].append(value)
-
-        # subjective_value is the similar as value
-        data['subjective_value_banana'].append(
-            value if situation.endswith("banana") else 0
-        )
-        data['subjective_value_juice'].append(
-            value if situation.endswith("juice") else 0
-        )
-
         # number of spikes in the response window (in contrast to in baseline window)
         num_spikes_in_response_window = len(
             [
@@ -164,15 +134,52 @@ def get_df(
         )
         data['relative_firing_rate'].append(relative_firing_rate)
 
+    # obtain properties generated from situation
+    for trial_i in range(len(data['situation'])):
+
+        situation = data['situation'][trial_i]
+
+        # identity is the identity of the stimulus presented in this trial
+        # it is 1 if the stimulus is a banana, -1 if the stimulus is a juice, and 0 if the stimulus is empty
+        identity = {
+            "1.5g banana": -1,
+            "0.3g banana": -1,
+            "0.2ml juice": +1,
+            "0.5ml juice": +1,
+            "0.9ml juice": +1,
+            "empty": 0,
+        }[situation]
+        data['identity'].append(identity)
+
+        # value is the value of the stimulus presented in this trial, normalized across different stimuli
+        value = {
+            "1.5g banana": 0.7,
+            "0.3g banana": 0.05,
+            "0.2ml juice": 0.1,
+            "0.5ml juice": 0.5,
+            "0.9ml juice": 1,
+            "empty": 0,
+        }[situation]
+        data['value'].append(value)
+
+        # subjective_value is the similar as value
+        data['subjective_value_banana'].append(
+            value if situation.endswith("banana") else 0
+        )
+        data['subjective_value_juice'].append(
+            value if situation.endswith("juice") else 0
+        )
+
     df = pd.DataFrame.from_dict(data)
 
     return df
 
 
-def do_regression(neuron, formula):
+def do_regression(neuron, formula, is_shuffle_situation=False):
 
     df = get_df(
         neuron=neuron,
+        is_shuffle_situation=is_shuffle_situation,
     )
 
     # first we run this line to tell statsmodels where to find the data and the explanatory variables
@@ -216,32 +223,32 @@ def train(config):
     return results
 
 
-def get_coeff_date_anova(config):
+# def get_coeff_date_anova(config):
 
-    data = {
-        'date': [],
-        'coeff': [],
-    }
+#     data = {
+#         'date': [],
+#         'coeff': [],
+#     }
 
-    for neuron in neurons:
-        df, reg_results = do_regression(
-            neuron=neuron,
-            formula="value + identity : value",
-        )
+#     for neuron in neurons:
+#         df, reg_results = do_regression(
+#             neuron=neuron,
+#             formula="value + identity : value",
+#         )
 
-        data['date'].append(df['date'].iloc[0])
-        data['coeff'].append(reg_results.params['identity:value'])
+#         data['date'].append(df['date'].iloc[0])
+#         data['coeff'].append(reg_results.params['identity:value'])
 
-    df = pd.DataFrame.from_dict(data)
+#     df = pd.DataFrame.from_dict(data)
 
-    # First we create the ANOVA model:
-    chimps_lm = smf.ols('coeff ~ date', data=df).fit()
-    # Then output the ANOVA table
-    table = sm.stats.anova_lm(chimps_lm, typ=2)
+#     # First we create the ANOVA model:
+#     chimps_lm = smf.ols('coeff ~ date', data=df).fit()
+#     # Then output the ANOVA table
+#     table = sm.stats.anova_lm(chimps_lm, typ=2)
 
-    input(table)
+#     input(table)
 
-    return {}
+#     return {}
 
 
 def get_num_significant_coeffs(config):
@@ -252,6 +259,7 @@ def get_num_significant_coeffs(config):
         df, reg_results = do_regression(
             neuron=neuron,
             formula="value + identity : value",
+            is_shuffle_situation=config['is_shuffle_situation'],
         )
 
         p_value = reg_results.pvalues['identity:value']

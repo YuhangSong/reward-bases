@@ -2,5 +2,5 @@
 # Figures
 
 |                                                     |
-|:----------------------------------------------------|
-| ![](./base-neuron-response-corellation-actual-.png) |
+| :-------------------------------------------------- |
+| ![](./base-neuron-response-correlation-actual-.png) |

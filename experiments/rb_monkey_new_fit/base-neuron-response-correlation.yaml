@@ -5,7 +5,7 @@
 
 ray_paradigm: "fit"
 
-trainable: eu.get_neuron_responses_corellation
+trainable: eu.get_neuron_responses_correlation
 
 run_config: |-
     ray.air.RunConfig(

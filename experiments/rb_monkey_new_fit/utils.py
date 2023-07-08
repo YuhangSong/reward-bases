@@ -369,7 +369,7 @@ def get_neuron_responses(neuron, is_shuffle_situation=False):
     return neuron_responses
 
 
-def get_neuron_responses_corellation(config):
+def get_neuron_responses_correlation(config):
 
     seed = config['seed']
     # in numpy (pandas uses numpy for random number generation)

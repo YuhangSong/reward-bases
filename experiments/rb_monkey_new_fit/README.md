@@ -5,7 +5,7 @@
 - [base-two-regressor](#base-two-regressor)
 - [base-two-regressor-compare\_coeff](#base-two-regressor-compare_coeff)
 - [base-neuron-response](#base-neuron-response)
-- [base-neuron-response-corellation](#base-neuron-response-corellation)
+- [base-neuron-response-correlation](#base-neuron-response-correlation)
 - [base-data-model](#base-data-model)
 
 
@@ -133,24 +133,24 @@ python analysis_v1.py \
 
 ![](base-neuron-response-.png)
 
-# base-neuron-response-corellation
+# base-neuron-response-correlation
 
 ```bash
 rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base-neuron-response-corellation && \
+python main.py -c rb_monkey_new_fit/base-neuron-response-correlation && \
 python analysis_v1.py \
--t "base-neuron-response-corellation" \
+-t "base-neuron-response-correlation" \
 --p "sns.set_theme()" \
 -l $RESULTS_DIR/rb_monkey_new_fit/ \
 -m "df['corr'].iloc[-1]" \
--f "./experiments/rb_monkey_new_fit/base-neuron-response-corellation.yaml" \
+-f "./experiments/rb_monkey_new_fit/base-neuron-response-correlation.yaml" \
 -v \
 "import experiments.rb_monkey_new_fit.utils as eu" \
 "df=eu.proc_df(df, ['corr'])" \
 "sns.displot(data=df, x='corr', hue='is_shuffle_situation', kind='hist')"
 ```
 
-![](base-neuron-response-corellation-.png)
+![](base-neuron-response-correlation-.png)
 
 # base-data-model
 

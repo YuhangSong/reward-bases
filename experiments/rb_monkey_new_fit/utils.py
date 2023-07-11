@@ -20,7 +20,7 @@ def get_df(
     neuron,
     response_window_start=150, response_window_end=500,
     baseline_window_start=-500, baseline_window_end=0,
-    is_shuffle_situation=False,
+    is_shuffle_identity=False,
 ):
     from monkey.get_clean_data import get_clean_data
 
@@ -140,14 +140,6 @@ def get_df(
         )
         data['relative_firing_rate'].append(relative_firing_rate)
 
-    if is_shuffle_situation:
-        random.shuffle(data['situation'])
-
-    # obtain properties generated from situation
-    for trial_i in range(len(data['situation'])):
-
-        situation = data['situation'][trial_i]
-
         # identity is the identity of the stimulus presented in this trial
         # it is 1 if the stimulus is a banana, -1 if the stimulus is a juice, and 0 if the stimulus is empty
         identity = {
@@ -179,16 +171,19 @@ def get_df(
             value if situation.endswith("juice") else 0
         )
 
+    if is_shuffle_identity:
+        random.shuffle(data['identity'])
+
     df = pd.DataFrame.from_dict(data)
 
     return df
 
 
-def do_regression(neuron, formula, is_shuffle_situation=False):
+def do_regression(neuron, formula, is_shuffle_identity=False):
 
     df = get_df(
         neuron=neuron,
-        is_shuffle_situation=is_shuffle_situation,
+        is_shuffle_identity=is_shuffle_identity,
     )
 
     # first we run this line to tell statsmodels where to find the data and the explanatory variables
@@ -268,7 +263,7 @@ def get_num_significant_coeffs(config):
         df, reg_results = do_regression(
             neuron=neuron,
             formula="value + identity : value",
-            is_shuffle_situation=config['is_shuffle_situation'],
+            is_shuffle_identity=config['is_shuffle_identity'],
         )
 
         p_value = reg_results.pvalues['identity:value']

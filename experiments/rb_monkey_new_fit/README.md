@@ -89,7 +89,7 @@ python analysis_v1.py \
 "import experiments.rb_monkey_new_fit.utils as eu" \
 "df=eu.proc_df(df, ['num_significant_coeffs'])" \
 "bin_edges=np.arange(start=df['num_significant_coeffs'].min() - 0.5, stop=df['num_significant_coeffs'].max() + 1.5, step=1)" \
-"sns.displot(data=df, x='num_significant_coeffs', hue='is_shuffle_situation', kind='hist', bins=bin_edges)"
+"sns.displot(data=df, x='num_significant_coeffs', hue='is_shuffle_identity', kind='hist', bins=bin_edges)"
 ```
 
 ![](base-num-significant-coeffs-.png)

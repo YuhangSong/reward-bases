@@ -309,21 +309,21 @@ def panel_bc_fit_data_and_plot(df):
         method_column=method_column,
         plot_column=plot_column,
         raw_data=[
-            # valued
+            # valued: error bar = (4.e-1)-(2.1e-1) = 0.190000
             [0, 0.30621110563277043],
-            # devalued
+            # devalued: error bar = (1.2e-1)-(-8.5e-2) = 0.20500000
             [1, 0.006223098756712675],
-            # expected valued
+            # expected valued: error bar = (((-6.71e-2)-(-1.5e-1))**2+((-6.5e-2)-(-1.2e-1))**2)**0.5/2 = 0.049742863809796874
             [2, (-0.09460814540014345-0.1070539419087137)/2],
-            # expected devalued
+            # expected devalued: error bar = (((-1.6e-1)-(-2.1e-1))**2+((-1.7e-1)-(-2.5e-1))**2)**0.5/2 = 0.04716990
             [3, (-0.13230665035834505-0.1867219917012451)/2],
-            # more valued
+            # more valued: error bar = (((9.9e-1)-(5.8e-1))**2+((2.3e-1)-(1e-1))**2)**0.5/2 = 0.215058131676065
             [4, (0.7907926739139199+0.4820744702293768)/2],
-            # more devalued
+            # more devalued: error bar = (((6.4e-1)-(3.2e-1))**2+((8.4e-2)-(-1.e-1))**2)**0.5/2 = 0.1845643519
             [5, (0.16999019067711207-0.010904473319985675)/2],
-            # switch to valued
+            # switch to valued: error bar = (((3.4037e-2)-(-5.15e-2))**2+((2.1e-1)-(5.5e-2))**2)**0.5/2 = 0.0885177642750
             [6, (0.12589283006661478-0.015767634854771784)/2],
-            # switch to devalued
+            # switch to devalued: error bar = (((-1.2e-1)-(-2.1e-1))**2+((-1.1e-1)-(-1.6e-1))**2)**0.5/2 = 0.0514781507049
             [7, (-0.1347660396049613-0.16514522821576755)/2],
         ],
         process_plot_column_fn_in_raw_data=lambda plot: np.round(plot),

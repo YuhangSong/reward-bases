@@ -10,7 +10,7 @@ from scipy import stats
 
 # for import monkey, need improvement
 import sys
-sys.path.insert(0, "/Users/yuhang/working_dir/reward-base/")
+sys.path.insert(0, "/Users/yuhang/working_dir/reward-bases/experiments/")
 
 neurons = ['0359', '0360', '0361', '0362', '0363', '0364', '0365', '0366', '0367',
            '0368', '0369', '0370', '0371', '0372', '0373', '0374', '0375', '0376', '0377']
@@ -25,7 +25,7 @@ def get_df(
     from monkey.get_clean_data import get_clean_data
 
     spiketimes_list, stim_onsets_list, situations_list = get_clean_data(
-        path=f"/Users/yuhang/working_dir/reward-base/monkey/CleanData/w065-{neuron}.jld2"
+        path=f"/Users/yuhang/working_dir/reward-bases/experiments/monkey/CleanData/w065-{neuron}.jld2"
     )
 
     # date each neuron is recorded

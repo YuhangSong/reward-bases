@@ -55,7 +55,12 @@ def get_situations_list(file):
             raise TypeError("Element is not a reference")
     return situations_list
 
+import os
+current_dir = os.path.dirname(os.path.realpath(__file__))
+
 def get_clean_data(path):
+
+    path = os.path.join(current_dir, 'CleanData', path)
 
     with h5py.File(path, 'r') as file:
         spiketimes_list = get_spiketimes_list(file)
@@ -66,7 +71,7 @@ def get_clean_data(path):
 
 if __name__ == "__main__":
 
-    spiketimes_list, stim_onsets_list, situations_list = get_clean_data(path="CleanData/w065-0359.jld2")
+    spiketimes_list, stim_onsets_list, situations_list = get_clean_data(path="w065-0359.jld2")
 
     print()
     print(f"len(spiketimes_list) = {len(spiketimes_list)}")

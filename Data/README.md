@@ -9,7 +9,7 @@ To use the cleaned data in python:
 ```python
 from get_clean_data import get_clean_data
 
-spiketimes_list, stim_onsets_list, situations_list = get_clean_data(path="CleanData/w065-0359.jld2")
+spiketimes_list, stim_onsets_list, situations_list = get_clean_data(path="w065-0359.jld2")
 
 print()
 print(f"len(spiketimes_list) = {len(spiketimes_list)}")

@@ -8,9 +8,13 @@ import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
 from scipy import stats
 
+import os
+
+RB_CODE_DIR = os.environ['RB_CODE_DIR']
+
 # for import neurons_visualisation, need improvement
 import sys
-sys.path.insert(0, "/Users/yuhang/working_dir/reward-bases/experiments/")
+sys.path.insert(0, os.path.join(RB_CODE_DIR, 'Data'))
 
 neurons = ['0359', '0360', '0361', '0362', '0363', '0364', '0365', '0366', '0367',
            '0368', '0369', '0370', '0371', '0372', '0373', '0374', '0375', '0376', '0377']
@@ -24,13 +28,10 @@ def get_df(
     baseline_window_start=-500, baseline_window_end=0,
     is_shuffle_identity=False,
 ):
-    from neurons_visualisation.get_clean_data import get_clean_data
+    from get_clean_data import get_clean_data
 
     spiketimes_list, stim_onsets_list, situations_list = get_clean_data(
-        path=os.path.join(
-            os.environ['RB_CODE_DIR'],
-            f"/Data/CleanData/w065-{neuron}.jld2",
-        )
+        path=f"w065-{neuron}.jld2",
     )
 
     # date each neuron is recorded

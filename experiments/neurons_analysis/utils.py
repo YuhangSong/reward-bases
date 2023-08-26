@@ -16,6 +16,8 @@ neurons = ['0359', '0360', '0361', '0362', '0363', '0364', '0365', '0366', '0367
            '0368', '0369', '0370', '0371', '0372', '0373', '0374', '0375', '0376', '0377']
 
 
+import os
+
 def get_df(
     neuron,
     response_window_start=150, response_window_end=500,
@@ -25,7 +27,10 @@ def get_df(
     from neurons_visualisation.get_clean_data import get_clean_data
 
     spiketimes_list, stim_onsets_list, situations_list = get_clean_data(
-        path=f"/Users/yuhang/working_dir/reward-bases/experiments/neurons_visualisation/CleanData/w065-{neuron}.jld2"
+        path=os.path.join(
+            os.environ['RB_CODE_DIR'],
+            f"/Data/CleanData/w065-{neuron}.jld2",
+        )
     )
 
     # date each neuron is recorded

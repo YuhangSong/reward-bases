@@ -121,7 +121,7 @@ function bucket_counts_by_situation(spiketimes, events, situations, situation_li
 end
 
 
-function load_data(sname="CleanData/w064-0122.jld2")
+function load_data(sname=joinpath(ENV["RB_CODE_DIR"], "Data/CleanData/w064-0122.jld2"))
 
     loaded_spiketimes, loaded_stim_onsets, loaded_situations = jldopen(sname, "r") do file
         read(file, "spiketimes"), read(file, "stim_onsets"), read(file, "situations")
@@ -136,7 +136,7 @@ function bucket_count_by_situation_neuronlist(neuronlist, situation_list, window
     for situation in ALL_SITUATIONS
         all_counts = []
         for neuron in neuronlist
-            spiketimes, situations, stim_onsets = load_data("CleanData/w065-0$neuron" * ".jld2")
+            spiketimes, situations, stim_onsets = load_data(joinpath(ENV["RB_CODE_DIR"], "Data/CleanData/w065-0$neuron" * ".jld2"))
             try
                 counts = bucket_counts_by_situation(spiketimes, stim_onsets, situations, [situation], window_size, bucket_start, bucket_end, use_overlapping_window)
                 if crop_end

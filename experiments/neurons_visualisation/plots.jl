@@ -46,7 +46,7 @@ function plot_neuron(neuron_id, window_size=200)
     window_size = window_end - window_start
     divisor = window_size / 1000 # msec to sec
 
-    spiketimes, situations, stim_onsets = load_data("CleanData/w065-0$(neuron_id)" * ".jld2")
+    spiketimes, situations, stim_onsets = load_data(joinpath(ENV["RB_CODE_DIR"], "Data/CleanData/w065-0$(neuron_id)" * ".jld2"))
     situation_1 = counts_per_trial_window_by_situation(spiketimes, stim_onsets, situations, [1], window_start, window_end, false) / divisor
     situation_2 = counts_per_trial_window_by_situation(spiketimes, stim_onsets, situations, [2], window_start, window_end, false) / divisor
     situation_3 = counts_per_trial_window_by_situation(spiketimes, stim_onsets, situations, [3], window_start, window_end, false) / divisor

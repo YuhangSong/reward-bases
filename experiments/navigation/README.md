@@ -1,15 +1,5 @@
 # README
 
-Install MatLab, then run
-
-```bash
-sea_salt.m
-```
-
-to produce:
-
-[salt.pdf](figures/salt.pdf)
-
 Install Python and make sure that the `python` command can be ran from your command line.
 Install required python packages with:
 

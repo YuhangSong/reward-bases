@@ -115,7 +115,7 @@ python analysis_v1.py \
 
 ![](base-two-regressor-.png)
 
-# base-two-regressor-compare_coeff
+<!-- # base-two-regressor-compare_coeff
 
 ```bash
 rm -r $RESULTS_DIR/neurons_analysis/ ; \
@@ -132,7 +132,7 @@ python analysis_v1.py \
 "g=sns.relplot(data=df, kind='scatter', y='coeff_value', x='coeff_identity_value', style='compare_coeff')"
 ```
 
-![](base-two-regressor-compare_coeff-.png)
+![](base-two-regressor-compare_coeff-.png) -->
 
 # base-neuron-response
 

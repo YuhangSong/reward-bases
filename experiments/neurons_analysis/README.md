@@ -1,27 +1,25 @@
-
-- [base](#base)
-- [base-formula](#base-formula)
-- [base-num-significant-coeffs](#base-num-significant-coeffs)
-- [base-two-regressor](#base-two-regressor)
-- [base-two-regressor-compare\_coeff](#base-two-regressor-compare_coeff)
-- [base-neuron-response](#base-neuron-response)
-- [base-neuron-response-correlation](#base-neuron-response-correlation)
-- [base-data-model](#base-data-model)
-
+-   [base](#base)
+-   [base-formula](#base-formula)
+-   [base-num-significant-coeffs](#base-num-significant-coeffs)
+-   [base-two-regressor](#base-two-regressor)
+-   [base-two-regressor-compare_coeff](#base-two-regressor-compare_coeff)
+-   [base-neuron-response](#base-neuron-response)
+-   [base-neuron-response-correlation](#base-neuron-response-correlation)
+-   [base-data-model](#base-data-model)
 
 # base
 
 ```bash
-rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base && \
+rm -r $RESULTS_DIR/neurons_analysis/ ; \
+python main.py -c neurons_analysis/base && \
 python analysis_v1.py \
 -t "base-bic-all_neuron" \
 --p "sns.set_theme()" \
--l $RESULTS_DIR/rb_monkey_new_fit/ \
+-l $RESULTS_DIR/neurons_analysis/ \
 -m "df['bic'].iloc[-1]" \
--f "./experiments/rb_monkey_new_fit/base.yaml" \
+-f "./experiments/neurons_analysis/base.yaml" \
 -v \
-"import experiments.rb_monkey_new_fit.utils as eu" \
+"import experiments.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, 'bic')" \
 "df=au.reduce(df, ['formula'], lambda df: {'sum_bic': df['bic'].sum()})" \
 "g=sns.catplot(data=df, kind='bar', y='sum_bic', x='formula')" \
@@ -34,16 +32,16 @@ python analysis_v1.py \
 # base-formula
 
 ```bash
-rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base-formula && \
+rm -r $RESULTS_DIR/neurons_analysis/ ; \
+python main.py -c neurons_analysis/base-formula && \
 python analysis_v1.py \
 -t "base-formula-coeff" \
 --p "sns.set_theme()" \
--l $RESULTS_DIR/rb_monkey_new_fit/ \
+-l $RESULTS_DIR/neurons_analysis/ \
 -m "df['coeff'].iloc[-1]" "df['pvalue'].iloc[-1]" \
--f "./experiments/rb_monkey_new_fit/base-formula.yaml" \
+-f "./experiments/neurons_analysis/base-formula.yaml" \
 -v \
-"import experiments.rb_monkey_new_fit.utils as eu" \
+"import experiments.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, ['coeff', 'pvalue'])" \
 "df=eu.sort_by_id_coeff(df)" \
 "g=sns.catplot(data=df, kind='bar', y='coeff', x='neuron', hue='coeff_id')" \
@@ -51,11 +49,11 @@ python analysis_v1.py \
 python analysis_v1.py \
 -t "base-formula-pvalue" \
 --p "sns.set_theme()" \
--l $RESULTS_DIR/rb_monkey_new_fit/ \
+-l $RESULTS_DIR/neurons_analysis/ \
 -m "df['coeff'].iloc[-1]" "df['pvalue'].iloc[-1]" \
--f "./experiments/rb_monkey_new_fit/base-formula.yaml" \
+-f "./experiments/neurons_analysis/base-formula.yaml" \
 -v \
-"import experiments.rb_monkey_new_fit.utils as eu" \
+"import experiments.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, ['coeff', 'pvalue'])" \
 "df=eu.sort_by_id_coeff(df)" \
 "g=sns.catplot(data=df, kind='bar', y='pvalue', x='neuron', hue='coeff_id')" \
@@ -70,23 +68,23 @@ python analysis_v1.py \
 <!-- # base-coeff-date-anova
 
 ```bash
-rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base-coeff-date-anova -l
+rm -r $RESULTS_DIR/neurons_analysis/ ; \
+python main.py -c neurons_analysis/base-coeff-date-anova -l
 ``` -->
 
 # base-num-significant-coeffs
 
 ```bash
-rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base-num-significant-coeffs && \
+rm -r $RESULTS_DIR/neurons_analysis/ ; \
+python main.py -c neurons_analysis/base-num-significant-coeffs && \
 python analysis_v1.py \
 -t "base-num-significant-coeffs" \
 --p "sns.set_theme()" \
--l $RESULTS_DIR/rb_monkey_new_fit/ \
+-l $RESULTS_DIR/neurons_analysis/ \
 -m "df['num_significant_coeffs'].iloc[-1]" \
--f "./experiments/rb_monkey_new_fit/base-num-significant-coeffs.yaml" \
+-f "./experiments/neurons_analysis/base-num-significant-coeffs.yaml" \
 -v \
-"import experiments.rb_monkey_new_fit.utils as eu" \
+"import experiments.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, ['num_significant_coeffs'])" \
 "bin_edges=np.arange(start=df['num_significant_coeffs'].min() - 0.5, stop=df['num_significant_coeffs'].max() + 1.5, step=1)" \
 "sns.displot(data=df, x='num_significant_coeffs', hue='is_shuffle_identity', kind='hist', bins=bin_edges)"
@@ -97,16 +95,16 @@ python analysis_v1.py \
 # base-two-regressor
 
 ```bash
-rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base-two-regressor && \
+rm -r $RESULTS_DIR/neurons_analysis/ ; \
+python main.py -c neurons_analysis/base-two-regressor && \
 python analysis_v1.py \
 -t "base-two-regressor" \
 --p "sns.set_theme()" \
--l $RESULTS_DIR/rb_monkey_new_fit/ \
+-l $RESULTS_DIR/neurons_analysis/ \
 -m "df['coeff_banana'].iloc[-1]" "df['coeff_juice'].iloc[-1]" \
--f "./experiments/rb_monkey_new_fit/base-two-regressor.yaml" \
+-f "./experiments/neurons_analysis/base-two-regressor.yaml" \
 -v \
-"import experiments.rb_monkey_new_fit.utils as eu" \
+"import experiments.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, ['coeff_banana', 'coeff_juice'])" \
 "g=sns.relplot(data=df, kind='scatter', y='coeff_banana', x='coeff_juice')" \
 "ax = plt.gca()" \
@@ -118,16 +116,16 @@ python analysis_v1.py \
 # base-two-regressor-compare_coeff
 
 ```bash
-rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base-two-regressor-compare_coeff && \
+rm -r $RESULTS_DIR/neurons_analysis/ ; \
+python main.py -c neurons_analysis/base-two-regressor-compare_coeff && \
 python analysis_v1.py \
 -t "base-two-regressor-compare_coeff" \
 --p "sns.set_theme()" \
--l $RESULTS_DIR/rb_monkey_new_fit/ \
+-l $RESULTS_DIR/neurons_analysis/ \
 -m "df['coeff_value'].iloc[-1]" "df['coeff_identity_value'].iloc[-1]" \
--f "./experiments/rb_monkey_new_fit/base-two-regressor-compare_coeff.yaml" \
+-f "./experiments/neurons_analysis/base-two-regressor-compare_coeff.yaml" \
 -v \
-"import experiments.rb_monkey_new_fit.utils as eu" \
+"import experiments.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, ['coeff_value', 'coeff_identity_value'])" \
 "g=sns.relplot(data=df, kind='scatter', y='coeff_value', x='coeff_identity_value', style='compare_coeff')"
 ```
@@ -137,16 +135,16 @@ python analysis_v1.py \
 # base-neuron-response
 
 ```bash
-rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base-neuron-response && \
+rm -r $RESULTS_DIR/neurons_analysis/ ; \
+python main.py -c neurons_analysis/base-neuron-response && \
 python analysis_v1.py \
 -t "base-neuron-response" \
 --p "sns.set_theme()" \
--l $RESULTS_DIR/rb_monkey_new_fit/ \
+-l $RESULTS_DIR/neurons_analysis/ \
 -m "df['biggest_banana_relative_firing_rate_mean'].iloc[-1]" "df['biggest_juice_relative_firing_rate_mean'].iloc[-1]" "df['biggest_banana_relative_firing_rate_sem_half'].iloc[-1]" "df['biggest_juice_relative_firing_rate_sem_half'].iloc[-1]" \
--f "./experiments/rb_monkey_new_fit/base-neuron-response.yaml" \
+-f "./experiments/neurons_analysis/base-neuron-response.yaml" \
 -v \
-"import experiments.rb_monkey_new_fit.utils as eu" \
+"import experiments.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, ['biggest_banana_relative_firing_rate_mean', 'biggest_juice_relative_firing_rate_mean', 'biggest_banana_relative_firing_rate_sem_half', 'biggest_juice_relative_firing_rate_sem_half'])" \
 "eu.plot_neuron_response(df)"
 ```
@@ -156,16 +154,16 @@ python analysis_v1.py \
 # base-neuron-response-correlation
 
 ```bash
-rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base-neuron-response-correlation && \
+rm -r $RESULTS_DIR/neurons_analysis/ ; \
+python main.py -c neurons_analysis/base-neuron-response-correlation && \
 python analysis_v1.py \
 -t "base-neuron-response-correlation" \
 --p "sns.set_theme()" \
--l $RESULTS_DIR/rb_monkey_new_fit/ \
+-l $RESULTS_DIR/neurons_analysis/ \
 -m "df['corr'].iloc[-1]" \
--f "./experiments/rb_monkey_new_fit/base-neuron-response-correlation.yaml" \
+-f "./experiments/neurons_analysis/base-neuron-response-correlation.yaml" \
 -v \
-"import experiments.rb_monkey_new_fit.utils as eu" \
+"import experiments.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, ['corr'])" \
 "sns.displot(data=df, x='corr', hue='is_shuffle_situation', kind='hist')"
 ```
@@ -175,16 +173,16 @@ python analysis_v1.py \
 # base-data-model
 
 ```bash
-rm -r $RESULTS_DIR/rb_monkey_new_fit/ ; \
-python main.py -c rb_monkey_new_fit/base-data-model && \
+rm -r $RESULTS_DIR/neurons_analysis/ ; \
+python main.py -c neurons_analysis/base-data-model && \
 python analysis_v1.py \
 -t "base-data-model" \
 --p "sns.set_theme()" \
--l $RESULTS_DIR/rb_monkey_new_fit/ \
+-l $RESULTS_DIR/neurons_analysis/ \
 -m "df['epoch_history'].iloc[0]" "df['V_history'].iloc[0]" \
--f "./experiments/rb_monkey_new_fit/base-data-model.yaml" \
+-f "./experiments/neurons_analysis/base-data-model.yaml" \
 -v \
-"import experiments.rb_monkey_new_fit.utils as eu" \
+"import experiments.neurons_analysis.utils as eu" \
 "eu.plot_data_model(df)"
 ```
 

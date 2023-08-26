@@ -8,7 +8,7 @@ import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
 from scipy import stats
 
-# for import monkey, need improvement
+# for import neurons_visualisation, need improvement
 import sys
 sys.path.insert(0, "/Users/yuhang/working_dir/reward-bases/experiments/")
 
@@ -22,10 +22,10 @@ def get_df(
     baseline_window_start=-500, baseline_window_end=0,
     is_shuffle_identity=False,
 ):
-    from monkey.get_clean_data import get_clean_data
+    from neurons_visualisation.get_clean_data import get_clean_data
 
     spiketimes_list, stim_onsets_list, situations_list = get_clean_data(
-        path=f"/Users/yuhang/working_dir/reward-bases/experiments/monkey/CleanData/w065-{neuron}.jld2"
+        path=f"/Users/yuhang/working_dir/reward-bases/experiments/neurons_visualisation/CleanData/w065-{neuron}.jld2"
     )
 
     # date each neuron is recorded

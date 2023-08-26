@@ -1,4 +1,4 @@
-# Environments for the experiments
+# Environments for the Simulations
 
 import numpy as np
 import matplotlib.pyplot as plt

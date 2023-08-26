@@ -32,15 +32,15 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # load config
-    with open('experiments/{}.yaml'.format(args.experiment_config)) as f:
+    with open('Simulations/{}.yaml'.format(args.experiment_config)) as f:
         config = yaml.safe_load(f)
     # # warning after load config
     logger.warning(
         "Config yaml loaded. You can safely make changes to the yaml now. \n"
     )
 
-    # for historical experiments, there were default imports of trainables, importing here
-    # to avoid breaking old experiments
+    # for historical Simulations, there were default imports of trainables, importing here
+    # to avoid breaking old Simulations
     # from base_trainable import BaseTrainable
     # from dataset_learning_trainable import DatasetLearningTrainable
     # from supervised_learning_trainable import SupervisedLearningTrainable
@@ -94,12 +94,12 @@ if __name__ == '__main__':
 
     try:
         exec(
-            f"import experiments.{name}.utils as eu"
+            f"import Simulations.{name}.utils as eu"
         )
     except Exception as e:
         logger.warning((
             "the recommended workflow is to use eu.Trainable as your <trainable> or <run_or_experiment>, where eu is imported automatically for your from <your_experiment/utils.py>. "
-            f"But `import experiments.{name}.utils as eu` fails with the following error: \n"
+            f"But `import Simulations.{name}.utils as eu` fails with the following error: \n"
             f"{e} "
         ))
 

@@ -107,7 +107,7 @@ def resolve_nested_dict(nested_dict: Dict) -> Dict[Tuple, Any]:
 
 
 class Analysis:
-    """Analyze all results from a directory of experiments.
+    """Analyze all results from a directory of Simulations.
     To use this class, the experiment must be executed with the JsonLogger.
     Args:
         experiment_dir (str): Directory of the experiment to load.
@@ -590,7 +590,7 @@ def nature_post(g, xticks=None, yticks=None, is_grid=True):
 
 
 def format_friendly_string(string, is_abbr=False):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#you-may-want-to-format-a-string-to-be-friendly-for-being-a-dictionary
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#you-may-want-to-format-a-string-to-be-friendly-for-being-a-dictionary
 
         Format a string to be friendly. Specifically,
             1, replace all special characters, punctuation and spaces from string with '_'
@@ -834,7 +834,7 @@ def load_config_from_params(logdir, silent_broken_trials=True):
 
 
 def summarize_select(df, config_columns, group_summarize, summarize_fn, group_select, select_fn):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#summarize-and-select
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#summarize-and-select
 
     Args:
         df (pd.DataFrame): The dataframe.
@@ -874,7 +874,7 @@ def summarize_select(df, config_columns, group_summarize, summarize_fn, group_se
 
 
 def select_best_lr(df, config_columns, metric, group_summarize=['seed'], group_select=['learning_rate'], is_min=True):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#summarize-and-select
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#summarize-and-select
 
     Args:
         df: See summarize_select.
@@ -1178,7 +1178,7 @@ def process_dkeys(d, process):
 def filter_dataframe_by_dict(dataframe, d):
     """Filter dataframe by a dictionary of keys (columns) and values.
 
-    See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#select
+    See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#select
 
     Args:
         dataframe (pd.DataFrame): The dataframe to be filtered.
@@ -1415,14 +1415,14 @@ def explode_with(df, new_col_name, x):
 
 
 def drop_cols(df, cols):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#drop-cols
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#drop-cols
     """
     assert isinstance(df, pd.DataFrame)
     return df.drop(cols, axis=1)
 
 
 def reduce(df, by, reduce_fn):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#reduce-by-group
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#reduce-by-group
     """
 
     # sanitize args
@@ -1446,7 +1446,7 @@ def reduce(df, by, reduce_fn):
 
 
 def add_metric_per_group(df, by, metric_fn):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#add-metric-per-group
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#add-metric-per-group
     """
 
     # sanitize args
@@ -1471,7 +1471,7 @@ def add_metric_per_group(df, by, metric_fn):
 
 
 def select_rows_per_group(df, by, select_fn):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#reduce-by-group
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#reduce-by-group
     """
     assert isinstance(df, pd.DataFrame)
     assert isinstance(by, list)
@@ -1487,7 +1487,7 @@ def select_rows_per_group(df, by, select_fn):
 
 
 def new_col(df, col_key, apply_fn):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#generate-new-column-from-each-row
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#generate-new-column-from-each-row
     """
     assert isinstance(df, pd.DataFrame)
     assert isinstance(col_key, str)
@@ -1500,7 +1500,7 @@ def new_col(df, col_key, apply_fn):
 
 
 def combine_cols(df, col_key, cols, combine_opt='dict'):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#combine-cols
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#combine-cols
     """
 
     def combine_fn(row):
@@ -1524,7 +1524,7 @@ def combine_cols(df, col_key, cols, combine_opt='dict'):
 
 
 def extract_plot(df, col, along):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#plot-along-training-iteration
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#plot-along-training-iteration
     """
 
     assert isinstance(df, pd.DataFrame)
@@ -1551,7 +1551,7 @@ def extract_plot(df, col, along):
 
 
 # def codify_col(df, col):
-#     """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#codify-a-column
+#     """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#codify-a-column
 #     """
 #     df.insert(
 #         1, '{}-code'.format(col),
@@ -1817,19 +1817,19 @@ def parallel_coordinates(
 
 
 def my_catplot(*args, **kwargs):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#my_catplot
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#my_catplot
     """
     return sns.catplot(*args, **kwargs, errorbar=('ci', 68), kind='point', capsize=0.4, legend_out=False)
 
 
 def my_relplot(*args, **kwargs):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#my_relplot
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#my_relplot
     """
     return sns.relplot(*args, **kwargs, errorbar=('ci', 68), kind='line')
 
 
 def df2tb(df):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#save-the-dataframe-to-markdown-file
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#save-the-dataframe-to-markdown-file
     """
     return tabulate(df.values, df.columns, tablefmt='pipe')
 
@@ -1850,13 +1850,13 @@ def list2str(l):
 
 
 # def count_parameters(model):
-#     """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#deal-with-saved-model
+#     """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#deal-with-saved-model
 #     """
 #     return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 
 # def get_checkpoint_path(log_dir, i, model_name='model.pth'):
-#     """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#get-checkpoint-path
+#     """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#get-checkpoint-path
 #     """
 #     assert isinstance(log_dir, str)
 #     assert isinstance(i, int)
@@ -1867,7 +1867,7 @@ def list2str(l):
 
 
 # def get_model_delta(model_i, model_j, delta_fn):
-#     """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#compare-two-checkpoints
+#     """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#compare-two-checkpoints
 #     """
 #     delta_all = []
 #     if isinstance(model_i, dict):

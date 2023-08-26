@@ -17,7 +17,7 @@ def fit_data(df,
              is_reduce_multiple_best_fit=True,
              is_print_best_fit_per_method=True,
              ):
-    """See https://github.com/YuhangSong/general-energy-nets/tree/master/experiments#fit-to-biological-experiment-data
+    """See https://github.com/YuhangSong/general-energy-nets/tree/master/Simulations#fit-to-biological-experiment-data
 
     Args:
         df (pd.DataFrame): The dataframe.

@@ -17,9 +17,9 @@ python analysis_v1.py \
 -t "panel_b" \
 -l $RESULTS_DIR/dopamine_release/ \
 -m "eval(df['value-along-index'].iloc[-1])" \
--f "./experiments/dopamine_release/panel_b.yaml" \
+-f "./Simulations/dopamine_release/panel_b.yaml" \
 -v \
-"import experiments.dopamine_release.utils as eu" \
+"import Simulations.dopamine_release.utils as eu" \
 "eu.panel_b_fit_data_and_plot(df)"
 ```
 
@@ -36,9 +36,9 @@ python analysis_v1.py \
 -t "panel_c" \
 -l $RESULTS_DIR/dopamine_release/ \
 -m "eval(df['value-along-index'].iloc[-1])" \
--f "./experiments/dopamine_release/panel_c.yaml" \
+-f "./Simulations/dopamine_release/panel_c.yaml" \
 -v \
-"import experiments.dopamine_release.utils as eu" \
+"import Simulations.dopamine_release.utils as eu" \
 "eu.panel_c_fit_data_and_plot(df)"
 ```
 
@@ -57,9 +57,9 @@ python analysis_v1.py \
 -t "panel_bc" \
 -l $RESULTS_DIR/dopamine_release/ \
 -m "eval(df['value-along-index'].iloc[-1])" \
--f "./experiments/dopamine_release/panel_bc.yaml" \
+-f "./Simulations/dopamine_release/panel_bc.yaml" \
 -v \
-"import experiments.dopamine_release.utils as eu" \
+"import Simulations.dopamine_release.utils as eu" \
 "eu.panel_bc_fit_data_and_plot(df)"
 ```
 

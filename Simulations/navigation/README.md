@@ -12,7 +12,7 @@ pip install seaborn pandas matplotlib numpy scipy
 Then run
 
 ```bash
-python room_task_experiments.py
+python room_task_Simulations.py
 ```
 
 to produce:
@@ -29,4 +29,4 @@ to produce:
 
 ## Further information
 
-The file `envs.py` contains the environment classes for the various experiments and the `learners.py` file contains the classes for the reward basis, temporal difference, and successor representation agent.
+The file `envs.py` contains the environment classes for the various Simulations and the `learners.py` file contains the classes for the reward basis, temporal difference, and successor representation agent.

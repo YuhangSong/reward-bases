@@ -14,7 +14,7 @@ from fit_data import fit_data
 @pytest.fixture
 def get_fig_save_dir():
     return os.path.join(
-        'tests',
+        'Tests',
         'test_fit_data',
     )
 

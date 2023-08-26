@@ -1,5 +1,7 @@
 # README
 
+**Run the experiment inside this subfolder.**
+
 Install Python and make sure that the `python` command can be ran from your command line.
 Install required python packages with:
 

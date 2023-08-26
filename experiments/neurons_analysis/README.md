@@ -7,6 +7,8 @@
 -   [base-neuron-response-correlation](#base-neuron-response-correlation)
 -   [base-data-model](#base-data-model)
 
+**Run the following command from root directory of the repo.**
+
 # base
 
 ```bash

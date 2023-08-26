@@ -1,5 +1,7 @@
 # README
 
+**Run the experiment inside this subfolder.**
+
 Install MatLab, then run
 
 ```bash

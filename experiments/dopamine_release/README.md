@@ -4,6 +4,8 @@
 
 Data extrained from [here](https://drive.google.com/drive/folders/1J4yQ3XjXebkNY2GNYrFttIfAT5ODuVJb?usp=sharing) with [this software](https://apps.automeris.io/wpd/).
 
+**Run the following command from root directory of the repo.**
+
 # panel_b
 
 ```bash

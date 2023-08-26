@@ -1,15 +1,11 @@
 <!-- vscode-markdown-toc -->
 
 -   1. [Setting up environment](#Settingupenvironment)
-    -   1.1. [With docker](#Withdocker)
-    -   1.2. [Without docker](#Withoutdocker)
-        -   1.2.1. [Install dependencies](#Installdependencies)
-        -   1.2.2. [Set up environment variables](#Setupenvironmentvariables)
+    -   1.1. [Without docker](#Withoutdocker)
+        -   1.1.1. [Install dependencies](#Installdependencies)
+        -   1.1.2. [Set up environment variables](#Setupenvironmentvariables)
 -   2. [Structure of the code](#Structureofthecode)
 -   3. [Run the code to reproduce experiments and figures](#Runthecodetoreproduceexperimentsandfigures)
--   4. [Other notes](#Othernotes)
-    -   4.1. [Warning and error messages](#Warninganderrormessages)
-    -   4.2. [Reproducibility](#Reproducibility)
 
 <!-- vscode-markdown-toc-config
 	numbering=true
@@ -19,7 +15,7 @@
 
 ## 1. <a name='Settingupenvironment'></a>Setting up environment
 
-### 1.1. <a name='Withdocker'></a>With docker
+<!-- ### 1.1. <a name='Withdocker'></a>With docker
 
 A [`Dockerfile`](./Dockerfile) is available in the main directory above, and a pre-built docker image from this `Dockerfile` is available on docker hub here: [dryuhangsong/general-energy-nets:1.0](https://hub.docker.com/r/dryuhangsong/general-energy-nets).
 
@@ -29,7 +25,7 @@ If you are not familar with docker but want to learn and use docker, [get starte
 
 Alternatively, you can set up the environment by yourself (without docker), see [Without docker](#without-docker).
 
-### 1.2. <a name='Withoutdocker'></a>Without docker
+###  1.1. <a name='Withoutdocker'></a>Without docker
 
 This section setup the environment without docker.
 
@@ -37,20 +33,20 @@ Note that exact reproducibility is not guaranteed without docker.
 But you should not get obvious divergent results from what is reported in the paper, becase the code run on pretty high-level APIs of the packages, and the high-level APIs are supposed to be stable across different versions of the packages.
 If you do obverve divergent results, please try to install package with version matching the docker image, and also **let us know** so that we can make a note for other users.
 
-Also in this guide, we don't fix the package versions or python versions, because different python versions and packages versions might be supported and not supported on different systems.
+Also in this guide, we don't fix the package versions or python versions, because different python versions and packages versions might be supported and not supported on different systems. -->
 
 You can use [conda](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html#managing-python) or other tools to manage the python environment.
 You then need to walk through the following a few steps to get your environment ready.
 
-#### 1.2.1. <a name='Installdependencies'></a>Install dependencies
+#### 1.1.1. <a name='Installdependencies'></a>Install dependencies
 
 You need to install the following packages:
 
 ```bash
-pip install ray[all] torch torchvision torchaudio seaborn tqdm visdom tabulate
+pip install ray[all] torch torchvision torchaudio seaborn tqdm visdom tabulate statsmodels h5py
 ```
 
-#### 1.2.2. <a name='Setupenvironmentvariables'></a>Set up environment variables
+#### 1.1.2. <a name='Setupenvironmentvariables'></a>Set up environment variables
 
 You need to set up the following environment variables:
 
@@ -99,17 +95,17 @@ Before looking at each experiment folder, we explain the shared underlying logic
 In each experiment folder, the `README.md` documents two kinds of commands to run:
 
 -   `python main.py -c <config_file.yaml>`: This command will launch the experiment. The experiment will be launched in parallel with multiple processes (with ray as backend), and the results will be saved to `$RESULTS_DIR` in your environment variable.
-    -   You will see command `ray job submit --runtime-env runtime_envs/runtime_env_without_ip.yaml --address $pssr -- ` before `python main.py -c <config_file.yaml>`, it is to submit the job to ray cluster to run instead of run locally.
+    <!-- -   You will see command `ray job submit --runtime-env runtime_envs/runtime_env_without_ip.yaml --address $pssr -- ` before `python main.py -c <config_file.yaml>`, it is to submit the job to ray cluster to run instead of run locally.
         -   If you want to run locally, you can simply remove this command, and run `python main.py -c <config_file.yaml>` on your local machine.
-        -   If you want to run on a ray cluster, you will need to get yourself educated about [ray cluster](https://docs.ray.io/en/latest/cluster/getting-started.html). Then you need to set up a ray cluster and set the environment variable `$pssr` to the address of the ray cluster.
+        -   If you want to run on a ray cluster, you will need to get yourself educated about [ray cluster](https://docs.ray.io/en/latest/cluster/getting-started.html). Then you need to set up a ray cluster and set the environment variable `$pssr` to the address of the ray cluster. -->
 -   `python analysis_v1.py -c <config_file.yaml>`: This command will load the results from `$RESULTS_DIR` and plot the figures. The figures will be saved to the experiment folder.
-    -   This command does not limit to produce figures though, it loads the results as a pandas dataframe and do anything with it, depending on the exec commands you passed to it. For example, it is sometimes used to produced tables as well.
+    <!-- -   This command does not limit to produce figures though, it loads the results as a pandas dataframe and do anything with it, depending on the exec commands you passed to it. For example, it is sometimes used to produced tables as well. -->
 
-## 4. <a name='Othernotes'></a>Other notes
+<!-- ## 4. <a name='Othernotes'></a>Other notes
 
-There are several other things to note.
+There are several other things to note. -->
 
-### 4.1. <a name='Warninganderrormessages'></a>Warning and error messages
+<!-- ### 4.1. <a name='Warninganderrormessages'></a>Warning and error messages
 
 You may see some warning messages when running the code:
 
@@ -118,9 +114,9 @@ You may see some warning messages when running the code:
 
 You should not see any error messages if you are using the docker image.
 You may see error messages if you are using your own environment, but they are usually easy to fix by comparing the `Dockerfile` with your procedure of setting up the environment.
-Open an issue if you have any problem in dealing with error messages and we will help out as we can.
+Open an issue if you have any problem in dealing with error messages and we will help out as we can. -->
 
-### 4.2. <a name='Reproducibility'></a>Reproducibility
+<!-- ### 4.2. <a name='Reproducibility'></a>Reproducibility
 
 Reproducibility should be guaranteed by the docker image and how we control the randomness of Pytorch, Numpy and Random packages.
-Please open an issue if you find any reproducibility issue.
+Please open an issue if you find any reproducibility issue. -->

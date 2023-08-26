@@ -1,9 +1,11 @@
 # README
 
+**Run the experiment inside this subfolder.**
+
 Install [Julia](https://julialang.org) and make sure that the `julia` command can be ran from your command line.
 
 Install packages used in the scripts, they are all quite standard and can be installed with the `Pkg.add` command.
-To do that, type `julia` in your command line (you should be inside julia now with your terminal starting with ```julia>```) and then run:
+To do that, type `julia` in your command line (you should be inside julia now with your terminal starting with `julia>`) and then run:
 
 ```julia
 using Pkg
@@ -11,9 +13,11 @@ Pkg.add(["MAT", "Plots", "GLM", "DataFrames", "Distributions", "StatsBase", "Hyp
 ```
 
 Exit the julia terminal with `Ctrl+D`, then you are good to run in your terminal:
+
 ```bash
 julia plots.jl
 ```
+
 to produce:
 
 ![](figures/subjective_value_barchart_resized.png)
@@ -53,6 +57,7 @@ to produce:
 ![](figures/neuron_histogram_360_4.png)
 
 ![](figures/neuron_histogram_360_5.png)
+
 ## Cleaned data
 
 Data analysed in the manuscript are available in the directory CleanData. These data were originally reported in: Lak, A., Stauffer, W. R., & Schultz, W. (2014). Dopamine prediction error responses integrate subjective value from different reward dimensions. Proceedings of the National Academy of Sciences, 111(6), 2343-2348. Each file in that directory contains data recorded from a single dopamine neuron (one neuron at the time was recorded in the experiment).
@@ -102,6 +107,6 @@ situations_list[1] = 25
 
 In the above,
 
-- `spiketimes_list`: is a list, each element in it corresponds to one trial and is a list of times the neuron produced spikes on that trial [in ms].
-- `stim_onsets_list`: is a list, each element in it is the time the stimulus was presented on a given trial [in ms], or an empty value if no stimulus was presented.
-- `situations_list`: is a list, each element in it describes the trial type: 1 = 1.5g banana, 2 = 0.3g banana, 3 = 0.2ml juice, 4 = 0.5ml juice, 5 = 0.9ml juice, 25 = a trial without a stimulus.
+-   `spiketimes_list`: is a list, each element in it corresponds to one trial and is a list of times the neuron produced spikes on that trial [in ms].
+-   `stim_onsets_list`: is a list, each element in it is the time the stimulus was presented on a given trial [in ms], or an empty value if no stimulus was presented.
+-   `situations_list`: is a list, each element in it describes the trial type: 1 = 1.5g banana, 2 = 0.3g banana, 3 = 0.2ml juice, 4 = 0.5ml juice, 5 = 0.9ml juice, 25 = a trial without a stimulus.

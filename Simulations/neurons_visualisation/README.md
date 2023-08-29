@@ -4,7 +4,7 @@
 
 Install [Julia](https://julialang.org) and make sure that the `julia` command can be ran from your command line.
 
-Install packages used in the scripts, they are all quite standard and can be installed with the `Pkg.add` command.
+Install packages used in the scripts, they are all quite standard, and can be installed with the `Pkg.add` command.
 To do that, type `julia` in your command line (you should be inside julia now with your terminal starting with `julia>`) and then run:
 
 ```julia

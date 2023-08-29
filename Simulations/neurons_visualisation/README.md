@@ -57,3 +57,15 @@ to produce:
 ![](figures/neuron_histogram_360_4.png)
 
 ![](figures/neuron_histogram_360_5.png)
+
+![](figures/neuron_time_366.png)
+
+![](figures/neuron_histogram_366_1.png)
+
+![](figures/neuron_histogram_366_2.png)
+
+![](figures/neuron_histogram_366_3.png)
+
+![](figures/neuron_histogram_366_4.png)
+
+![](figures/neuron_histogram_366_5.png)

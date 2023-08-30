@@ -58,7 +58,7 @@ to produce:
 
 ![](figures/neuron_histogram_360_5.png)
 
-![](figures/neuron_time_366.png)
+<!-- ![](figures/neuron_time_366.png)
 
 ![](figures/neuron_histogram_366_1.png)
 
@@ -68,11 +68,23 @@ to produce:
 
 ![](figures/neuron_histogram_366_4.png)
 
-![](figures/neuron_histogram_366_5.png)
+![](figures/neuron_histogram_366_5.png) -->
 
-![](figures/neuron_time_375.png)
+<!-- ![](figures/neuron_time_375.png) -->
+
 ![](figures/neuron_time_374.png)
-![](figures/neuron_time_369.png)
+
+![](figures/neuron_histogram_374_1.png)
+
+![](figures/neuron_histogram_374_2.png)
+
+![](figures/neuron_histogram_374_3.png)
+
+![](figures/neuron_histogram_374_4.png)
+
+![](figures/neuron_histogram_374_5.png)
+
+<!-- ![](figures/neuron_time_369.png)
 ![](figures/neuron_time_364.png)
 ![](figures/neuron_time_373.png)
-![](figures/neuron_time_365.png)
+![](figures/neuron_time_365.png) -->

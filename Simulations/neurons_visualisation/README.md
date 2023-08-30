@@ -9,7 +9,7 @@ To do that, type `julia` in your command line (you should be inside julia now wi
 
 ```julia
 using Pkg
-Pkg.add(["MAT", "Plots", "GLM", "DataFrames", "Distributions", "StatsBase", "HypothesisTests", "StatsPlots", "Statistics", "NPZ", "Plots.PlotMeasures"])
+Pkg.add(["MAT", "Plots", "GLM", "DataFrames", "Distributions", "StatsBase", "HypothesisTests", "StatsPlots", "Statistics", "NPZ", "JLD2"])
 ```
 
 Exit the julia terminal with `Ctrl+D`, then you are good to run in your terminal:

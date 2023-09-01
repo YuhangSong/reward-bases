@@ -4,7 +4,11 @@
 
 FROM rayproject/ray-ml:2.4.0-py38-gpu
 
+USER root
+
 RUN conda install python=3.8 -y
+
+RUN pip install --upgrade pip
 
 RUN pip install ray[all] torch torchvision torchaudio seaborn tqdm visdom tabulate statsmodels h5py
 

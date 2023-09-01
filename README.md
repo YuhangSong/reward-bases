@@ -39,11 +39,19 @@ Also in this guide, we don't fix the package versions or python versions, becaus
 
 ### 1.1. <a name='Few-clik-readysetup'></a>Few-clik-ready setup
 
-The repo is setup so that the code can be run directly in a github codespace, without any additional setup.
+The repo is setup with dev container so can be run directly in a github codespace, without any additional setup.
 
 To go with this way:
 
-![Alt text](image.png)
+![Alt text](image-1.png)
+
+You need at least this tier:
+
+![Alt text](image-2.png)
+
+<!-- ![Alt text](image-3.png) -->
+
+If you do not see this tier, you might need a add payment info to your account.
 
 Note the the codespace is not free, but you can get a free trial for 14 days.
 
@@ -51,7 +59,7 @@ Note that you can open codespace on your local vscode, or on the web (as the abo
 
 Alternatively, you can open this repo locally on your vscode, the repo contains dev container configuration, vscode should prompt you to open the repo in a dev container, and you can click yes to open it in a dev container.
 
-All above ways does not require you to install anything, and you can run the code directly.
+All above ways does not require you to install anything, and you can run the code directly within to dev container.
 
 If you have to go with the manual setup, see below.
 

@@ -1,4 +1,5 @@
 {
     "name": "reward-bases",
-    "image": "dryuhangsong/reward-bases:latest"
+    "image": "dryuhangsong/reward-bases:latest",
+    "postStartCommand": "echo 'export RB_CODE_DIR=$(pwd)' >> ~/.bashrc"
 }

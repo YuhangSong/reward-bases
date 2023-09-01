@@ -12,7 +12,7 @@ using NPZ
 using Plots.PlotMeasures
 include("utils.jl")
 
-ALL_SITUATIONS = [1, 2, 3, 4, 5, 25]
+ALL_SITUATIONS = [1, 2, 3, 4, 5] #, 25]
 neuronlist = [359 360 361 362 363 364 365 366 367 368 369 370 371 372 373 374 375 376 377]
 
 function plot_neuron(neuron_id, window_size=200)
@@ -63,7 +63,7 @@ function plot_neuron(neuron_id, window_size=200)
 
     N = length(histogram_list)
     for i in 1:N
-        hist_plot = histogram(xs, histogram_list[i], label=label_list[i], color=color_list[i], ylims=(0, 6), bins=xs, xticks=xticks, bar_width=bar_width, size=(500, 125), yticks=[2, 4, 6])
+        hist_plot = histogram(xs, histogram_list[i], label=label_list[i], color=color_list[i], ylims=(0, 8), bins=xs, xticks=xticks, bar_width=bar_width, size=(500, 125), yticks=[4, 8])
         savefig("figures/neuron_histogram_$(neuron_id)_$i" * ".png")
         savefig("figures/neuron_histogram_$(neuron_id)_$i" * ".pdf")
     end
@@ -87,10 +87,3 @@ subjective_value_barchart()
 plot_neuron(359)
 plot_neuron(368)
 plot_neuron(360)
-plot_neuron(366)
-plot_neuron(375)
-plot_neuron(374)
-plot_neuron(369)
-plot_neuron(364)
-plot_neuron(373)
-plot_neuron(365)

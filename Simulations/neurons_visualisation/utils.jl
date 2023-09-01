@@ -59,8 +59,8 @@ function overlapping_window_count_spikes(spikes, window_size, bucket_start=-500,
     println("in overlapping window count spikes $bucket_start")
     bucket_starts = collect(bucket_start:step_size:bucket_end)
     counts = zeros(length(bucket_starts))
-    for i in 1:length(spikes)
-        stimes = spikes[i]
+    for j in 1:length(spikes)
+        stimes = spikes[j]
         for time in stimes
             if time <= bucket_starts[1]
                 counts[1] += 1
@@ -115,7 +115,11 @@ end
 
 function bucket_counts_by_situation(spiketimes, events, situations, situation_list, window_size, bucket_start, bucket_end, use_overlapping_window=false)
     spikes_filt, events_filt = filter_spikes_events_by_situation(spiketimes, events, situations, situation_list)
-    relative_spikes = get_relative_times(spikes_filt, events)
+    L = length(spikes_filt)
+    println("Plot total spikes $L")
+    relative_spikes = get_relative_times(spikes_filt, events_filt) ######There was a TYPO before!!!!!!!! Here was: events!!!!!
+    L = length(relative_spikes)
+    println("Plot relative spikes $L")
     counts = bucket_count_spikes(relative_spikes, window_size, bucket_start, bucket_end, use_overlapping_window)
     return counts
 end
@@ -174,7 +178,11 @@ end
 
 function counts_per_trial_window_by_situation(spiketimes, events, situations, situation_list, window_start, window_end, control_normalization=false, per_trial_normalization=false)
     spikes_filt, events_filt = filter_spikes_events_by_situation(spiketimes, events, situations, situation_list)
+    L = length(spikes_filt)
+    println("total spikes $L")
     relative_spikes = get_relative_times(spikes_filt, events_filt)
+    L = length(relative_spikes)
+    println("relative spikes $L")
     # count spikes for each trial
     counts_per_trial = []
     total_control_counts = 0

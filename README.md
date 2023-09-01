@@ -35,12 +35,13 @@ If you do obverve divergent results, please try to install package with version 
 
 Also in this guide, we don't fix the package versions or python versions, because different python versions and packages versions might be supported and not supported on different systems. -->
 
-You can use [conda](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html#managing-python) or other tools to manage the python environment.
+<!-- You can use [conda](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html#managing-python) or other tools to manage the python environment. -->
+
 You then need to walk through the following a few steps to get your environment ready.
 
 #### 1.1.1. <a name='Installdependencies'></a>Install dependencies
 
-You need to install the following packages:
+You need to install the following python packages:
 
 ```bash
 pip install ray[all] torch torchvision torchaudio seaborn tqdm visdom tabulate statsmodels h5py
@@ -55,8 +56,8 @@ You need to set up the following environment variables:
 -   `RESULTS_DIR`: The directory where you want to store the results.
 -   `RB_CODE_DIR`: The directory where you clone and store the code.
 
-Of course, make sure that the directories exist.
-Exactly how to set up environment variables depends on your system (a quick search on internet should give you the answer).
+<!-- Of course, make sure that the directories exist.
+Exactly how to set up environment variables depends on your system (a quick search on internet should give you the answer). -->
 
 <!-- #### Download the datasets
 
@@ -120,3 +121,6 @@ Open an issue if you have any problem in dealing with error messages and we will
 
 Reproducibility should be guaranteed by the docker image and how we control the randomness of Pytorch, Numpy and Random packages.
 Please open an issue if you find any reproducibility issue. -->
+
+Some simumations does not follow this logic, but directly runs a python script to produce figures, rather than through ray (`main.py` + `analysis_v1.py`).
+Their logic are more straight forward, and are documented in the `README.md` file in the corresponding simulation folder.

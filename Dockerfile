@@ -10,4 +10,6 @@ RUN pip install ray[all] torch torchvision torchaudio seaborn tqdm visdom tabula
 
 RUN sudo apt-get update && sudo apt-get install julia -y
 
+RUN sudo apt update && sudo apt upgrade git -y
+
 RUN julia --eval 'using Pkg; Pkg.add(["MAT", "Plots", "GLM", "DataFrames", "Distributions", "StatsBase", "HypothesisTests", "StatsPlots", "Statistics", "NPZ", "JLD2"])'

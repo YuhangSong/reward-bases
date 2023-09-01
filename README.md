@@ -45,6 +45,16 @@ To go with this way:
 
 ![Alt text](image.png)
 
+Note the the codespace is not free, but you can get a free trial for 14 days.
+
+Note that you can open codespace on your local vscode, or on the web (as the above).
+
+Alternatively, you can open this repo locally on your vscode, the repo contains dev container configuration, vscode should prompt you to open the repo in a dev container, and you can click yes to open it in a dev container.
+
+All above ways does not require you to install anything, and you can run the code directly.
+
+If you have to go with the manual setup, see below.
+
 ### 1.2. <a name='Manualsetup'></a>Manual setup
 
 #### 1.2.1. <a name='Installdependencies'></a>Install dependencies

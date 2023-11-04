@@ -185,12 +185,15 @@ def get_df(
     return df
 
 
-def do_regression(neuron, formula, is_shuffle_identity=False):
+def do_regression(neuron, formula, is_shuffle_identity=False, df=None):
 
-    df = get_df(
-        neuron=neuron,
-        is_shuffle_identity=is_shuffle_identity,
-    )
+    if df is None:
+        df = get_df(
+            neuron=neuron,
+            is_shuffle_identity=is_shuffle_identity,
+        )
+    else:
+        assert isinstance(df, pd.DataFrame)
 
     # first we run this line to tell statsmodels where to find the data and the explanatory variables
     reg_formula = sm.regression.linear_model.OLS.from_formula(

@@ -149,7 +149,7 @@ param_space:
             - "value + identity : value"
             # - "value + situation"
 
-    fit_generated_data_to_formula:
+    fit_generated_data_with_formula:
         grid_search:
             - "value + identity : value"
             # - "value + situation"

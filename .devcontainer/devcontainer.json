@@ -1,8 +1,5 @@
 {
     "name": "reward-bases",
     "image": "dryuhangsong/reward-bases:latest",
-    "postStartCommand": [
-        "echo 'export RB_CODE_DIR=$(pwd)' >> ~/.bashrc",
-        "echo 'export RESULTS_DIR=$(pwd)/results' >> ~/.bashrc"
-    ]
+    "postStartCommand": "echo 'export RB_CODE_DIR=$(pwd)' >> ~/.bashrc && echo 'export RESULTS_DIR=$(pwd)/results' >> ~/.bashrc"
 }

@@ -240,7 +240,6 @@ def model_recovery(config):
 
     df = get_df(
         neuron=config['neuron'],
-        is_shuffle_identity=is_shuffle_identity,
     )
 
     reg_results = do_regression(

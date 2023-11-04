@@ -185,15 +185,7 @@ def get_df(
     return df
 
 
-def do_regression(neuron, formula, is_shuffle_identity=False, df=None):
-
-    if df is None:
-        df = get_df(
-            neuron=neuron,
-            is_shuffle_identity=is_shuffle_identity,
-        )
-    else:
-        assert isinstance(df, pd.DataFrame)
+def do_regression(df, formula):
 
     # first we run this line to tell statsmodels where to find the data and the explanatory variables
     reg_formula = sm.regression.linear_model.OLS.from_formula(
@@ -207,13 +199,17 @@ def do_regression(neuron, formula, is_shuffle_identity=False, df=None):
     # let's view a summary of the regression results
     # reg_results.summary()
 
-    return df, reg_results
+    return reg_results
 
 
 def train(config):
 
-    _, reg_results = do_regression(
+    df = get_df(
         neuron=config['neuron'],
+    )
+
+    reg_results = do_regression(
+        df=df,
         formula=config['formula'],
     )
 
@@ -235,33 +231,33 @@ def train(config):
 
     return results
 
+def model_recovery(config):
 
-# def get_coeff_date_anova(config):
+    # set numpy seed
+    np.random.seed(config['seed'])
 
-#     data = {
-#         'date': [],
-#         'coeff': [],
-#     }
+    df = get_df(
+        neuron=config['neuron'],
+        is_shuffle_identity=is_shuffle_identity,
+    )
 
-#     for neuron in neurons:
-#         df, reg_results = do_regression(
-#             neuron=neuron,
-#             formula="value + identity : value",
-#         )
+    reg_results = do_regression(
+        df=df,
+        formula=config['generate_with_formula'],
+    )
 
-#         data['date'].append(df['date'].iloc[0])
-#         data['coeff'].append(reg_results.params['identity:value'])
+    # Calculate the residuals from the fitted model
+    residuals = reg_results.resid
 
-#     df = pd.DataFrame.from_dict(data)
+    # Get the standard deviation of the residuals
+    std_dev = residuals.std()
 
-#     # First we create the ANOVA model:
-#     chimps_lm = smf.ols('coeff ~ date', data=df).fit()
-#     # Then output the ANOVA table
-#     table = sm.stats.anova_lm(chimps_lm, typ=2)
+    # When making predictions, add a random term sampled from a normal distribution
+    # with mean zero and the standard deviation of the residuals
+    random_error = np.random.normal(0, std_dev, size=df.shape[0])
 
-#     input(table)
-
-#     return {}
+    # Adding the random error to the deterministic predictions to introduce stochasticity
+    df['stochastic_generated_dopamine'] = reg_results.predict(df) + random_error
 
 
 def get_num_significant_coeffs(config):
@@ -269,10 +265,15 @@ def get_num_significant_coeffs(config):
     num_significant_coeffs = 0
 
     for neuron in neurons:
-        df, reg_results = do_regression(
+
+        df = get_df(
             neuron=neuron,
-            formula="value + identity : value",
             is_shuffle_identity=config['is_shuffle_identity'],
+        )
+
+        reg_results = do_regression(
+            df=df,
+            formula="value + identity : value",
         )
 
         p_value = reg_results.pvalues['identity:value']

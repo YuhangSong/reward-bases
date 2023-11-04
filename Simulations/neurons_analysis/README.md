@@ -189,3 +189,27 @@ python analysis_v1.py \
 ```
 
 ![](base-data-model-.png)
+
+# model-recovery
+
+```bash
+rm -r $RESULTS_DIR/neurons_analysis/ ; \
+python main.py -c neurons_analysis/base-model-recovery && \
+python analysis_v1.py \
+-t "base-model-recovery" \
+--p "sns.set_theme()" \
+-l $RESULTS_DIR/neurons_analysis/ \
+-m "df['bic'].iloc[-1]" \
+-f "./Simulations/neurons_analysis/base-model-recovery.yaml" \
+-v \
+"import Simulations.neurons_analysis.utils as eu" \
+"df=eu.proc_df(df, 'bic')" \
+"df=au.reduce(df, ['formula'], lambda df: {'sum_bic': df['bic'].sum()})" \
+"g=sns.catplot(data=df, kind='bar', y='sum_bic', x='generate_with_formula', hue='fit_generated_data_with_formula')"
+
+ \
+"g.set(ylim=(3380, 3480))" \
+"g.set_xticklabels(rotation=90)"
+```
+
+![](base-model-recovery-.png)

@@ -185,11 +185,11 @@ def get_df(
     return df
 
 
-def do_regression(df, formula):
+def do_regression(df, formula, fit_to='dopamine'):
 
     # first we run this line to tell statsmodels where to find the data and the explanatory variables
     reg_formula = sm.regression.linear_model.OLS.from_formula(
-        data=df, formula=f'dopamine ~ {formula}'
+        data=df, formula=f'{fit_to} ~ {formula}'
     )
 
     # then we run this line to fit the regression (work out the values of intercept and slope)
@@ -233,6 +233,8 @@ def train(config):
 
 def model_recovery(config):
 
+    results = {}
+
     # set numpy seed
     np.random.seed(config['seed'])
 
@@ -243,6 +245,7 @@ def model_recovery(config):
 
     reg_results = do_regression(
         df=df,
+        fit_to="dopamine",
         formula=config['generate_with_formula'],
     )
 
@@ -257,7 +260,18 @@ def model_recovery(config):
     random_error = np.random.normal(0, std_dev, size=df.shape[0])
 
     # Adding the random error to the deterministic predictions to introduce stochasticity
-    df['stochastic_generated_dopamine'] = reg_results.predict(df) + random_error
+    df['generated_dopamine'] = reg_results.predict(df) + random_error
+
+    reg_results = do_regression(
+        df=df,
+        fit_to="generated_dopamine",
+        formula=config['fit_generated_data_with_formula'],
+    )
+
+    # get bic score
+    results['bic'] = reg_results.bic
+
+    return results
 
 
 def get_num_significant_coeffs(config):

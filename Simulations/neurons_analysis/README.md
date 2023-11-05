@@ -193,3 +193,24 @@ python analysis_v1.py \
 ```
 
 ![](base-model-recovery-.png)
+
+# base-formula-block
+
+```bash
+rm -r $RESULTS_DIR/neurons_analysis/ ; \
+python main.py -c neurons_analysis/base-formula-block && \
+python analysis_v1.py \
+-t "base-formula-block-coeff" \
+--p "sns.set_theme()" \
+-l $RESULTS_DIR/neurons_analysis/ \
+-m "df['coeff'].iloc[-1]" "df['pvalue'].iloc[-1]" \
+-f "./Simulations/neurons_analysis/base-formula-block.yaml" \
+-v \
+"import Simulations.neurons_analysis.utils as eu" \
+"df=eu.proc_df(df, ['coeff', 'pvalue'])" \
+"df=eu.sort_by_id_coeff(df)" \
+"g=sns.catplot(data=df, kind='bar', y='coeff', x='neuron', hue='coeff_id')" \
+"g.set_xticklabels(rotation=90)"
+```
+
+![](base-formula-block-coeff-.png)

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import uuid
 
-from ..utils import *
+from utils import *
 
 
 def test_split_list_specific():

@@ -104,6 +104,8 @@ def get_df(
     trial_blocks = u.split_list_specific(trial_is, n=num_trial_blocks)
 
     trial_is = []
+    if isinstance(trial_block_idxes, int):
+        trial_block_idxes = [trial_block_idxes]
     for idx in trial_block_idxes:
         trial_is.extend(trial_blocks[idx])
 

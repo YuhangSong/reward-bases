@@ -1,4 +1,5 @@
 import analysis_utils as au
+import utils as u
 import random
 import pandas as pd
 import numpy as np
@@ -98,7 +99,15 @@ def get_df(
         "dopamine": [],
         "relative_firing_rate": [],
     }
-    for trial_i in range(len(spiketimes_list)):
+
+    trial_is = list(range(len(spiketimes_list)))
+    trial_blocks = u.split_list_specific(trial_is, n=num_trial_blocks)
+
+    trial_is = []
+    for idx in trial_block_idxes:
+        trial_is.extend(trial_blocks[idx])
+
+    for trial_i in trial_is:
         # situation is the stimulus presented in this trial
         situation = {
             1: "1.5g banana",

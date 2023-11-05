@@ -208,8 +208,8 @@ python analysis_v1.py \
 -v \
 "import Simulations.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, ['coeff', 'pvalue'])" \
-"df=eu.sort_by_id_coeff(df)" \
-"g=sns.catplot(data=df, kind='bar', y='coeff', x='neuron', hue='coeff_id', row='get_df_kwargs: trial_block_idxes')" \
+"df=eu.sort_by_id_coeff(df, filter_df_fn=lambda df: df[df['get_df_kwargs: trial_block_idxes'] == 0])" \
+"g=sns.catplot(data=df, kind='bar', y='coeff', x='neuron', hue='get_df_kwargs: trial_block_idxes')" \
 "g.set_xticklabels(rotation=90)"
 ```
 

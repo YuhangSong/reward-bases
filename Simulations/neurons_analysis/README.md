@@ -1,12 +1,3 @@
--   [base](#base)
--   [base-formula](#base-formula)
--   [base-num-significant-coeffs](#base-num-significant-coeffs)
--   [base-two-regressor](#base-two-regressor)
--   [base-two-regressor-compare_coeff](#base-two-regressor-compare_coeff)
--   [base-neuron-response](#base-neuron-response)
--   [base-neuron-response-correlation](#base-neuron-response-correlation)
--   [base-data-model](#base-data-model)
-
 **Run the following command from root directory of the repo.**
 
 # base
@@ -66,13 +57,6 @@ python analysis_v1.py \
 ![](base-formula-coeff-.png)
 
 ![](base-formula-pvalue-.png)
-
-<!-- # base-coeff-date-anova
-
-```bash
-rm -r $RESULTS_DIR/neurons_analysis/ ; \
-python main.py -c neurons_analysis/base-coeff-date-anova -l
-``` -->
 
 # base-num-significant-coeffs
 

@@ -495,12 +495,11 @@ def proc_df(df, log_id):
     return df
 
 
-def sort_by_id_coeff(df):
+def sort_by_id_coeff(
+    df, filter_df_fn=lambda df: df[df["coeff_id"] == "identity:value"]
+):
     # filter the DataFrame
-    df_filtered = df[df["coeff_id"] == "identity:value"]
-
-    if "get_df_kwargs: trial_block_idxes" in df.columns:
-        df_filtered = df_filtered[df_filtered["get_df_kwargs: trial_block_idxes"] == 0]
+    df_filtered = filter_df_fn(df)
 
     # sort the filtered DataFrame and get the sorted 'neuron' values
     sorted_neurons = df_filtered.sort_values("coeff", ascending=False)["neuron"]

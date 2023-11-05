@@ -10,23 +10,48 @@ from scipy import stats
 
 import os
 
-RB_CODE_DIR = os.environ['RB_CODE_DIR']
+RB_CODE_DIR = os.environ["RB_CODE_DIR"]
 
 # for import neurons_visualisation, need improvement
 import sys
-sys.path.insert(0, os.path.join(RB_CODE_DIR, 'Data'))
 
-neurons = ['0359', '0360', '0361', '0362', '0363', '0364', '0365', '0366', '0367',
-           '0368', '0369', '0370', '0371', '0372', '0373', '0374', '0375', '0376', '0377']
+sys.path.insert(0, os.path.join(RB_CODE_DIR, "Data"))
+
+neurons = [
+    "0359",
+    "0360",
+    "0361",
+    "0362",
+    "0363",
+    "0364",
+    "0365",
+    "0366",
+    "0367",
+    "0368",
+    "0369",
+    "0370",
+    "0371",
+    "0372",
+    "0373",
+    "0374",
+    "0375",
+    "0376",
+    "0377",
+]
 
 
 import os
 
+
 def get_df(
     neuron,
-    response_window_start=150, response_window_end=500,
-    baseline_window_start=-500, baseline_window_end=0,
+    response_window_start=150,
+    response_window_end=500,
+    baseline_window_start=-500,
+    baseline_window_end=0,
     is_shuffle_identity=False,
+    num_trial_blocks=1,
+    trial_block_idxes=[0],
 ):
     from get_clean_data import get_clean_data
 
@@ -62,19 +87,18 @@ def get_df(
 
     # data used to construct the dataframe, where each row is a trial
     data = {
-        'date': [],
-        'trial_i': [],
-        'onset': [],
-        'situation': [],
-        'identity': [],
-        'value': [],
-        'subjective_value_banana': [],
-        'subjective_value_juice': [],
-        'dopamine': [],
-        'relative_firing_rate': [],
+        "date": [],
+        "trial_i": [],
+        "onset": [],
+        "situation": [],
+        "identity": [],
+        "value": [],
+        "subjective_value_banana": [],
+        "subjective_value_juice": [],
+        "dopamine": [],
+        "relative_firing_rate": [],
     }
     for trial_i in range(len(spiketimes_list)):
-
         # situation is the stimulus presented in this trial
         situation = {
             1: "1.5g banana",
@@ -93,58 +117,58 @@ def get_df(
             continue
 
         # add date, trial_i, situation, onset to the row of this trial
-        data['date'].append(date)
-        data['trial_i'].append(trial_i)
-        data['situation'].append(situation)
-        data['onset'].append(onset)
+        data["date"].append(date)
+        data["trial_i"].append(trial_i)
+        data["situation"].append(situation)
+        data["onset"].append(onset)
 
         # number of spikes in the response window (in contrast to in baseline window)
         num_spikes_in_response_window = len(
             [
-                spiketime for spiketime in spiketimes if (
-                    (
-                        onset+response_window_start
-                    ) <= spiketime <= (
-                        onset + response_window_end
-                    )
+                spiketime
+                for spiketime in spiketimes
+                if (
+                    (onset + response_window_start)
+                    <= spiketime
+                    <= (onset + response_window_end)
                 )
             ]
         )
         # size of the response window
-        response_window_size = (
-            response_window_end - response_window_start
-        )/1000.0
+        response_window_size = (response_window_end - response_window_start) / 1000.0
         # firing rate in the response window
-        firing_rate_in_response_window = num_spikes_in_response_window / response_window_size
+        firing_rate_in_response_window = (
+            num_spikes_in_response_window / response_window_size
+        )
 
         # dopamine is the number of spikes in the response window
         dopamine = num_spikes_in_response_window
-        data['dopamine'].append(dopamine)
+        data["dopamine"].append(dopamine)
 
         # number of spikes in the baseline window (in contrast to in response window)
         num_spikes_in_baseline_window = len(
             [
-                spiketime for spiketime in spiketimes if (
-                    (
-                        onset+baseline_window_start
-                    ) <= spiketime <= (
-                        onset + baseline_window_end
-                    )
+                spiketime
+                for spiketime in spiketimes
+                if (
+                    (onset + baseline_window_start)
+                    <= spiketime
+                    <= (onset + baseline_window_end)
                 )
             ]
         )
         # size of the baseline window
-        baseline_window_size = (
-            baseline_window_end - baseline_window_start
-        )/1000.0
+        baseline_window_size = (baseline_window_end - baseline_window_start) / 1000.0
         # firing rate in the baseline window
-        firing_rate_in_baseline_window = num_spikes_in_baseline_window / baseline_window_size
+        firing_rate_in_baseline_window = (
+            num_spikes_in_baseline_window / baseline_window_size
+        )
 
         # relative_firing_rate is the difference between firing rate in the response window and in the baseline window
         relative_firing_rate = (
             firing_rate_in_response_window - firing_rate_in_baseline_window
         )
-        data['relative_firing_rate'].append(relative_firing_rate)
+        data["relative_firing_rate"].append(relative_firing_rate)
 
         # identity is the identity of the stimulus presented in this trial
         # it is 1 if the stimulus is a banana, -1 if the stimulus is a juice, and 0 if the stimulus is empty
@@ -156,7 +180,7 @@ def get_df(
             "0.9ml juice": +1,
             "empty": 0,
         }[situation]
-        data['identity'].append(identity)
+        data["identity"].append(identity)
 
         # value is the value of the stimulus presented in this trial, normalized across different stimuli
         value = {
@@ -167,29 +191,28 @@ def get_df(
             "0.9ml juice": 1,
             "empty": 0,
         }[situation]
-        data['value'].append(value)
+        data["value"].append(value)
 
         # subjective_value is the similar as value
-        data['subjective_value_banana'].append(
+        data["subjective_value_banana"].append(
             value if situation.endswith("banana") else 0
         )
-        data['subjective_value_juice'].append(
+        data["subjective_value_juice"].append(
             value if situation.endswith("juice") else 0
         )
 
     if is_shuffle_identity:
-        random.shuffle(data['identity'])
+        random.shuffle(data["identity"])
 
     df = pd.DataFrame.from_dict(data)
 
     return df
 
 
-def do_regression(df, formula, fit_to='dopamine'):
-
+def do_regression(df, formula, fit_to="dopamine"):
     # first we run this line to tell statsmodels where to find the data and the explanatory variables
     reg_formula = sm.regression.linear_model.OLS.from_formula(
-        data=df, formula=f'{fit_to} ~ {formula}'
+        data=df, formula=f"{fit_to} ~ {formula}"
     )
 
     # then we run this line to fit the regression (work out the values of intercept and slope)
@@ -203,49 +226,48 @@ def do_regression(df, formula, fit_to='dopamine'):
 
 
 def train(config):
-
     df = get_df(
-        neuron=config['neuron'],
+        neuron=config["neuron"],
     )
 
     reg_results = do_regression(
         df=df,
-        formula=config['formula'],
+        formula=config["formula"],
     )
 
     results = {}
 
     # get r2 score
-    results['rsquared'] = reg_results.rsquared
+    results["rsquared"] = reg_results.rsquared
 
     # get bic score
-    results['bic'] = reg_results.bic
+    results["bic"] = reg_results.bic
 
     # get coeff
-    if 'coeff_id' in config:
+    if "coeff_id" in config:
         # get coeff
-        results['coeff'] = reg_results.params[config['coeff_id']]
+        results["coeff"] = reg_results.params[config["coeff_id"]]
 
         # get pvalue
-        results['pvalue'] = reg_results.pvalues[config['coeff_id']]
+        results["pvalue"] = reg_results.pvalues[config["coeff_id"]]
 
     return results
 
-def model_recovery(config):
 
+def model_recovery(config):
     results = {}
 
     # set numpy seed
-    np.random.seed(config['seed'])
+    np.random.seed(config["seed"])
 
     df = get_df(
-        neuron=config['neuron'],
+        neuron=config["neuron"],
     )
 
     reg_results = do_regression(
         df=df,
         fit_to="dopamine",
-        formula=config['generate_with_formula'],
+        formula=config["generate_with_formula"],
     )
 
     # Calculate the residuals from the fitted model
@@ -259,29 +281,27 @@ def model_recovery(config):
     random_error = np.random.normal(0, std_dev, size=df.shape[0])
 
     # Adding the random error to the deterministic predictions to introduce stochasticity
-    df['generated_dopamine'] = reg_results.predict(df) + random_error
+    df["generated_dopamine"] = reg_results.predict(df) + random_error
 
     reg_results = do_regression(
         df=df,
         fit_to="generated_dopamine",
-        formula=config['fit_generated_data_with_formula'],
+        formula=config["fit_generated_data_with_formula"],
     )
 
     # get bic score
-    results['bic'] = reg_results.bic
+    results["bic"] = reg_results.bic
 
     return results
 
 
 def get_num_significant_coeffs(config):
-
     num_significant_coeffs = 0
 
     for neuron in neurons:
-
         df = get_df(
             neuron=neuron,
-            is_shuffle_identity=config['is_shuffle_identity'],
+            is_shuffle_identity=config["is_shuffle_identity"],
         )
 
         reg_results = do_regression(
@@ -289,69 +309,66 @@ def get_num_significant_coeffs(config):
             formula="value + identity : value",
         )
 
-        p_value = reg_results.pvalues['identity:value']
+        p_value = reg_results.pvalues["identity:value"]
 
         if p_value < 0.05:
             num_significant_coeffs += 1
 
     return {
-        'num_significant_coeffs': num_significant_coeffs,
+        "num_significant_coeffs": num_significant_coeffs,
     }
 
 
 def get_two_regressor_coeffs(neuron):
-
     df = get_df(
         neuron=neuron,
     )
 
     # fit to formula
     reg_formula = sm.regression.linear_model.OLS.from_formula(
-        data=df, formula=f'dopamine ~ subjective_value_banana + subjective_value_juice'
+        data=df, formula=f"dopamine ~ subjective_value_banana + subjective_value_juice"
     )
     reg_results = reg_formula.fit()
 
     # get coeff
-    coeff_banana = reg_results.params[f'subjective_value_banana']
-    coeff_juice = reg_results.params[f'subjective_value_juice']
+    coeff_banana = reg_results.params[f"subjective_value_banana"]
+    coeff_juice = reg_results.params[f"subjective_value_juice"]
 
     return df, coeff_banana, coeff_juice
 
 
 def train_two_regressor(config):
-
     results = {}
 
     df, coeff_banana, coeff_juice = get_two_regressor_coeffs(
-        neuron=config['neuron'],
+        neuron=config["neuron"],
     )
 
-    results[f'coeff_banana'] = coeff_banana
-    results[f'coeff_juice'] = coeff_juice
+    results[f"coeff_banana"] = coeff_banana
+    results[f"coeff_juice"] = coeff_juice
 
     # compare coeff of two formula to confirm the code is consistent with theorectical derivation
     if "compare_coeff" in config:
-
         # compare against another model
 
         # fit to formula
         reg_formula = sm.regression.linear_model.OLS.from_formula(
-            data=df, formula=f'dopamine ~ value + identity : value'
+            data=df, formula=f"dopamine ~ value + identity : value"
         )
         reg_results = reg_formula.fit()
         # get coeff
-        coeff_value_fitted = reg_results.params[f'value']
-        coeff_identity_value_fitted = reg_results.params[f'identity:value']
+        coeff_value_fitted = reg_results.params[f"value"]
+        coeff_identity_value_fitted = reg_results.params[f"identity:value"]
 
         coeff_value_inferred = (coeff_banana + coeff_juice) / 2
         coeff_identity_value_inferred = (coeff_juice - coeff_banana) / 2
 
-        if config['compare_coeff'] == 'inferred':
-            results[f'coeff_value'] = coeff_value_inferred
-            results[f'coeff_identity_value'] = coeff_identity_value_inferred
-        elif config['compare_coeff'] == 'fitted':
-            results[f'coeff_value'] = coeff_value_fitted
-            results[f'coeff_identity_value'] = coeff_identity_value_fitted
+        if config["compare_coeff"] == "inferred":
+            results[f"coeff_value"] = coeff_value_inferred
+            results[f"coeff_identity_value"] = coeff_identity_value_inferred
+        elif config["compare_coeff"] == "fitted":
+            results[f"coeff_value"] = coeff_value_fitted
+            results[f"coeff_identity_value"] = coeff_identity_value_fitted
         else:
             raise NotImplementedError
 
@@ -359,54 +376,52 @@ def train_two_regressor(config):
 
 
 def get_neuron_responses(neuron, is_shuffle_situation=False):
-
     df = get_df(
         neuron=neuron,
     )
 
     # get df with only rows is situation='1.5g banana' or '0.9ml juice'
-    df = df[df['situation'].isin(['1.5g banana', '0.9ml juice'])]
+    df = df[df["situation"].isin(["1.5g banana", "0.9ml juice"])]
 
     if is_shuffle_situation:
-        df['situation'] = df['situation'].sample(frac=1).values
+        df["situation"] = df["situation"].sample(frac=1).values
 
     neuron_responses = {
-        'banana': {
-            'mean': None,
-            'sem_half': None,
+        "banana": {
+            "mean": None,
+            "sem_half": None,
         },
-        'juice': {
-            'mean': None,
-            'sem_half': None,
+        "juice": {
+            "mean": None,
+            "sem_half": None,
         },
     }
 
     # relative firing rate of the biggest banana stimulus
-    biggest_banana_relative_firing_rate = df[
-        df['situation'] == '1.5g banana'
-    ]['relative_firing_rate']
+    biggest_banana_relative_firing_rate = df[df["situation"] == "1.5g banana"][
+        "relative_firing_rate"
+    ]
     # mean of it
-    neuron_responses['banana']['mean'] = biggest_banana_relative_firing_rate.mean()
+    neuron_responses["banana"]["mean"] = biggest_banana_relative_firing_rate.mean()
     # half of the standard error of it
-    neuron_responses['banana']['sem_half'] = biggest_banana_relative_firing_rate.sem(
-    ) / 2
+    neuron_responses["banana"]["sem_half"] = (
+        biggest_banana_relative_firing_rate.sem() / 2
+    )
 
     # relative firing rate of the biggest juice stimulus
-    biggest_juice_relative_firing_rate = df[
-        df['situation'] == '0.9ml juice'
-    ]['relative_firing_rate']
+    biggest_juice_relative_firing_rate = df[df["situation"] == "0.9ml juice"][
+        "relative_firing_rate"
+    ]
     # mean of it
-    neuron_responses['juice']['mean'] = biggest_juice_relative_firing_rate.mean()
+    neuron_responses["juice"]["mean"] = biggest_juice_relative_firing_rate.mean()
     # half of the standard error of it
-    neuron_responses['juice']['sem_half'] = biggest_juice_relative_firing_rate.sem(
-    ) / 2
+    neuron_responses["juice"]["sem_half"] = biggest_juice_relative_firing_rate.sem() / 2
 
     return neuron_responses
 
 
 def get_neuron_responses_correlation(config):
-
-    seed = config['seed']
+    seed = config["seed"]
     # in numpy (pandas uses numpy for random number generation)
     np.random.seed(seed)
     # in random
@@ -418,42 +433,44 @@ def get_neuron_responses_correlation(config):
     for neuron in neurons:
         neuron_responses = get_neuron_responses(
             neuron=neuron,
-            is_shuffle_situation=config['is_shuffle_situation'],
+            is_shuffle_situation=config["is_shuffle_situation"],
         )
-        banana.append(
-            neuron_responses['banana']['mean']
-        )
-        juice.append(
-            neuron_responses['juice']['mean']
-        )
+        banana.append(neuron_responses["banana"]["mean"])
+        juice.append(neuron_responses["juice"]["mean"])
 
     corr, _ = stats.pearsonr(banana, juice)
 
     return {
-        'corr': corr,
+        "corr": corr,
     }
 
 
 def train_neuron_response(config):
-
     neuron_responses = get_neuron_responses(
-        neuron=config['neuron'],
+        neuron=config["neuron"],
     )
 
     results = {}
 
     # put into results
-    results['biggest_banana_relative_firing_rate_mean'] = neuron_responses['banana']['mean']
-    results['biggest_juice_relative_firing_rate_mean'] = neuron_responses['juice']['mean']
+    results["biggest_banana_relative_firing_rate_mean"] = neuron_responses["banana"][
+        "mean"
+    ]
+    results["biggest_juice_relative_firing_rate_mean"] = neuron_responses["juice"][
+        "mean"
+    ]
 
-    results['biggest_banana_relative_firing_rate_sem_half'] = neuron_responses['banana']['sem_half']
-    results['biggest_juice_relative_firing_rate_sem_half'] = neuron_responses['juice']['sem_half']
+    results["biggest_banana_relative_firing_rate_sem_half"] = neuron_responses[
+        "banana"
+    ]["sem_half"]
+    results["biggest_juice_relative_firing_rate_sem_half"] = neuron_responses["juice"][
+        "sem_half"
+    ]
 
     return results
 
 
 def proc_df(df, log_id):
-
     # rename the col for easier access
 
     if isinstance(log_id, str):
@@ -467,60 +484,60 @@ def proc_df(df, log_id):
 
 
 def sort_by_id_coeff(df):
-
     # filter the DataFrame
-    df_filtered = df[df['coeff_id'] == "identity:value"]
+    df_filtered = df[df["coeff_id"] == "identity:value"]
 
     # sort the filtered DataFrame and get the sorted 'neuron' values
-    sorted_neurons = df_filtered.sort_values(
-        'coeff', ascending=False
-    )['neuron']
+    sorted_neurons = df_filtered.sort_values("coeff", ascending=False)["neuron"]
 
     # convert sorted_neurons to a categorical type with its categories being the sorted neurons
-    df['neuron'] = pd.Categorical(
-        df['neuron'], categories=sorted_neurons, ordered=True,
+    df["neuron"] = pd.Categorical(
+        df["neuron"],
+        categories=sorted_neurons,
+        ordered=True,
     )
 
     return df
 
 
 def plot_neuron_response(df):
-
     # convert a pd.Series to a np.array
-    def convert(x): return np.squeeze(x.to_numpy())
+    def convert(x):
+        return np.squeeze(x.to_numpy())
 
     # plot error bars in both x and y directions
     plt.errorbar(
-        convert(
-            df[['biggest_juice_relative_firing_rate_mean']]
-        ), convert(
-            df[['biggest_banana_relative_firing_rate_mean']]
-        ),
-        convert(
-            df[['biggest_juice_relative_firing_rate_sem_half']]
-        ), convert(
-            df[['biggest_banana_relative_firing_rate_sem_half']]
-        ),
-        'none',
-        ecolor='gray', elinewidth=1.5, capsize=1.7, capthick=1.5, zorder=1,
+        convert(df[["biggest_juice_relative_firing_rate_mean"]]),
+        convert(df[["biggest_banana_relative_firing_rate_mean"]]),
+        convert(df[["biggest_juice_relative_firing_rate_sem_half"]]),
+        convert(df[["biggest_banana_relative_firing_rate_sem_half"]]),
+        "none",
+        ecolor="gray",
+        elinewidth=1.5,
+        capsize=1.7,
+        capthick=1.5,
+        zorder=1,
     )
 
     # scatter plot
     ax = sns.scatterplot(
         data=df,
-        x='biggest_juice_relative_firing_rate_mean', y='biggest_banana_relative_firing_rate_mean',
+        x="biggest_juice_relative_firing_rate_mean",
+        y="biggest_banana_relative_firing_rate_mean",
     )
 
-    ax.set_aspect('equal', adjustable='box')
+    ax.set_aspect("equal", adjustable="box")
 
-    ax.axhline(0, color='red', linestyle='--')  # Adds a horizontal line at y=0
-    ax.axvline(0, color='red', linestyle='--')  # Adds a vertical line at x=0
+    ax.axhline(0, color="red", linestyle="--")  # Adds a horizontal line at y=0
+    ax.axvline(0, color="red", linestyle="--")  # Adds a vertical line at x=0
 
     # Get the range of the data
-    xmin, xmax = np.floor(df['biggest_juice_relative_firing_rate_mean'].min(
-    )), np.ceil(df['biggest_juice_relative_firing_rate_mean'].max())
-    ymin, ymax = np.floor(df['biggest_banana_relative_firing_rate_mean'].min(
-    )), np.ceil(df['biggest_banana_relative_firing_rate_mean'].max())
+    xmin, xmax = np.floor(df["biggest_juice_relative_firing_rate_mean"].min()), np.ceil(
+        df["biggest_juice_relative_firing_rate_mean"].max()
+    )
+    ymin, ymax = np.floor(
+        df["biggest_banana_relative_firing_rate_mean"].min()
+    ), np.ceil(df["biggest_banana_relative_firing_rate_mean"].max())
 
     # Combine the ranges
     combined_min = min(xmin, ymin)
@@ -536,8 +553,7 @@ def plot_neuron_response(df):
 
 
 def train_data_model(config):
-
-    seed = config['seed']
+    seed = config["seed"]
     # in numpy (pandas uses numpy for random number generation)
     np.random.seed(seed)
     # in random
@@ -546,8 +562,8 @@ def train_data_model(config):
     # r
 
     r = {
-        'banana': [0.7, 0.05, 0.0, 0.0, 0.0],
-        'juice': [0.0, 0.0, 0.1, 0.5, 1.0],
+        "banana": [0.7, 0.05, 0.0, 0.0, 0.0],
+        "juice": [0.0, 0.0, 0.1, 0.5, 1.0],
     }
 
     def get_r(i, x):
@@ -556,8 +572,8 @@ def train_data_model(config):
     # V
 
     V = {
-        'banana': [0.0, 0.0, 0.0, 0.0, 0.0],
-        'juice': [0.0, 0.0, 0.0, 0.0, 0.0],
+        "banana": [0.0, 0.0, 0.0, 0.0, 0.0],
+        "juice": [0.0, 0.0, 0.0, 0.0, 0.0],
     }
 
     def get_V(i, x):
@@ -574,8 +590,8 @@ def train_data_model(config):
             neuron=neuron,
         )
         coeffs[neuron] = {
-            'banana': coeff_banana,
-            'juice': coeff_juice,
+            "banana": coeff_banana,
+            "juice": coeff_juice,
         }
 
     def get_beta(i, k):
@@ -596,24 +612,18 @@ def train_data_model(config):
     # total set of indexes
     ks = neurons
     xs = [0, 1, 2, 3, 4]
-    is_ = ['banana', 'juice']
+    is_ = ["banana", "juice"]
 
     epoch_history = []
     V_history = []
 
-    for epoch in range(config['epochs']):
-
+    for epoch in range(config["epochs"]):
         x = int(np.random.uniform(low=0, high=5))
 
         for k in ks:
-
             vs = []
             for i in is_:
-                vs.append(
-                    get_beta(i=i, k=k) * (
-                        get_r(i=i, x=x) - get_V(i=i, x=x)
-                    )
-                )
+                vs.append(get_beta(i=i, k=k) * (get_r(i=i, x=x) - get_V(i=i, x=x)))
             v = sum(vs)
 
             set_delta(
@@ -623,13 +633,10 @@ def train_data_model(config):
             )
 
         for i in is_:
-
             delta_Vs = []
             for k in ks:
-                delta_Vs.append(
-                    get_beta(i=i, k=k) * get_delta(k=k, x=x)
-                )
-            delta_V = sum(delta_Vs) * config['alpha']
+                delta_Vs.append(get_beta(i=i, k=k) * get_delta(k=k, x=x))
+            delta_V = sum(delta_Vs) * config["alpha"]
             set_V(
                 i=i,
                 x=x,
@@ -637,25 +644,22 @@ def train_data_model(config):
             )
 
         epoch_history.append(epoch)
-        V_history.append(
-            get_V(i=config['V_history_i'], x=config['V_history_x'])
-        )
+        V_history.append(get_V(i=config["V_history_i"], x=config["V_history_x"]))
 
     return {
-        'epoch_history': epoch_history,
-        'V_history': V_history,
+        "epoch_history": epoch_history,
+        "V_history": V_history,
     }
 
 
 def eval_extract_lists(df, cols):
-
     def eval_col(df, col_eval, col_new):
         def eval_with_nan_inf(v):
-            nan = float('nan')
-            inf = float('inf')
+            nan = float("nan")
+            inf = float("inf")
             return eval(v)
-        df = au.new_col(
-            df, col_new, lambda row: eval_with_nan_inf(row[col_eval]))
+
+        df = au.new_col(df, col_new, lambda row: eval_with_nan_inf(row[col_eval]))
         df = df.drop(col_eval, axis=1)
         return df
 
@@ -668,13 +672,13 @@ def eval_extract_lists(df, cols):
 
 
 def plot_data_model(df):
-
-    df = eval_extract_lists(df, ['epoch_history', 'V_history'])
+    df = eval_extract_lists(df, ["epoch_history", "V_history"])
 
     sns.relplot(
         data=df,
-        kind='line',
-        x='epoch_history', y='V_history',
-        hue='V_history_x',
-        col='V_history_i',
+        kind="line",
+        x="epoch_history",
+        y="V_history",
+        hue="V_history_x",
+        col="V_history_i",
     )

@@ -39,6 +39,13 @@ param_space:
             - "0376"
             - "0377"
 
+    get_df_kwargs:
+        num_trial_blocks: 2
+        trial_block_idxes:
+            grid_search:
+                - 0
+                - 1
+
     formula: "value + identity : value"
 
     coeff_id:

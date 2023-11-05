@@ -499,6 +499,9 @@ def sort_by_id_coeff(df):
     # filter the DataFrame
     df_filtered = df[df["coeff_id"] == "identity:value"]
 
+    if "get_df_kwargs: trial_block_idxes" in df.columns:
+        df_filtered = df_filtered[df_filtered["get_df_kwargs: trial_block_idxes"] == 0]
+
     # sort the filtered DataFrame and get the sorted 'neuron' values
     sorted_neurons = df_filtered.sort_values("coeff", ascending=False)["neuron"]
 

@@ -237,6 +237,7 @@ def do_regression(df, formula, fit_to="dopamine"):
 def train(config):
     df = get_df(
         neuron=config["neuron"],
+        **config.get("get_df_kwargs", {}),
     )
 
     reg_results = do_regression(

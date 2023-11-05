@@ -206,10 +206,6 @@ python analysis_v1.py \
 "df=eu.proc_df(df, 'bic')" \
 "df=au.reduce(df, ['fit_generated_data_with_formula', 'generate_with_formula', 'seed'], lambda df: {'sum_bic': df['bic'].sum()})" \
 "g=sns.catplot(data=df, kind='bar', y='sum_bic', x='generate_with_formula', hue='fit_generated_data_with_formula')"
-
- \
-"g.set(ylim=(3380, 3480))" \
-"g.set_xticklabels(rotation=90)"
 ```
 
 ![](base-model-recovery-.png)

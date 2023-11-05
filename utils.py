@@ -33,6 +33,24 @@ from torchvision import transforms
 
 matplotlib.use('agg')
 
+
+def split_list_specific(lst, n):
+    """
+    Splits the list lst into n blocks with specific requirements.
+    The first n-1 blocks will have the same number of elements,
+    and the last block will contain the remaining elements.
+
+    :param lst: List to be split
+    :param n: Number of blocks to split into
+    :return: A list of n blocks (as lists) with the elements from lst distributed as specified
+    """
+    # Calculate the number of elements in each of the first n-1 blocks
+    block_size = len(lst) // n
+    blocks = [lst[i * block_size : (i + 1) * block_size] for i in range(n - 1)]
+    # The last block contains the remaining elements
+    blocks.append(lst[(n - 1) * block_size :])
+    return blocks
+
 '''
     logger
 '''

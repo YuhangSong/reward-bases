@@ -204,7 +204,7 @@ python analysis_v1.py \
 -v \
 "import Simulations.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, 'bic')" \
-"df=au.reduce(df, ['formula'], lambda df: {'sum_bic': df['bic'].sum()})" \
+"df=au.reduce(df, ['fit_generated_data_with_formula', 'generate_with_formula', 'seed'], lambda df: {'sum_bic': df['bic'].sum()})" \
 "g=sns.catplot(data=df, kind='bar', y='sum_bic', x='generate_with_formula', hue='fit_generated_data_with_formula')"
 
  \

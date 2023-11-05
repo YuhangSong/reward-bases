@@ -48,7 +48,4 @@ param_space:
 
     formula: "value + identity : value"
 
-    coeff_id:
-        grid_search:
-            # - "value"
-            - "identity:value"
+    coeff_id: "identity:value"

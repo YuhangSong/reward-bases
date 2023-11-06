@@ -5,7 +5,7 @@
 
 ray_paradigm: "fit"
 
-trainable: eu.train
+trainable: eu.train_formula_block
 
 run_config: |-
     ray.air.RunConfig(
@@ -21,31 +21,20 @@ param_space:
         grid_search:
             - "0359"
             - "0360"
-            - "0361"
-            - "0362"
-            - "0363"
-            - "0364"
-            - "0365"
-            - "0366"
-            - "0367"
-            - "0368"
-            - "0369"
-            - "0370"
-            - "0371"
-            - "0372"
-            - "0373"
-            - "0374"
-            - "0375"
-            - "0376"
-            - "0377"
-
-    get_df_kwargs:
-        num_trial_blocks: 2
-        trial_block_idxes:
-            grid_search:
-                - 0
-                - 1
-
-    formula: "value + identity : value"
-
-    coeff_id: "identity:value"
+            # - "0361"
+            # - "0362"
+            # - "0363"
+            # - "0364"
+            # - "0365"
+            # - "0366"
+            # - "0367"
+            # - "0368"
+            # - "0369"
+            # - "0370"
+            # - "0371"
+            # - "0372"
+            # - "0373"
+            # - "0374"
+            # - "0375"
+            # - "0376"
+            # - "0377"

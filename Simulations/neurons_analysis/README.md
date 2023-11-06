@@ -203,14 +203,12 @@ python analysis_v1.py \
 -t "base-formula-block-coeff" \
 --p "sns.set_theme()" \
 -l $RESULTS_DIR/neurons_analysis/ \
--m "df['coeff'].iloc[-1]" "df['pvalue'].iloc[-1]" \
+-m "df['coeff: trial_block_idx=0'].iloc[-1]" "df['coeff: trial_block_idx=1'].iloc[-1]" \
 -f "./Simulations/neurons_analysis/base-formula-block.yaml" \
 -v \
 "import Simulations.neurons_analysis.utils as eu" \
-"df=eu.proc_df(df, ['coeff', 'pvalue'])" \
-"df=eu.sort_by_id_coeff(df, filter_df_fn=lambda df: df[df['get_df_kwargs: trial_block_idxes'] == 0])" \
-"g=sns.catplot(data=df, kind='bar', y='coeff', x='neuron', hue='get_df_kwargs: trial_block_idxes')" \
-"g.set_xticklabels(rotation=90)"
+"df=eu.proc_df(df, ['coeff: trial_block_idx=0', 'coeff: trial_block_idx=1'])" \
+"g=sns.relplot(data=df, kind='scatter', y='coeff: trial_block_idx=1', x='coeff: trial_block_idx=0')"
 ```
 
 ![](base-formula-block-coeff-.png)

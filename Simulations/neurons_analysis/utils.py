@@ -266,6 +266,28 @@ def train(config):
     return results
 
 
+def train_formula_block(config):
+    results = {}
+
+    for trial_block_idx in [0, 1]:
+        df = get_df(
+            neuron=config["neuron"],
+            num_trial_blocks=2,
+            trial_block_idxes=trial_block_idx,
+        )
+
+        reg_results = do_regression(
+            df=df,
+            formula="value + identity : value",
+        )
+
+        results[f"coeff: trial_block_idx={trial_block_idx}"] = reg_results.params[
+            "identity:value"
+        ]
+
+    return results
+
+
 def model_recovery(config):
     results = {}
 

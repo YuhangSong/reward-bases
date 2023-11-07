@@ -6,21 +6,21 @@
 rm -r $RESULTS_DIR/neurons_analysis/ ; \
 python main.py -c neurons_analysis/base && \
 python analysis_v1.py \
--t "base-bic-all_neuron" \
+-t "base-aic-all_neuron" \
 --p "sns.set_theme()" \
 -l $RESULTS_DIR/neurons_analysis/ \
--m "df['bic'].iloc[-1]" \
+-m "df['aic'].iloc[-1]" \
 -f "./Simulations/neurons_analysis/base.yaml" \
 -v \
 "import Simulations.neurons_analysis.utils as eu" \
-"df=eu.proc_df(df, 'bic')" \
-"df=au.reduce(df, ['formula'], lambda df: {'sum_bic': df['bic'].sum()})" \
-"g=sns.catplot(data=df, kind='bar', y='sum_bic', x='formula')" \
-"g.set(ylim=(3380, 3480))" \
+"df=eu.proc_df(df, 'aic')" \
+"df=au.reduce(df, ['formula'], lambda df: {'sum_aic': df['aic'].sum()})" \
+"g=sns.catplot(data=df, kind='bar', y='sum_aic', x='formula')" \
+"g.set(ylim=(3260, 3400))" \
 "g.set_xticklabels(rotation=90)"
 ```
 
-![](base-bic-all_neuron-.png)
+![](base-aic-all_neuron-.png)
 
 # base-formula
 
@@ -183,13 +183,14 @@ python analysis_v1.py \
 -t "base-model-recovery" \
 --p "sns.set_theme()" \
 -l $RESULTS_DIR/neurons_analysis/ \
--m "df['bic'].iloc[-1]" \
+-m "df['aic'].iloc[-1]" \
 -f "./Simulations/neurons_analysis/base-model-recovery.yaml" \
 -v \
 "import Simulations.neurons_analysis.utils as eu" \
-"df=eu.proc_df(df, 'bic')" \
-"df=au.reduce(df, ['fit_generated_data_with_formula', 'generate_with_formula', 'seed'], lambda df: {'sum_bic': df['bic'].sum()})" \
-"g=sns.catplot(data=df, kind='bar', y='sum_bic', x='generate_with_formula', hue='fit_generated_data_with_formula')"
+"df=eu.proc_df(df, 'aic')" \
+"df=au.reduce(df, ['fit_generated_data_with_formula', 'generate_with_formula', 'seed'], lambda df: {'sum_aic': df['aic'].sum()})" \
+"g=sns.catplot(data=df, kind='bar', y='sum_aic', x='generate_with_formula', hue='fit_generated_data_with_formula')" \
+"g.set(ylim=(3000, 3300))"
 ```
 
 ![](base-model-recovery-.png)

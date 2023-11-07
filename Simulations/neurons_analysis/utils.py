@@ -255,6 +255,9 @@ def train(config):
     # get bic score
     results["bic"] = reg_results.bic
 
+    # get aic score
+    results["aic"] = reg_results.aic
+
     # get coeff
     if "coeff_id" in config:
         # get coeff
@@ -325,6 +328,9 @@ def model_recovery(config):
 
     # get bic score
     results["bic"] = reg_results.bic
+
+    # get aic score
+    results["aic"] = reg_results.aic
 
     return results
 

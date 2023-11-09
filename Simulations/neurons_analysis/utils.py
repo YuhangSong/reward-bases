@@ -786,6 +786,8 @@ def plot_confusion_matrix(df):
                     "count",
                 ] += 1
 
+    confusion_matrix["percentage"] = confusion_matrix["count"] / len(seeds) * 100
+
     confusion_matrix.rename(
         columns={"generate_with_formula": "Data generating formula"}, inplace=True
     )
@@ -794,7 +796,7 @@ def plot_confusion_matrix(df):
         confusion_matrix.pivot(
             index="fit_generated_data_with_formula",
             columns="Data generating formula",
-            values="count",
+            values="percentage",
         ),
         annot=True,
         fmt=".1f",

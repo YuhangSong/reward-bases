@@ -724,3 +724,53 @@ def plot_data_model(df):
         hue="V_history_x",
         col="V_history_i",
     )
+
+def plot_confusion_matrix(df):
+    # Given the task, we need to create a confusion matrix where we count the number of times a model B
+    # is chosen over model A when model A was used to generate the data. We assume that a model is chosen
+    # based on it having a smaller sum_aic value.
+
+    # First, we need to split the data into groups based on 'generate_with_formula'
+    # and 'fit_generated_data_with_formula' pairs and find the minimum sum_aic for each group.
+    grouped = df.groupby(['generate_with_formula', 'fit_generated_data_with_formula'])
+
+    # Now, within each group, we need to compare the sum_aic of the current 'fit_generated_data_with_formula'
+    # with the sum_aic of the alternative model.
+    # If the current model has a smaller sum_aic, it's considered as the chosen one.
+
+    # This dictionary will hold the counts of how often each model is chosen
+    model_counts = {
+        'value + identity : value': {'value + identity : value': 0, 'value + situation': 0},
+        'value + situation': {'value + identity : value': 0, 'value + situation': 0}
+    }
+
+    # Iterate over each group and update counts
+    for (generate_formula, fit_formula), group_data in grouped:
+        # Determine the alternative formula
+        alternative_formula = 'value + situation' if fit_formula == 'value + identity : value' else 'value + identity : value'
+        
+        # For each row in the group, check if the fit_formula has a smaller sum_aic than the alternative formula
+        for index, row in group_data.iterrows():
+            # Get the min sum_aic for the alternative formula with the same seed
+            alternative_min_aic = df[(df['seed'] == row['seed']) & 
+                                    (df['generate_with_formula'] == generate_formula) & 
+                                    (df['fit_generated_data_with_formula'] == alternative_formula)]['sum_aic'].min()
+            
+            # If the current fit_formula has a smaller or equal sum_aic, it's the chosen model
+            if row['sum_aic'] <= alternative_min_aic:
+                chosen_formula = fit_formula
+            else:
+                chosen_formula = alternative_formula
+            
+            # Update the count for the chosen model
+            model_counts[generate_formula][chosen_formula] += 1
+
+    # Now that we have the counts, we can create a confusion matrix
+    confusion_matrix = pd.DataFrame(model_counts).T  # Transpose to get the desired format
+
+    # We can now plot the confusion matrix with actual counts
+    plt.figure(figsize=(10, 7))
+    sns.heatmap(confusion_matrix, annot=True, fmt="d", cmap="Blues", cbar_kws={'label': 'Count'})
+    plt.title('Confusion Matrix with Actual Counts')
+    plt.ylabel('Generated Formula')
+    plt.xlabel('Chosen Best Fit Formula')

@@ -803,3 +803,6 @@ def plot_confusion_matrix(df):
 
     for t in ax.texts:
         t.set_text(t.get_text() + " %")
+
+    # Remove the y-axis label
+    ax.set_ylabel("")

@@ -786,13 +786,20 @@ def plot_confusion_matrix(df):
                     "count",
                 ] += 1
 
-    sns.heatmap(
+    confusion_matrix.rename(
+        columns={"generate_with_formula": "Data generating formula"}, inplace=True
+    )
+
+    ax = sns.heatmap(
         confusion_matrix.pivot(
             index="fit_generated_data_with_formula",
-            columns="generate_with_formula",
+            columns="Data generating formula",
             values="count",
         ),
         annot=True,
-        fmt="d",
+        fmt=".1f",
         cmap="Blues",
     )
+
+    for t in ax.texts:
+        t.set_text(t.get_text() + " %")

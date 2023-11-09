@@ -727,44 +727,72 @@ def plot_data_model(df):
 
 
 def plot_confusion_matrix(df):
-    # Correcting the approach to calculate the confusion matrix
-
-    # Resetting the model counts for the new run
-    model_counts = {
-        "value + identity : value": {
-            "value + identity : value": 0,
-            "value + situation": 0,
-        },
-        "value + situation": {"value + identity : value": 0, "value + situation": 0},
-    }
-
-    # We need to compare each seed's sum_aic for the two formulas and determine which formula has the smaller sum_aic.
-    # This will tell us for each seed which model is preferred.
-    for seed in df["seed"].unique():
-        # Filter the dataframe for each unique seed
-        df_seed = df[df["seed"] == seed]
-
-        # For each 'generate_with_formula' value, find the row with the minimum 'sum_aic'
-        for formula in df_seed["generate_with_formula"].unique():
-            df_formula = df_seed[df_seed["generate_with_formula"] == formula]
-
-            # Get the formula with the minimum sum_aic
-            min_aic_row = df_formula.loc[df_formula["sum_aic"].idxmin()]
-
-            # Update the count in the confusion matrix
-            # The generated formula is the row, and the formula with min_aic is the column
-            model_counts[formula][min_aic_row["fit_generated_data_with_formula"]] += 1
-
-    # Convert the counts dictionary to a dataframe for the confusion matrix
-    confusion_matrix = pd.DataFrame(
-        model_counts
-    ).T  # Transpose to get the correct orientation
-
-    # Plot the confusion matrix
-    plt.figure(figsize=(10, 7))
-    sns.heatmap(
-        confusion_matrix, annot=True, fmt="d", cmap="Blues", cbar_kws={"label": "Count"}
+    seeds = df["seed"].unique()
+    generate_with_formulas = sorted(list(df["generate_with_formula"].unique()))
+    fit_generated_data_with_formulas = sorted(
+        list(df["fit_generated_data_with_formula"].unique())
     )
-    plt.title("Corrected Confusion Matrix with Actual Counts")
-    plt.ylabel("Generated Formula")
-    plt.xlabel("Chosen Best Fit Formula")
+    assert len(generate_with_formulas) == len(fit_generated_data_with_formulas)
+    assert generate_with_formulas[0] == fit_generated_data_with_formulas[0]
+    assert generate_with_formulas[1] == fit_generated_data_with_formulas[1]
+
+    confusion_matrix = pd.DataFrame(
+        {
+            "generate_with_formula": [
+                "value + identity : value",
+                "value + identity : value",
+                "value + situation",
+                "value + situation",
+            ],
+            "fit_generated_data_with_formula": [
+                "value + identity : value",
+                "value + situation",
+                "value + identity : value",
+                "value + situation",
+            ],
+            "count": [0, 0, 0, 0],
+        }
+    )
+
+    for generate_with_formula in generate_with_formulas:
+        for seed in seeds:
+            two_rows = df[
+                (df["seed"] == seed)
+                & (df["generate_with_formula"] == generate_with_formula)
+            ]
+            if (
+                two_rows[
+                    df["fit_generated_data_with_formula"] == "value + identity : value"
+                ]["sum_aic"].item()
+                < two_rows[
+                    df["fit_generated_data_with_formula"] == "value + situation"
+                ]["sum_aic"].item()
+            ):
+                confusion_matrix.loc[
+                    (confusion_matrix["generate_with_formula"] == generate_with_formula)
+                    & (
+                        confusion_matrix["fit_generated_data_with_formula"]
+                        == "value + identity : value"
+                    ),
+                    "count",
+                ] += 1
+            else:
+                confusion_matrix.loc[
+                    (confusion_matrix["generate_with_formula"] == generate_with_formula)
+                    & (
+                        confusion_matrix["fit_generated_data_with_formula"]
+                        == "value + situation"
+                    ),
+                    "count",
+                ] += 1
+
+    sns.heatmap(
+        confusion_matrix.pivot(
+            index="fit_generated_data_with_formula",
+            columns="generate_with_formula",
+            values="count",
+        ),
+        annot=True,
+        fmt="d",
+        cmap="Blues",
+    )

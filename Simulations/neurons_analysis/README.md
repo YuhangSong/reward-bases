@@ -189,8 +189,8 @@ python analysis_v1.py \
 "import Simulations.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, 'aic')" \
 "df=au.reduce(df, ['fit_generated_data_with_formula', 'generate_with_formula', 'seed'], lambda df: {'sum_aic': df['aic'].sum()})" \
-"g=sns.catplot(data=df, kind='bar', y='sum_aic', x='generate_with_formula', hue='fit_generated_data_with_formula')" \
-"g.set(ylim=(3000, 3300))"
+"print(df[['generate_with_formula', 'fit_generated_data_with_formula', 'sum_aic', 'seed']])" \
+"eu.plot_confusion_matrix(df)"
 ```
 
 ![](base-model-recovery-.png)

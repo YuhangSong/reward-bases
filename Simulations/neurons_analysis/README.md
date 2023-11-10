@@ -1,6 +1,28 @@
 **Run the following command from root directory of the repo.**
 
-# base
+# base-bic
+
+```bash
+rm -r $RESULTS_DIR/neurons_analysis/ ; \
+python main.py -c neurons_analysis/base && \
+python analysis_v1.py \
+-t "base-bic-all_neuron" \
+--p "sns.set_theme()" \
+-l $RESULTS_DIR/neurons_analysis/ \
+-m "df['bic'].iloc[-1]" \
+-f "./Simulations/neurons_analysis/base.yaml" \
+-v \
+"import Simulations.neurons_analysis.utils as eu" \
+"df=eu.proc_df(df, 'bic')" \
+"df=au.reduce(df, ['formula'], lambda df: {'sum_bic': df['bic'].sum()})" \
+"g=sns.catplot(data=df, kind='bar', y='sum_bic', x='formula', hue='formula')" \
+"g.set(ylim=(3380, 3480))" \
+"g.set_xticklabels(rotation=90)"
+```
+
+![](base-bic-all_neuron-.png)
+
+# base-aic
 
 ```bash
 rm -r $RESULTS_DIR/neurons_analysis/ ; \
@@ -15,7 +37,7 @@ python analysis_v1.py \
 "import Simulations.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, 'aic')" \
 "df=au.reduce(df, ['formula'], lambda df: {'sum_aic': df['aic'].sum()})" \
-"g=sns.catplot(data=df, kind='bar', y='sum_aic', x='formula')" \
+"g=sns.catplot(data=df, kind='bar', y='sum_aic', x='formula', hue='formula')" \
 "g.set(ylim=(3260, 3400))" \
 "g.set_xticklabels(rotation=90)"
 ```

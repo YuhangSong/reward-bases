@@ -307,6 +307,30 @@ def model_recovery(config):
         formula=config["generate_with_formula"],
     )
 
+    if config["generate_with_formula"] == "value + situation":
+        # Extract the parameters from the regression results
+        params = reg_results.params
+
+        # Identify the keys for the parameters you want to shuffle
+        keys_to_shuffle = [
+            "situation[T.0.3g banana]",
+            "situation[T.0.5ml juice]",
+            "situation[T.0.9ml juice]",
+            "situation[T.1.5g banana]",
+        ]
+
+        # Extract the values of these parameters
+        values_to_shuffle = [params[key] for key in keys_to_shuffle]
+
+        # Shuffle the values
+        np.random.shuffle(values_to_shuffle)
+
+        # Assign the shuffled values back to the params
+        for i, key in enumerate(keys_to_shuffle):
+            params[key] = values_to_shuffle[i]
+
+        # Now, params contains the shuffled values for the specified parameters
+
     # Calculate the residuals from the fitted model
     residuals = reg_results.resid
 

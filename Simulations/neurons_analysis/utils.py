@@ -832,3 +832,38 @@ def plot_confusion_matrix(df):
 
     # Remove the y-axis label
     ax.set_ylabel("")
+
+
+def plot_difference_histogram(df, num_bins=10):
+    df = au.reduce(
+        df,
+        ["generate_with_formula", "seed"],
+        lambda df: {
+            "delta_sum_aic": df[
+                df["fit_generated_data_with_formula"] == "value + situation"
+            ]["sum_aic"].item()
+            - df[df["fit_generated_data_with_formula"] == "value + identity : value"][
+                "sum_aic"
+            ].item()
+        },
+    )
+
+    max_delta_sum_aic = df["delta_sum_aic"].max()
+    min_delta_sum_aic = df["delta_sum_aic"].min()
+
+    # Generate bins
+    bins = np.linspace(min_delta_sum_aic, max_delta_sum_aic, num_bins + 1)
+
+    # Binning the continuous variable into categories
+    labels = [f"{bins[i]:.2f}-{bins[i+1]:.2f}" for i in range(num_bins)]
+    df["binned_var"] = pd.cut(
+        df["delta_sum_aic"], bins, labels=labels, include_lowest=True
+    )
+
+    g = sns.catplot(
+        data=df,
+        x="binned_var",
+        kind="count",
+        hue="generate_with_formula",
+    )
+    g.set_xticklabels(rotation=90)

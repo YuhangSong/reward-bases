@@ -834,7 +834,7 @@ def plot_confusion_matrix(df):
     ax.set_ylabel("")
 
 
-def plot_difference_histogram(df, num_bins=10):
+def plot_difference_histogram(df, bin_size=10):
     df = au.reduce(
         df,
         ["generate_with_formula", "seed"],
@@ -851,11 +851,18 @@ def plot_difference_histogram(df, num_bins=10):
     max_delta_sum_aic = df["delta_sum_aic"].max()
     min_delta_sum_aic = df["delta_sum_aic"].min()
 
+    # Adjust the range to fit the bin size
+    low = int(np.floor(min_delta_sum_aic / bin_size) * bin_size)
+    high = int(np.ceil(max_delta_sum_aic / bin_size) * bin_size)
+
+    # Calculate the number of bins
+    num_bins = int((high - low) / bin_size)
+
     # Generate bins
-    bins = np.linspace(min_delta_sum_aic, max_delta_sum_aic, num_bins + 1)
+    bins = np.linspace(low, high, num_bins + 1)
 
     # Binning the continuous variable into categories
-    labels = [f"{bins[i]:.2f}-{bins[i+1]:.2f}" for i in range(num_bins)]
+    labels = [f"{int(bins[i])}-{int(bins[i+1])}" for i in range(num_bins)]
     df["binned_var"] = pd.cut(
         df["delta_sum_aic"], bins, labels=labels, include_lowest=True
     )

@@ -37,6 +37,7 @@ python analysis_v1.py \
 "import Simulations.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, 'aic')" \
 "df=au.reduce(df, ['formula'], lambda df: {'sum_aic': df['aic'].sum()})" \
+"print(df[['formula','sum_aic']])" \
 "g=sns.catplot(data=df, kind='bar', y='sum_aic', x='formula', hue='formula')" \
 "g.set(ylim=(3260, 3400))" \
 "g.set_xticklabels(rotation=90)"

@@ -848,6 +848,22 @@ def plot_difference_histogram(df, bin_size=10):
         },
     )
 
+    df_calculate_difference = df.copy()
+    df_calculate_difference = df_calculate_difference[
+        df["generate_with_formula"] == "value + situation"
+    ]
+    # the below are sum_aic fit with real data
+    #                                formula      sum_aic
+    # 0                                value  3388.705545
+    # 1                     value + identity  3329.612571
+    # 2  value + identity + identity : value  3297.428108
+    # 3             value + identity : value  3272.965026
+    # 4                    value + situation  3289.791104
+    df_calculate_difference = df_calculate_difference[
+        df_calculate_difference["delta_sum_aic"] > (3289.791104 - 3272.965026)
+    ]
+    print(len(df_calculate_difference))
+
     max_delta_sum_aic = df["delta_sum_aic"].max()
     min_delta_sum_aic = df["delta_sum_aic"].min()
 

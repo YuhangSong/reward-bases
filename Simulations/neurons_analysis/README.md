@@ -232,7 +232,10 @@ python analysis_v1.py \
 -v \
 "import Simulations.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, ['coeff: trial_block_idx=0', 'coeff: trial_block_idx=1'])" \
-"g=sns.lmplot(data=df, y='coeff: trial_block_idx=1', x='coeff: trial_block_idx=0')"
+"g=sns.lmplot(data=df, y='coeff: trial_block_idx=1', x='coeff: trial_block_idx=0')" \
+"from scipy.stats import pearsonr" \
+"correlation, p_value = pearsonr(df['coeff: trial_block_idx=0'], df['coeff: trial_block_idx=1'])" \
+"print(correlation, p_value)"
 ```
 
 ![](base-formula-block-coeff-.png)

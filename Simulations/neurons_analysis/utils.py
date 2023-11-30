@@ -307,7 +307,7 @@ def model_recovery(config):
         formula=config["generate_with_formula"],
     )
 
-    # if config["generate_with_formula"] == "value + situation":
+    # if config["generate_with_formula"] == "situation":
     #     # Extract the parameters from the regression results
     #     params = reg_results.params
 
@@ -765,14 +765,14 @@ def plot_confusion_matrix(df):
             "generate_with_formula": [
                 "value + identity : value",
                 "value + identity : value",
-                "value + situation",
-                "value + situation",
+                "situation",
+                "situation",
             ],
             "fit_generated_data_with_formula": [
                 "value + identity : value",
-                "value + situation",
+                "situation",
                 "value + identity : value",
-                "value + situation",
+                "situation",
             ],
             "count": [0, 0, 0, 0],
         }
@@ -789,7 +789,7 @@ def plot_confusion_matrix(df):
                     df["fit_generated_data_with_formula"] == "value + identity : value"
                 ]["sum_aic"].item()
                 < two_rows[
-                    df["fit_generated_data_with_formula"] == "value + situation"
+                    df["fit_generated_data_with_formula"] == "situation"
                 ]["sum_aic"].item()
             ):
                 confusion_matrix.loc[
@@ -805,7 +805,7 @@ def plot_confusion_matrix(df):
                     (confusion_matrix["generate_with_formula"] == generate_with_formula)
                     & (
                         confusion_matrix["fit_generated_data_with_formula"]
-                        == "value + situation"
+                        == "situation"
                     ),
                     "count",
                 ] += 1
@@ -840,7 +840,7 @@ def plot_difference_histogram(df, bin_size=10):
         ["generate_with_formula", "seed"],
         lambda df: {
             "delta_sum_aic": df[
-                df["fit_generated_data_with_formula"] == "value + situation"
+                df["fit_generated_data_with_formula"] == "situation"
             ]["sum_aic"].item()
             - df[df["fit_generated_data_with_formula"] == "value + identity : value"][
                 "sum_aic"
@@ -850,7 +850,7 @@ def plot_difference_histogram(df, bin_size=10):
 
     df_calculate_difference = df.copy()
     df_calculate_difference = df_calculate_difference[
-        df["generate_with_formula"] == "value + situation"
+        df["generate_with_formula"] == "situation"
     ]
     # the below are sum_aic fit with real data
     #                                formula      sum_aic
@@ -858,7 +858,7 @@ def plot_difference_histogram(df, bin_size=10):
     # 1                     value + identity  3329.612571
     # 2  value + identity + identity : value  3297.428108
     # 3             value + identity : value  3272.965026
-    # 4                    value + situation  3289.791104
+    # 4                    situation  3289.791104
     df_calculate_difference = df_calculate_difference[
         df_calculate_difference["delta_sum_aic"] > (3289.791104 - 3272.965026)
     ]

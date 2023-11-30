@@ -1045,9 +1045,9 @@ param_space:
     generate_with_formula:
         grid_search:
             - "value + identity : value"
-            - "value + situation"
+            - "situation"
 
     fit_generated_data_with_formula:
         grid_search:
             - "value + identity : value"
-            - "value + situation"
+            - "situation"

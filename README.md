@@ -19,7 +19,7 @@ This repository contains the data and code for the paper [Reward-Bases: Dopamine
 By _Beren Millidge_, _Yuhang Song\*_, _Armin Lak_, _Mark E. Walton_, _Rafal Bogacz\*_.
 **doi**: https://doi.org/10.1101/2023.05.09.540067. UNDER REVIEW at _Nature Communications_.
 
-Experimental data and usage instructions with activity of primate dopamine neurons is in [Data](.Data).
+Experimental data and usage instructions with activity of primate dopamine neurons is in [Data](Data).
 
 ## 1. <a name='Settingupenvironment'></a>Setting up environment
 

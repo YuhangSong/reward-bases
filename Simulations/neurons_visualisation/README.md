@@ -57,3 +57,5 @@ to produce:
 ![](figures/neuron_histogram_360_4.png)
 
 ![](figures/neuron_histogram_360_5.png)
+
+## Other neurons

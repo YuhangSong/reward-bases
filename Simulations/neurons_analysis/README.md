@@ -33,6 +33,7 @@ python analysis_v1.py \
 -l $RESULTS_DIR/neurons_analysis/ \
 -m "df['aic'].iloc[-1]" \
 -f "./Simulations/neurons_analysis/base.yaml" \
+-d \
 -v \
 "import Simulations.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, 'aic')" \
@@ -40,7 +41,7 @@ python analysis_v1.py \
 "print(df[['formula','sum_aic']])" \
 "df=df.sort_values(by='formula', key=lambda x: x.map({v: i for i, v in enumerate(['value', 'value + identity', 'value + identity : value', 'value + identity + identity : value', 'situation', 'identity'])}))" \
 "g=sns.catplot(data=df, kind='bar', y='sum_aic', x='formula', hue='formula')" \
-"g.set(ylim=(3260, 3400))" \
+"g.set(ylim=(3260, 3600))" \
 "g.set_xticklabels(rotation=90)"
 ```
 

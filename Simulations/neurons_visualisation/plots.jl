@@ -15,7 +15,7 @@ include("utils.jl")
 ALL_SITUATIONS = [1, 2, 3, 4, 5] #, 25]
 neuronlist = [359 360 361 362 363 364 365 366 367 368 369 370 371 372 373 374 375 376 377]
 
-default(size=(750, 400),
+default(size=(750, 500),
         xtickfontsize=18,
         ytickfontsize=18,
         legendfontsize=16,

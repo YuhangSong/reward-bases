@@ -23,7 +23,10 @@ default(size=(750, 400),
         titlefontsize=17,
         framestyle=:box,     # Ensure there are axis lines
         gridlinewidth=2,   # Thickness of the grid lines
-        linewidth=4)         # Thickness of the plot lines
+        linewidth=4,# Thickness of the plot lines
+        margin=20mm,         # Add margin around the plot
+        titlelocation=:top   # Move the title higher
+)         
 
 function plot_neuron(neuron_id, window_size=200)
     bucket_start = -500
@@ -47,7 +50,7 @@ function plot_neuron(neuron_id, window_size=200)
 
     xlabel!("Time (ms) after cue")
     ylabel!("Firing rate within window (Hz)")
-    title!("$(neuron_id) responsive neuron")
+    title!("Neuron $(neuron_id)")
     savefig("figures/neuron_time_$(neuron_id).png")
     savefig("figures/neuron_time_$(neuron_id).pdf")
 end

@@ -58,4 +58,42 @@ to produce:
 
 ![](figures/neuron_histogram_360_5.png)
 
-## Other neurons
+## All neurons
+
+![](figures/neuron_time_359.png)
+
+![](figures/neuron_time_372.png)
+
+![](figures/neuron_time_361.png)
+
+![](figures/neuron_time_362.png)
+
+![](figures/neuron_time_376.png)
+
+![](figures/neuron_time_360.png)
+
+![](figures/neuron_time_375.png)
+
+![](figures/neuron_time_363.png)
+
+![](figures/neuron_time_374.png)
+
+![](figures/neuron_time_367.png)
+
+![](figures/neuron_time_369.png)
+
+![](figures/neuron_time_377.png)
+
+![](figures/neuron_time_364.png)
+
+![](figures/neuron_time_366.png)
+
+![](figures/neuron_time_373.png)
+
+![](figures/neuron_time_365.png)
+
+![](figures/neuron_time_371.png)
+
+![](figures/neuron_time_370.png)
+
+![](figures/neuron_time_368.png)

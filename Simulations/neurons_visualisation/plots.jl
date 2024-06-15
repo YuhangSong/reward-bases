@@ -22,9 +22,7 @@ default(size=(750, 400),
         guidefontsize=18,
         titlefontsize=17,
         framestyle=:box,     # Ensure there are axis lines
-        ticklinewidth=2,     # Thickness of the tick lines
         gridlinewidth=2,   # Thickness of the grid lines
-        axislinewidth=4,     # Thickness of the axis lines
         linewidth=4)         # Thickness of the plot lines
 
 function plot_neuron(neuron_id, window_size=200)
@@ -75,6 +73,25 @@ end
 
 
 subjective_value_barchart()
-plot_neuron(359)
+# plot_neuron(359)
 # plot_neuron(368)
 # plot_neuron(360)
+
+# [359, 372, 361, 362, 376, 360, 375, 363, 374, 367, 369, 377, 364, 366, 373, 365, 371, 370, 368]
+
+plot_neuron(372)
+plot_neuron(361)
+plot_neuron(362)
+plot_neuron(376)
+plot_neuron(375)
+plot_neuron(363)
+plot_neuron(374)
+plot_neuron(367)
+plot_neuron(369)
+plot_neuron(377)
+plot_neuron(364)
+plot_neuron(366)
+plot_neuron(373)
+plot_neuron(365)
+plot_neuron(371)
+plot_neuron(370)

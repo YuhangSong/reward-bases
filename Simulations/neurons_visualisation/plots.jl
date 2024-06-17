@@ -40,11 +40,11 @@ function plot_neuron(neuron_id, window_size=200)
     neuron_means = neuron_means ./ window_size_seconds
 
 
-    plot(xs .+ half_window_size, neuron_means[5][1, :], label="0.9ml juice", color=:blue)
-    plot!(xs .+ half_window_size, neuron_means[4][1, :], label="0.5ml juice", color=:blue, linestyle=:dashdot)
-    plot!(xs .+ half_window_size, neuron_means[3][1, :], label="0.2ml juice", color=:blue, linestyle=:dot)
-    plot!(xs .+ half_window_size, neuron_means[1][1, :], label="1.5g banana", color=:orange, linestyle=:solid)
-    plot!(xs .+ half_window_size, neuron_means[2][1, :], label="0.3g banana", color=:orange, linestyle=:dashdot)
+    plot(xs .+ half_window_size, neuron_means[5][1, :], label="0.9ml juice", color=:blue,legend=false)
+    plot!(xs .+ half_window_size, neuron_means[4][1, :], label="0.5ml juice", color=:blue, linestyle=:dashdot,legend=false)
+    plot!(xs .+ half_window_size, neuron_means[3][1, :], label="0.2ml juice", color=:blue, linestyle=:dot,legend=false)
+    plot!(xs .+ half_window_size, neuron_means[1][1, :], label="1.5g banana", color=:orange, linestyle=:solid,legend=false)
+    plot!(xs .+ half_window_size, neuron_means[2][1, :], label="0.3g banana", color=:orange, linestyle=:dashdot,legend=false)
 
     vline!([0], linestyle=:dash, alpha=0.6, color=:gray, label="")
 

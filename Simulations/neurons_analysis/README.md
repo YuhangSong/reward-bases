@@ -11,12 +11,14 @@ python analysis_v1.py \
 -l $RESULTS_DIR/neurons_analysis/ \
 -m "df['bic'].iloc[-1]" \
 -f "./Simulations/neurons_analysis/base.yaml" \
+-d \
 -v \
 "import Simulations.neurons_analysis.utils as eu" \
 "df=eu.proc_df(df, 'bic')" \
 "df=au.reduce(df, ['formula'], lambda df: {'sum_bic': df['bic'].sum()})" \
+"print(df[['formula','sum_bic']])" \
 "g=sns.catplot(data=df, kind='bar', y='sum_bic', x='formula', hue='formula')" \
-"g.set(ylim=(3380, 3480))" \
+"g.set(ylim=(3380, 4000))" \
 "g.set_xticklabels(rotation=90)"
 ```
 

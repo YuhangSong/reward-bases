@@ -50,7 +50,7 @@ function plot_neuron(neuron_id, window_size=200)
 
     xlabel!("Time (ms) after cue")
     ylabel!("Firing rate within window (Hz)")
-    title!("Neuron $(neuron_id)")
+    # title!("Neuron $(neuron_id)")
     savefig("figures/neuron_time_$(neuron_id).png")
     savefig("figures/neuron_time_$(neuron_id).pdf")
 end

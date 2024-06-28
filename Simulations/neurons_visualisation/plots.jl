@@ -76,9 +76,9 @@ end
 
 
 # subjective_value_barchart()
-# plot_neuron(359)
-# plot_neuron(368)
-# plot_neuron(360)
+plot_neuron(359)
+plot_neuron(368)
+plot_neuron(360)
 
 # # [359, 372, 361, 362, 376, 360, 375, 363, 374, 367, 369, 377, 364, 366, 373, 365, 371, 370, 368]
 

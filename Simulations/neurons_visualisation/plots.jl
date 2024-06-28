@@ -16,11 +16,11 @@ ALL_SITUATIONS = [1, 2, 3, 4, 5] #, 25]
 neuronlist = [359 360 361 362 363 364 365 366 367 368 369 370 371 372 373 374 375 376 377]
 
 default(size=(750, 450),
-        xtickfontsize=18,
-        ytickfontsize=18,
-        legendfontsize=16,
-        guidefontsize=18,
-        titlefontsize=17,
+        xtickfontsize=27,
+        ytickfontsize=27,
+        legendfontsize=27,
+        guidefontsize=27,
+        titlefontsize=27,
         framestyle=:box,     # Ensure there are axis lines
         gridlinewidth=2,   # Thickness of the grid lines
         linewidth=4,# Thickness of the plot lines
@@ -49,8 +49,8 @@ function plot_neuron(neuron_id, window_size=200)
     vline!([0], linestyle=:dash, alpha=0.6, color=:gray, label="")
 
     xlabel!("Time (ms) after cue")
-    ylabel!("Firing rate within window (Hz)")
-    # title!("Neuron $(neuron_id)")
+    ylabel!("Firing rate")
+    title!("Neuron $(neuron_id)")
     savefig("figures/neuron_time_$(neuron_id).png")
     savefig("figures/neuron_time_$(neuron_id).pdf")
 end
@@ -75,10 +75,10 @@ end
 
 
 
-subjective_value_barchart()
-plot_neuron(359)
-plot_neuron(368)
-plot_neuron(360)
+# subjective_value_barchart()
+# plot_neuron(359)
+# plot_neuron(368)
+# plot_neuron(360)
 
 # # [359, 372, 361, 362, 376, 360, 375, 363, 374, 367, 369, 377, 364, 366, 373, 365, 371, 370, 368]
 

@@ -13,11 +13,10 @@
 	/vscode-markdown-toc-config -->
 <!-- /vscode-markdown-toc -->
 
-# Reward-Bases: Dopaminergic Mechanisms for Adaptive Acquisition of Multiple Reward Types
+# Reward-Bases: A Simple Mechanisms for Adaptive Acquisition of Multiple Reward Types
 
 This repository contains the data and code for the paper [Reward-Bases: Dopaminergic Mechanisms for Adaptive Acquisition of Multiple Reward Types](https://www.biorxiv.org/content/10.1101/2023.05.09.540067v1).
 By _Beren Millidge_, _Yuhang Song\*_, _Armin Lak_, _Mark E. Walton_, _Rafal Bogacz\*_.
-**doi**: https://doi.org/10.1101/2023.05.09.540067. UNDER REVIEW at _Nature Communications_.
 
 Experimental data and usage instructions with activity of primate dopamine neurons is in [Data](Data).
 
@@ -113,7 +112,7 @@ The code is organized as follows:
         <!-- - `*_trainable.py`: Various trainable classes that is shared across different Simulations. -->
         <!-- - `data_utils.py`: Utility functions for dataset. -->
     -   `fit_data.py`: Functions for fitting data from biological Simulations.
--   `Simulations`: This folder contains all the Simulations. Specifically, each subfolder contains
+-   `Simulations`: This folder contains all the simulations and data analyses. Specifically, each subfolder contains
     -   the `README.md` file that describes the experiment, document the comments to run to reproduce the experiment and reproduce the figure in the paper.
     -   the configuration file(s) (`.yaml`) for the experiment.
     -   `.py` files that are specific to the experiment.

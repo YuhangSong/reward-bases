@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
+sns.set_theme(context="talk")
+
 def xavier (Nout,Nin):
     return np.random.rand(Nout,Nin) * np.sqrt(6/(Nout+Nin))
 
@@ -79,9 +81,13 @@ Error = pd.DataFrame(E, columns=['Trial','Loss','r(wSD,wDS)'])
 plt.figure(figsize=(3,3))
 sns.lineplot (data=Error, x='Trial', y='Loss')
 plt.yscale('log')
+plt.savefig('Trial-Loss.pdf', format='pdf')
+
 plt.figure(figsize=(3,3))
 sns.lineplot (data=Error, x='Trial', y='r(wSD,wDS)')
+plt.savefig('Trial-r.pdf', format='pdf')
+
 plt.figure(figsize=(7,3))
 sns.barplot (data=Vdf, x='Stimulus', y='Striatal output', hue='Motivation', errorbar='sd')
-
+plt.savefig('Stimulus-Striatal_output.pdf', format='pdf')
             

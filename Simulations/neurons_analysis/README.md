@@ -183,24 +183,6 @@ python analysis_v1.py \
 
 ![](base-neuron-response-correlation-.png)
 
-# base-data-model
-
-```bash
-rm -r $RESULTS_DIR/neurons_analysis/ ; \
-python main.py -c neurons_analysis/base-data-model && \
-python analysis_v1.py \
--t "base-data-model" \
---p "sns.set_theme()" \
--l $RESULTS_DIR/neurons_analysis/ \
--m "df['epoch_history'].iloc[0]" "df['V_history'].iloc[0]" \
--f "./Simulations/neurons_analysis/base-data-model.yaml" \
--v \
-"import Simulations.neurons_analysis.utils as eu" \
-"eu.plot_data_model(df)"
-```
-
-![](base-data-model-.png)
-
 # model-recovery
 
 ```bash
